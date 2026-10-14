@@ -1,4 +1,4 @@
-:root{--ink:#0A0A0A;--green:#0F7B3F;--green-d:#0A5C2E;--lime:#22C55E;--paper:#FFFFFF;--soft:#F1F6F2;--line:#E3E8E4;--f1:'Source Serif 4',Georgia,serif;--f2:'Inter',system-ui,sans-serif}
+:root{--ink:#0A0A0A;--green:#0F7B3F;--green-d:#0A5C2E;--lime:#22C55E;--paper:#FFFFFF;--soft:#F1F6F2;--line:#E3E8E4;--f1:'Source Serif 4',Georgia,serif;--f2:'Inter',system-ui,sans-serif;--r:3/4}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 body{font:1rem/1.65 var(--f2);background:var(--paper);color:var(--ink)}
 a{color:inherit;text-decoration:none}ul{list-style:none}img{max-width:100%;display:block}
@@ -30,7 +30,7 @@ h1,h2{font-family:var(--f1);line-height:1.1;letter-spacing:-.02em}
 .btn.line:hover{background:var(--ink);color:var(--paper)}.hero .btn.line:hover{background:var(--paper);color:var(--ink)}
 .btn.off{opacity:.55;cursor:not-allowed;border-style:dashed;font-weight:600}
 #fan{position:relative;height:30rem}
-.fc{position:absolute;width:56%;aspect-ratio:3/4;left:50%;top:50%;box-shadow:0 25px 50px rgba(0,0,0,.5);border-radius:6px;overflow:hidden;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.fc{position:absolute;width:56%;aspect-ratio:var(--r);left:50%;top:50%;box-shadow:0 25px 50px rgba(0,0,0,.5);border-radius:6px;overflow:hidden;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .f0{transform:translate(-110%,-50%) rotate(-12deg)}.f1{transform:translate(-62%,-52%) rotate(-2deg)}.f2{transform:translate(-14%,-50%) rotate(9deg);z-index:2}
 #fan:hover .f0{transform:translate(-125%,-50%) rotate(-16deg)}#fan:hover .f2{transform:translate(0,-50%) rotate(13deg)}
 .gen{height:100%;width:100%;background:var(--c);color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:7% 8%;position:relative;overflow:hidden;font-family:var(--f1)}
@@ -40,7 +40,7 @@ h1,h2{font-family:var(--f1);line-height:1.1;letter-spacing:-.02em}
 .gen i{font:600 .8rem var(--f2);font-style:normal;position:relative;color:#0A0A0A;background:var(--lime);align-self:flex-start;padding:.1rem .6rem;border-radius:99px;margin-top:.5rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:2rem}
 .card{display:flex;flex-direction:column;gap:.5rem;text-align:left}
-.cv{display:block;aspect-ratio:3/4;border-radius:6px;overflow:hidden;box-shadow:0 8px 20px rgba(10,10,10,.18);transition:transform .25s,box-shadow .25s}.cv img{height:100%;width:100%;object-fit:cover}
+.cv{display:block;aspect-ratio:var(--r);border-radius:6px;overflow:hidden;box-shadow:0 8px 20px rgba(10,10,10,.18);transition:transform .25s,box-shadow .25s}.cv img{height:100%;width:100%;object-fit:cover}
 .card:hover .cv{transform:translateY(-6px) rotate(-1deg);box-shadow:0 18px 30px rgba(10,10,10,.28)}
 .card strong{font:700 1.15rem var(--f1)}
 .tag{align-self:flex-start;background:var(--c,var(--ink));color:#fff;font-size:.8rem;font-weight:600;padding:.1rem .7rem;border-radius:99px}
@@ -62,7 +62,7 @@ footer{background:var(--ink);color:#E5E7EB;padding:4rem 5% 1.5rem}
 footer h4{font:700 1.1rem var(--f1);color:var(--lime);margin:.2rem 0 .8rem}footer li{margin-bottom:.5rem}footer a:hover{color:var(--lime)}
 .copy{text-align:center;border-top:1px solid #2b2b2b;padding-top:1.5rem;font-size:.9rem}
 dialog{margin:auto;border:3px solid var(--ink);border-radius:12px;background:var(--paper);color:var(--ink);width:min(820px,92vw);padding:2rem}dialog::backdrop{background:rgba(10,10,10,.75)}
-.mg{display:grid;grid-template-columns:minmax(0,.8fr) 1.2fr;gap:2rem;align-items:center}.mc{aspect-ratio:3/4;border-radius:6px;overflow:hidden}.mc img{height:100%;object-fit:cover}
+.mg{display:grid;grid-template-columns:minmax(0,.8fr) 1.2fr;gap:2rem;align-items:center}.mc{aspect-ratio:var(--r);border-radius:6px;overflow:hidden}.mc img{height:100%;object-fit:cover}
 dialog h2{font-size:2rem;margin:.6rem 0}.md{margin-bottom:1.5rem}.acts{display:flex;gap:.8rem;flex-wrap:wrap}
 .x{position:absolute;top:.6rem;right:1rem;font-size:2rem;line-height:1}
 @media(max-width:800px){
@@ -129,4 +129,11 @@ dialog h2{font-size:2rem;margin:.6rem 0}.md{margin-bottom:1.5rem}.acts{display:f
  .f0,#fan:hover .f0{transform:translate(-96%,-50%) rotate(-9deg)}
  .f1{transform:translate(-50%,-52%) rotate(-1deg)}
  .f2,#fan:hover .f2{transform:translate(-4%,-50%) rotate(7deg)}
+}
+
+/* phones: smaller covers, two per row */
+@media(max-width:800px){
+ .grid{grid-template-columns:repeat(2,1fr);gap:1.4rem 1rem}
+ .card strong{font-size:1rem}.tag{font-size:.72rem}
+ .latest .cv{max-width:300px;margin:0 auto;width:100%}
 }
