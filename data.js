@@ -3,7 +3,7 @@ const CONFIG={
   startYear:2012,                 // first year in archive
   latest:{y:2026,m:9},            // newest issue (month 1-12). Update when a new issue is published.
   email:'info@kabarinews.com',
-  formEndpoint:'',                // paste a Formspree URL (https://formspree.io/f/xxxx) to receive messages by form; empty = opens email app
+  formEndpoint:'https://formspree.io/f/xqpewbpb',                // paste a Formspree URL (https://formspree.io/f/xxxx) to receive messages by form; empty = opens email app
   website:'https://kabarinews.com',
   issuu:'https://issuu.com/kabari8',   // official Kabari page on Issuu; used as the "Read" fallback until an issue has its own link
   location:'San Francisco, United States',

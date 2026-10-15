@@ -76,6 +76,9 @@ const T={
  sub_btn:{en:"Subscribe",id:"Berlangganan"},
  fol_t:{en:"Follow Kabari",id:"Ikuti Kabari"},
  fol_d:{en:"Stories, covers and community news every week on our social channels.",id:"Kisah, sampul, dan kabar komunitas setiap pekan di media sosial kami."},
+ upd:{en:"Last updated",id:"Terakhir diperbarui"},
+ f_priv:{en:"Privacy Policy",id:"Kebijakan Privasi"},
+ f_terms:{en:"Terms of Service",id:"Ketentuan Layanan"},
  ab3:{en:'Every monthly issue from 2012 onward is kept here so readers, researchers and future generations can find it.',id:'Setiap edisi bulanan sejak 2012 disimpan di sini agar pembaca, peneliti, dan generasi mendatang dapat menemukannya.'},
  ct_t:{en:'Contact us',id:'Hubungi kami'},ct_name:{en:'Your name',id:'Nama Anda'},ct_email:{en:'Your email',id:'Email Anda'},ct_subj:{en:'Subject',id:'Subjek'},ct_msg:{en:'Your message',id:'Pesan Anda'},ct_send:{en:'Send message',id:'Kirim pesan'},
  ct_ok:{en:'Message sent. Thank you, we will reply soon.',id:'Pesan terkirim. Terima kasih, kami akan segera membalas.'},ct_err:{en:'Could not send. Please email us directly.',id:'Gagal mengirim. Silakan kirim email langsung.'},
@@ -108,7 +111,7 @@ function shell(){
   const s=CONFIG.social,names={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<li><a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a></li>`).join('');
   $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html"><span class="mk" aria-hidden="true">K</span>Kabari Magazine</a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
-  $('#ftr').innerHTML=`<footer><div class="fg"><div><div class="logo"><span class="mk" aria-hidden="true">K</span>Kabari Magazine</div><p data-i="f_tag"></p></div><div><h4 data-i="f_links"></h4><ul>${nav.map(([p,k])=>`<li><a href="${p}.html" data-i="${k}"></a></li>`).join('')}</ul></div><div><h4 data-i="nav_contact"></h4><ul><li><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></li><li>${CONFIG.location}</li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener">Issuu</a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li></ul>${soc?`<h4 data-i="f_follow"></h4><ul>${soc}</ul>`:''}</div></div><p class="copy">© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span></p></footer>
+  $('#ftr').innerHTML=`<footer><div class="fg"><div><div class="logo"><span class="mk" aria-hidden="true">K</span>Kabari Magazine</div><p data-i="f_tag"></p></div><div><h4 data-i="f_links"></h4><ul>${nav.map(([p,k])=>`<li><a href="${p}.html" data-i="${k}"></a></li>`).join('')}</ul></div><div><h4 data-i="nav_contact"></h4><ul><li><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></li><li>${CONFIG.location}</li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener">Issuu</a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li></ul>${soc?`<h4 data-i="f_follow"></h4><ul>${soc}</ul>`:''}</div></div><p class="copy">© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span> &nbsp;·&nbsp; <a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></p></footer>
   <dialog id="dlg"><button class="x" aria-label="Close">×</button><div class="mg"><div class="mc"></div><div><span class="tag"></span><h2 id="mt"></h2><p class="md"></p><div class="acts"></div></div></div></dialog>`;
   {const j=document.createElement('script');j.type='application/ld+json';j.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'Kabari Magazine',url:CONFIG.website,foundingDate:'2007',address:{'@type':'PostalAddress',addressLocality:'San Francisco',addressCountry:'US'},email:CONFIG.email,sameAs:Object.values(CONFIG.social).filter(Boolean).concat(CONFIG.issuu)});document.head.appendChild(j)}
   $('.burger').onclick=e=>{const o=$('#nav').classList.toggle('open');e.target.setAttribute('aria-expanded',o)};
@@ -126,6 +129,7 @@ function i18n(){
 }
 function setLang(l){lang=l;try{localStorage.setItem('kabariLang',l)}catch(e){}i18n();render()}
 const L=ISSUES[0];
+const legal=k=>{const d=LEGAL[k],g=o=>o[lang]||o.en;$('#lg').innerHTML=`<h1 class="sec-t">${g(d.t)}</h1><p class="upd">${t('upd')}: ${g(d.u)}</p>`+d.s.map(([h,p])=>`<h2>${g(h)}</h2><p>${g(p)}</p>`).join('')};
 const pages={
  index(){
   $('#fan').innerHTML=ISSUES.slice(0,3).reverse().map((i,n)=>`<a class="fc f${n}" href="latest.html" aria-label="${title(i)}">${cover(i)}</a>`).join('');
@@ -167,6 +171,8 @@ const pages={
   $('#tpt').innerHTML=CATS.map(c=>`<tr><th scope="row"><span class="tag" style="--c:${CAT_COLOR[c]}">${t('c_'+c)}</span></th><td>${t('tp_'+c)}</td></tr>`).join('');
   $('#ayt').innerHTML=yrs.map(y=>{const l=ISSUES.filter(i=>i.y===y);return `<tr><th scope="row">${y}</th><td>${l.length}</td><td>${mName(l[l.length-1].m)} – ${mName(l[0].m)}</td><td><a href="archive.html?year=${y}">${t('ay_go')} →</a></td></tr>`}).join('');
  },
+ privacy(){legal('privacy')},
+ terms(){legal('terms')},
  contact(){
   const f=$('#cf');if(f.dataset.b)return;f.dataset.b=1;
   f.onsubmit=async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f)),st=$('#st');
