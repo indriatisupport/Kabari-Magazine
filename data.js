@@ -22,18 +22,7 @@ const CONFIG={
 };
 /* Real covers / links per issue. Key = "YYYY-M". Anything not listed gets a generated cover and "Coming soon" buttons.
    Example: "2026-9":{cover:"covers/2026-09.jpg",read:"https://...",pdf:"pdf/2026-09.pdf",desc:{en:"...",id:"..."}} */
-const OVERRIDES={
-  "2026-9":{cover:"covers/2026-09.jpg",read:"pdf/2026-09.pdf",pdf:"pdf/2026-09.pdf"},
-  "2026-8":{cover:"covers/2026-08.jpg",read:"pdf/2026-08.pdf",pdf:"pdf/2026-08.pdf"},
-  "2026-7":{cover:"covers/2026-07.png",read:"pdf/2026-07.pdf",pdf:"pdf/2026-07.pdf"},
-  "2026-6":{cover:"covers/2026-06.png",read:"pdf/2026-06.pdf",pdf:"pdf/2026-06.pdf"},
-  "2026-5":{cover:"covers/2026-05.png",read:"pdf/2026-05.pdf",pdf:"pdf/2026-05.pdf"},
-  "2026-4":{cover:"covers/2026-04.png",read:"pdf/2026-04.pdf",pdf:"pdf/2026-04.pdf"},
-  "2026-3":{cover:"covers/2026-03.jpg",read:"pdf/2026-03.pdf",pdf:"pdf/2026-03.pdf"},
-  "2026-2":{cover:"covers/2026-02.jpg",read:"pdf/2026-02.pdf",pdf:"pdf/2026-02.pdf"},
-  "2026-1":{cover:"covers/2026-01.jpg",read:"pdf/2026-01.pdf",pdf:"pdf/2026-01.pdf"}
-
-};
+const OVERRIDES={};
 const MONTHS_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTHS_ID=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const CATS=['News','Culture','Community','Business','Lifestyle'];

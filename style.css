@@ -153,3 +153,13 @@ header{padding-inline:max(5%,calc((100% - 1180px)/2 + 5%))}
 
 .logo img{height:54px}
 @media(max-width:800px){.logo img{height:42px}}
+
+
+/* QA fixes: stop wide children stretching grids; slightly larger tags */
+.ctl{grid-template-columns:minmax(0,1fr)}.ctl>*{min-width:0}
+.two>div{min-width:0}
+@media(max-width:800px){.two{grid-template-columns:minmax(0,1fr)}.tag{font-size:.78rem}}
+
+/* all years visible on desktop; footer list spacing */
+@media(min-width:801px){.yrs{flex-wrap:wrap;overflow:visible}}
+footer ul+h4{margin-top:1.6rem}

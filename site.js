@@ -79,6 +79,7 @@ const T={
  upd:{en:"Last updated",id:"Terakhir diperbarui"},
  f_priv:{en:"Privacy Policy",id:"Kebijakan Privasi"},
  f_terms:{en:"Terms of Service",id:"Ketentuan Layanan"},
+ count1:{en:"1 issue",id:"1 edisi"},
  ab3:{en:'Every monthly issue from 2012 onward is kept here so readers, researchers and future generations can find it.',id:'Setiap edisi bulanan sejak 2012 disimpan di sini agar pembaca, peneliti, dan generasi mendatang dapat menemukannya.'},
  ct_t:{en:'Contact us',id:'Hubungi kami'},ct_name:{en:'Your name',id:'Nama Anda'},ct_email:{en:'Your email',id:'Email Anda'},ct_subj:{en:'Subject',id:'Subjek'},ct_msg:{en:'Your message',id:'Pesan Anda'},ct_send:{en:'Send message',id:'Kirim pesan'},
  ct_ok:{en:'Message sent. Thank you, we will reply soon.',id:'Pesan terkirim. Terima kasih, kami akan segera membalas.'},ct_err:{en:'Could not send. Please email us directly.',id:'Gagal mengirim. Silakan kirim email langsung.'},
@@ -119,7 +120,7 @@ function shell(){
   const d=$('#dlg');$('.x',d).onclick=()=>d.close();d.addEventListener('click',e=>{if(e.target===d)d.close()});
   document.addEventListener('click',e=>{const c=e.target.closest('.card');if(c)openModal(byId(c.dataset.id))});
 }
-function openModal(i){const d=$('#dlg');$('.mc',d).innerHTML=cover(i);const g=$('.tag',d);g.textContent=t('c_'+i.cat);g.style.setProperty('--c',CAT_COLOR[i.cat]);$('#mt',d).textContent=title(i);$('.md',d).textContent=desc(i);$('.acts',d).innerHTML=btn(i.read,'read','solid')+btn(i.pdf,'pdf','line');d.dataset.id=i.id;d.showModal()}
+function openModal(i){const d=$('#dlg');$('.mc',d).innerHTML=cover(i);const g=$('.tag',d);g.textContent=t('c_'+i.cat);g.style.setProperty('--c',CAT_COLOR[i.cat]);$('#mt',d).textContent=title(i);$('.md',d).textContent=desc(i);$('.acts',d).innerHTML=btn(i.read,'read','solid')+btn(i.pdf,'pdf','line');d.dataset.id=i.id;if(!d.open)d.showModal()}
 function i18n(){
   document.documentElement.lang=lang;
   $$('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
@@ -155,7 +156,7 @@ const pages={
   const words=S.q.toLowerCase().split(/\s+/).filter(Boolean);
   const hay=i=>`${MONTHS_EN[i.m-1]} ${MONTHS_ID[i.m-1]} ${i.y} ${i.cat} ${T['c_'+i.cat].id} ${i.m<10?'0'+i.m:i.m}/${i.y}`.toLowerCase();
   const list=ISSUES.filter(i=>(S.c==='all'||i.cat===S.c)&&(words.length?words.every(w=>hay(i).includes(w)):(S.y==='all'||String(i.y)===S.y)));
-  $('#count').textContent=t('count',{n:list.length});
+  $('#count').textContent=t(list.length===1?'count1':'count',{n:list.length});
   $('#grid').innerHTML=list.length?list.map(card).join(''):`<p class="empty">${t('none')}</p>`;
   $('#years').onclick=e=>{const b=e.target.closest('[data-y]');if(b){S.y=b.dataset.y;render();$('#years [aria-pressed=true]').focus({preventScroll:true})}};
   $('#cats').onclick=e=>{const b=e.target.closest('[data-c]');if(b){S.c=b.dataset.c;render();$('#cats [aria-pressed=true]').focus({preventScroll:true})}};
