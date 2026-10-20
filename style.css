@@ -59,7 +59,7 @@ h1,h2{font-family:var(--f1);line-height:1.1;letter-spacing:-.02em}
 .fm{display:grid;gap:1.1rem;max-width:36rem}.fm textarea{min-height:10rem}#st{font-weight:600;min-height:1.5rem}
 footer{background:var(--ink);color:#E5E7EB;padding:4rem 5% 1.5rem}
 .fg{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3rem;max-width:1180px;margin:0 auto 2.5rem}.fg .logo{color:#fff;margin-bottom:.8rem}
-footer h4{font:700 1.1rem var(--f1);color:var(--lime);margin:.2rem 0 .8rem}footer li{margin-bottom:.5rem}footer a:hover{color:var(--lime)}
+footer h2{font:700 1.1rem var(--f1);color:var(--lime);margin:.2rem 0 .8rem}footer li{margin-bottom:.5rem}footer a:hover{color:var(--lime)}
 .copy{text-align:center;border-top:1px solid #2b2b2b;padding-top:1.5rem;font-size:.9rem}
 dialog{margin:auto;border:3px solid var(--ink);border-radius:12px;background:var(--paper);color:var(--ink);width:min(820px,92vw);padding:2rem}dialog::backdrop{background:rgba(10,10,10,.75)}
 .mg{display:grid;grid-template-columns:minmax(0,.8fr) 1.2fr;gap:2rem;align-items:center}.mc{aspect-ratio:var(--r);border-radius:6px;overflow:hidden}.mc img{height:100%;object-fit:cover}
@@ -162,4 +162,7 @@ header{padding-inline:max(5%,calc((100% - 1180px)/2 + 5%))}
 
 /* all years visible on desktop; footer list spacing */
 @media(min-width:801px){.yrs{flex-wrap:wrap;overflow:visible}}
-footer ul+h4{margin-top:1.6rem}
+footer ul+h2{margin-top:1.6rem}
+/* focus ring: dark green on light areas, lime on dark areas (3:1 contrast) */
+:focus-visible{outline-color:var(--green)}
+.hero :focus-visible,footer :focus-visible,.cta :focus-visible,.appc :focus-visible,.kb-panel :focus-visible{outline-color:var(--lime)}
