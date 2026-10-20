@@ -19,6 +19,10 @@ const issue = i => ({ t: 'issue', v: i });
 const lab = o => (typeof o === 'string' ? o : (o[RL] || o.en));
 const one = a => a[Math.floor(Math.random() * a.length)];
 const Pv = (en, id) => P(one(en), one(id));
+const MEM = { name: '' };
+const cap = w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+const RE_NAME = /\b(?:my name is|i am called|i'm called|call me|nama saya|namaku|panggil saya)\s+([A-Za-z\u00C0-\u00FF][A-Za-z\u00C0-\u00FF'’-]{1,20})/i;
+function learn(q) { const m = String(q).match(RE_NAME); if (m) MEM.name = cap(m[1]); }
 const aiOn = () => typeof CONFIG !== 'undefined' && !!CONFIG.chatEndpoint;
 
 /* ---------- text normalising and language detection ---------- */
@@ -177,17 +181,23 @@ const starters = () => chips([
   { l: { en: 'Subscribe', id: 'Berlangganan' }, run: hSubscribe },
   { l: { en: 'Contact', id: 'Kontak' }, run: hContact },
   { l: { en: 'About Kabari', id: 'Tentang Kabari' }, run: hAbout }]);
-const hWelcome = () => [P('Hi! I’m the Kabari assistant. Ask for any issue, like “Sep 2025”, or ask about subscribing, the app or contacting us.',
-                          'Halo! Saya asisten Kabari. Cari edisi mana pun, misalnya “Sep 2025”, atau tanyakan tentang berlangganan, aplikasi, atau cara menghubungi kami.'), starters()];
+const hWelcome = () => [P('Hi! How can I help you today?', 'Halo! Ada yang bisa saya bantu hari ini?')];
 const hFallback = () => [
   P('I’m not sure about that one. I can find any issue by month and year, and answer questions about Kabari. For anything else, the team is happy to help by email.',
     'Saya belum yakin soal itu. Saya bisa mencari edisi berdasarkan bulan dan tahun, dan menjawab pertanyaan tentang Kabari. Untuk hal lain, tim kami siap membantu lewat email.'),
   starters(), links([MAIL()])];
 
 /* ---------- small talk (varied wording, so it never sounds canned) ---------- */
-const hGreet = () => [Pv(
-  ['Hello! Nice to hear from you. What can I help you with today?', 'Hi there! How can I help you today?', 'Hey! Welcome to Kabari. Are you looking for a particular issue, or just browsing?'],
-  ['Halo! Senang bertemu Anda. Ada yang bisa saya bantu hari ini?', 'Hai! Ada yang bisa saya bantu?', 'Halo, selamat datang di Kabari! Mencari edisi tertentu, atau sekadar melihat-lihat?'])];
+const hGreet = () => MEM.name
+  ? [Pv(['Hello again, ' + MEM.name + '! What can I help you with?', 'Hi ' + MEM.name + '! Good to see you. How can I help?'], ['Halo lagi, ' + MEM.name + '! Ada yang bisa saya bantu?', 'Hai ' + MEM.name + '! Senang bertemu lagi. Ada yang bisa saya bantu?'])]
+  : [Pv(['Hello! Nice to hear from you. What can I help you with today?', 'Hi there! How can I help you today?', 'Hey! Welcome to Kabari. Are you looking for a particular issue, or just browsing?'],
+        ['Halo! Senang bertemu Anda. Ada yang bisa saya bantu hari ini?', 'Hai! Ada yang bisa saya bantu?', 'Halo, selamat datang di Kabari! Mencari edisi tertentu, atau sekadar melihat-lihat?'])];
+const hNameSaid = () => MEM.name
+  ? [Pv(['Nice to meet you, ' + MEM.name + '! How can I help you today?', 'Great to meet you, ' + MEM.name + '! What can I do for you?'], ['Senang berkenalan, ' + MEM.name + '! Ada yang bisa saya bantu?', 'Salam kenal, ' + MEM.name + '! Apa yang bisa saya bantu?'])]
+  : [P('Nice to meet you! How can I help you today?', 'Senang berkenalan! Ada yang bisa saya bantu?')];
+const hMemory = () => MEM.name
+  ? [P('Yes, you told me your name is ' + MEM.name + '. I keep track of what you tell me in our chat, on this device.', 'Ya, Anda bilang nama Anda ' + MEM.name + '. Saya mengingat apa yang Anda ceritakan di chat ini, di perangkat ini.')]
+  : [P('I don’t know your name yet. Tell me, and I’ll remember it while we chat on this device.', 'Saya belum tahu nama Anda. Beri tahu saya, dan saya akan mengingatnya selama kita mengobrol di perangkat ini.')];
 const hHow = () => [Pv(
   ['I’m doing well, thanks for asking! How about you? Is there something I can help you find?', 'Doing great, thank you! What can I do for you today?'],
   ['Saya baik, terima kasih sudah bertanya! Bagaimana dengan Anda? Ada yang bisa saya bantu?', 'Baik-baik saja, terima kasih! Ada yang bisa saya bantu hari ini?'])];
@@ -203,6 +213,8 @@ const hBye = () => [Pv(['Goodbye! Come back when the next issue is out.', 'Take 
 const FULL = r => new RegExp('^(' + r + ')( there| kabari| all| semua| bot)?[ !.?]*$');
 const RULES = [
   [FULL('hi|hello|hey|hallo|halo|hai|yo|assalamualaikum|selamat (pagi|siang|sore|malam)|good (morning|afternoon|evening)'), hGreet, 'chat'],
+  [/\b(my name is|call me|i am called|i'm called|nama saya|namaku|panggil saya)\b/, hNameSaid, 'chat'],
+  [/\b(my name|remember me|do you remember|do you know me|what did i (say|tell|ask)|who am i|nama saya siapa|ingat saya|kamu ingat)\b/, hMemory, 'info'],
   [/\b(how are you|how r u|how are things|how is it going|how's it going|what's up|whats up|apa kabar|lagi apa)\b/, hHow, 'chat'],
   [/\b(are you (a )?(bot|human|real|robot|ai|person|chatbot|machine)|who are you|what are you|your name|siapa kamu|siapa anda|kamu (siapa|bot|manusia)|apakah (kamu|anda) (bot|manusia))\b/, hWho, 'chat'],
   [/\b(thanks|thank you|thx|terima kasih|makasih)\b/, hThanks, 'chat'],
@@ -235,7 +247,7 @@ const RULES = [
 
 /* reply() returns { parts, kind } */
 function reply(q) {
-  RL = pick(q);
+  RL = pick(q); learn(q);
   const n = norm(q);
   if (!n) return { parts: hHelp(), kind: 'info' };
   const d = dates(n);
@@ -260,7 +272,7 @@ const css = `
 .kb-hd{display:flex;align-items:center;gap:.7rem;padding:.85rem 1rem;background:var(--ink,#0A0A0A);color:#fff;border-bottom:3px solid var(--lime,#22C55E)}
 .kb-hd .kb-mk{display:grid;place-items:center;width:2rem;height:2rem;border-radius:8px;background:var(--lime,#22C55E);color:#0A0A0A;font:700 1.15rem var(--f1,Georgia,serif)}
 .kb-hd b{display:block;font:700 1.05rem var(--f1,Georgia,serif);line-height:1.2}.kb-hd small{display:block;color:#D1D5DB;font-size:.78rem}
-.kb-x{margin-left:auto;width:2.2rem;height:2.2rem;border-radius:8px;color:#fff;font-size:1.5rem;line-height:1;cursor:pointer;background:none;border:0}.kb-x:hover{background:#2b2b2b}
+.kb-x{margin-left:.2rem;width:2.2rem;height:2.2rem;border-radius:8px;color:#fff;font-size:1.5rem;line-height:1;cursor:pointer;background:none;border:0}.kb-x:hover{background:#2b2b2b}
 .kb-log{position:relative;flex:1;overflow-y:auto;padding:1rem;background:var(--soft,#F1F6F2);display:flex;flex-direction:column;gap:.7rem;scroll-behavior:smooth}
 .kb-m{max-width:92%;display:flex;flex-direction:column;gap:.5rem}.kb-bot{align-self:flex-start}.kb-me{align-self:flex-end}
 .kb-m p{padding:.6rem .9rem;border-radius:14px;overflow-wrap:anywhere}
@@ -281,19 +293,25 @@ const css = `
 .kb-ft form{display:flex;gap:.5rem}.kb-ft input{flex:1;min-width:0;padding:.6rem .8rem;border:2px solid var(--ink,#0A0A0A);border-radius:10px;font:inherit;background:#fff;color:inherit}
 .kb-send{padding:.5rem 1rem;border-radius:10px;background:var(--green,#0F7B3F);color:#fff;font:700 .9rem var(--f2,Inter,system-ui,sans-serif);border:0;cursor:pointer}.kb-send:hover{background:var(--green-d,#0A5C2E)}
 .kb-note{margin-top:.4rem;font-size:.72rem;color:#6B7280;text-align:center}
-.kb-dots{display:inline-flex;gap:4px;padding:.7rem .9rem;background:#fff;border:1px solid var(--line,#E3E8E4);border-radius:14px;border-top-left-radius:4px}.kb-dots i{width:6px;height:6px;border-radius:50%;background:#9CA3AF;animation:kbd 1s infinite}.kb-dots i:nth-child(2){animation-delay:.15s}.kb-dots i:nth-child(3){animation-delay:.3s}
-@keyframes kbd{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.kb-typing{display:inline-flex;align-items:center;gap:.55rem;padding:.55rem .85rem;background:#fff;border:1px solid var(--line,#E3E8E4);border-radius:14px;border-top-left-radius:4px;color:#6B7280;font-size:.8rem}
+.kb-typing .d{display:inline-flex;gap:4px;align-items:flex-end;height:10px}.kb-typing i{width:7px;height:7px;border-radius:50%;background:var(--green,#0F7B3F);animation:kbb 1.1s infinite ease-in-out}.kb-typing i:nth-child(2){animation-delay:.15s}.kb-typing i:nth-child(3){animation-delay:.3s}
+@keyframes kbb{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-6px);opacity:1}}
+.kb-m{animation:kbin .25s ease-out}@keyframes kbin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.kb-clr{margin-left:auto;padding:.3rem .7rem;border-radius:99px;border:1px solid #4B5563;color:#E5E7EB;font:600 .75rem var(--f2,Inter,system-ui,sans-serif);background:none;cursor:pointer}.kb-clr:hover{background:#2b2b2b}
 @media(max-width:800px){.kb-panel{right:0;bottom:0;left:0;width:100%;height:86vh;height:86dvh;border-radius:16px 16px 0 0}.kb-fab{right:.8rem;bottom:.8rem}.kb-ft{padding-bottom:calc(.7rem + env(safe-area-inset-bottom,0px))}}
-@media(prefers-reduced-motion:reduce){.kb-log{scroll-behavior:auto}.kb-dots i{animation:none}}
+@media(prefers-reduced-motion:reduce){.kb-log{scroll-behavior:auto}.kb-typing i,.kb-m{animation:none}}
 `;
 const UI = {
   open: { en: 'Ask Kabari', id: 'Tanya Kabari' },
   title: { en: 'Kabari Assistant', id: 'Asisten Kabari' },
   sub: { en: 'Find any issue in seconds', id: 'Temukan edisi apa pun dalam hitungan detik' },
-  ph: { en: 'Try: Sep 2025, latest, subscribe…', id: 'Coba: Sep 2025, terbaru, berlangganan…' },
+  ph: { en: 'Type your message', id: 'Ketik pesan Anda' },
+  typing: { en: 'typing…', id: 'mengetik…' },
+  clr: { en: 'New chat', id: 'Chat baru' },
+  clrt: { en: 'Clear this chat and forget what you told me', id: 'Hapus chat ini dan lupakan yang Anda ceritakan' },
   send: { en: 'Send', id: 'Kirim' }, close: { en: 'Close chat', id: 'Tutup chat' },
-  note: { en: 'Answers come from this website. Your messages stay in your browser.', id: 'Jawaban berasal dari situs ini. Pesan Anda tetap di browser Anda.' },
-  noteai: { en: 'Replies are written by an AI assistant using this website’s information. Please don’t share personal details.', id: 'Balasan ditulis oleh asisten AI berdasarkan informasi situs ini. Mohon tidak membagikan data pribadi.' },
+  note: { en: 'Answers come from this website. This chat is saved on this device only. Tap “New chat” to clear it.', id: 'Jawaban berasal dari situs ini. Chat ini hanya tersimpan di perangkat Anda. Ketuk “Chat baru” untuk menghapusnya.' },
+  noteai: { en: 'Replies are written by an AI assistant using this website’s information. This chat is saved on this device only. Please don’t share sensitive details.', id: 'Balasan ditulis oleh asisten AI berdasarkan informasi situs ini. Chat ini hanya tersimpan di perangkat Anda. Mohon tidak membagikan data sensitif.' },
   read: { en: 'Read online', id: 'Baca online' }, pdf: { en: 'Download PDF', id: 'Unduh PDF' },
   det: { en: 'Details', id: 'Detail' }, ok: { en: 'Available online', id: 'Tersedia online' }, no: { en: 'Not online yet', id: 'Belum tersedia online' }
 };
@@ -306,7 +324,7 @@ fab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8
 const panel = el('section', 'kb-panel'); panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-labelledby', 'kb-t');
 const hd = el('div', 'kb-hd'); const mk = el('span', 'kb-mk', 'K'); mk.setAttribute('aria-hidden', 'true');
 const hb = el('div'); const ht = el('b'); ht.id = 'kb-t'; const hs = el('small'); hb.append(ht, hs);
-const xb = el('button', 'kb-x', '×'); xb.type = 'button'; hd.append(mk, hb, xb);
+const xb = el('button', 'kb-x', '×'); xb.type = 'button'; const clr = el('button', 'kb-clr'); clr.type = 'button'; hd.append(mk, hb, clr, xb);
 const log = el('div', 'kb-log'); log.setAttribute('role', 'log'); log.setAttribute('aria-live', 'polite');
 const ft = el('div', 'kb-ft'); const fm = el('form'); fm.autocomplete = 'off';
 const inp = el('input'); inp.type = 'text'; inp.maxLength = 200; const sb = el('button', 'kb-send'); sb.type = 'submit'; fm.append(inp, sb);
@@ -316,7 +334,7 @@ panel.append(hd, log, ft); document.body.append(fab, panel);
 function applyLang() {
   fab.lastChild.textContent = u('open'); ht.textContent = u('title'); hs.textContent = u('sub');
   inp.placeholder = u('ph'); inp.setAttribute('aria-label', u('ph')); sb.textContent = u('send');
-  xb.setAttribute('aria-label', u('close')); note.textContent = aiOn() ? u('noteai') : u('note'); panel.setAttribute('aria-label', u('title'));
+  xb.setAttribute('aria-label', u('close')); clr.textContent = u('clr'); clr.title = u('clrt'); clr.setAttribute('aria-label', u('clrt')); note.textContent = aiOn() ? u('noteai') : u('note'); panel.setAttribute('aria-label', u('title'));
 }
 
 function linkEl(o, solid) {
@@ -342,8 +360,18 @@ function issueEl(i) {
   b.append(el('strong', '', nm), stt, row); c.append(th, b); return c;
 }
 function scrollTo(node) { log.scrollTop = Math.max(0, node.offsetTop - 8); }
-function addUser(text) { const w = el('div', 'kb-m kb-me'); w.appendChild(el('p', '', text)); log.appendChild(w); log.scrollTop = log.scrollHeight; }
-function addBot(parts) {
+const KEY = 'kabariChat', TTL = 30 * 24 * 3600 * 1000;
+let ST = { v: 1, t: Date.now(), hist: [], log: [], name: '', open: false };
+try { const r = JSON.parse(localStorage.getItem(KEY) || 'null'); if (r && r.v === 1 && Date.now() - r.t < TTL) ST = r; } catch (e) {}
+MEM.name = ST.name || '';
+function save() { ST.t = Date.now(); ST.name = MEM.name; try { localStorage.setItem(KEY, JSON.stringify(ST)); } catch (e) {} }
+function ser(parts) {
+  return parts.map(p => p.t === 'p' ? { t: 'p', v: p.v } : p.t === 'issue' ? { t: 'issue', id: p.v.id } : p.t === 'links' ? { t: 'links', v: p.v.map(o => ({ l: o.l, href: o.href, ext: o.ext, dl: o.dl })) } : null).filter(Boolean);
+}
+function des(a) { return a.map(p => p.t === 'issue' ? { t: 'issue', v: ISSUES.find(i => i.id === p.id) } : p).filter(p => p.t !== 'issue' || p.v); }
+function logPush(e) { ST.log.push(e); if (ST.log.length > 40) ST.log.splice(0, ST.log.length - 40); save(); }
+function addUser(text, skip) { const w = el('div', 'kb-m kb-me'); w.appendChild(el('p', '', text)); log.appendChild(w); log.scrollTop = log.scrollHeight; if (!skip) logPush({ r: 'u', v: text }); }
+function addBot(parts, skip) {
   const w = el('div', 'kb-m kb-bot');
   parts.forEach(p => {
     if (p.t === 'p') w.appendChild(el('p', '', p.v));
@@ -351,13 +379,19 @@ function addBot(parts) {
     else if (p.t === 'links') { const r = el('div', 'kb-row'); p.v.forEach((o, n) => r.appendChild(linkEl(o, n === 0))); w.appendChild(r); }
     else if (p.t === 'chips') {
       const r = el('div', 'kb-row');
-      p.v.forEach(o => { const c = el('button', 'kb-chip', lab(o.l)); c.type = 'button'; c.onclick = () => { if (busy) return; RL = SL(); addUser(lab(o.l)); respond(() => { const p = o.run(); hist.push({ role: 'user', content: lab(o.l) }, { role: 'assistant', content: plain(p) || '(showed results)' }); return p; }); }; r.appendChild(c); });
+      p.v.forEach(o => { const c = el('button', 'kb-chip', lab(o.l)); c.type = 'button'; c.onclick = () => { if (busy) return; RL = SL(); addUser(lab(o.l)); respond(() => { const p = o.run(); remember('user', lab(o.l)); remember('assistant', plain(p) || '(showed results)'); return p; }); }; r.appendChild(c); });
       w.appendChild(r);
     }
   });
   log.appendChild(w); scrollTo(w);
+  if (!skip) logPush({ r: 'b', p: ser(parts) });
 }
-const hist = []; let busy = false, aiCalls = 0;
+const hist = ST.hist; let busy = false, aiCalls = 0;
+function remember(role, content) {
+  hist.push({ role, content: String(content).slice(0, role === 'assistant' ? 300 : 500) });
+  if (hist.length > 80) hist.splice(0, hist.length - 80);
+  save();
+}
 const plain = parts => parts.filter(p => p.t === 'p').map(p => p.v).join(' ');
 function facts() {
   const L0 = ISSUES[0], on = ISSUES.filter(i => i.read || i.pdf), by = {};
@@ -378,10 +412,14 @@ function facts() {
     'Terms: issues can be read and downloaded for personal, non-commercial use; copying or reselling needs written permission.'
   ].join('\n');
 }
+function memoryNotes() {
+  const older = hist.slice(0, -20).filter(m => m.role === 'user').slice(-30).map(m => '- ' + m.content.slice(0, 160)).join('\n').slice(-1800);
+  return (MEM.name ? 'Visitor name: ' + MEM.name + '\n' : '') + older;
+}
 async function askAI(ep) {
   const c = new AbortController(), tm = setTimeout(() => c.abort(), 15000);
   try {
-    const r = await fetch(ep, { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: c.signal, body: JSON.stringify({ messages: hist.slice(-8), facts: facts() }) });
+    const r = await fetch(ep, { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: c.signal, body: JSON.stringify({ messages: hist.slice(-20), memory: memoryNotes(), facts: facts() }) });
     if (!r.ok) throw new Error('http ' + r.status);
     const j = await r.json(); if (!j || !j.reply) throw new Error('empty');
     return String(j.reply);
@@ -397,19 +435,19 @@ function aiParts(txt, r) {
   return parts;
 }
 async function ask(q) {
-  hist.push({ role: 'user', content: q });
   const r = reply(q), ep = aiOn() ? CONFIG.chatEndpoint : '';
+  remember('user', q);
   let parts = r.parts;
   if (ep && r.kind !== 'issue' && r.kind !== 'chat' && aiCalls < 40) {
     aiCalls++;
     try { parts = aiParts(await askAI(ep), r); } catch (e) { parts = r.kind === 'none' ? hFallback() : r.parts; }
   }
-  hist.push({ role: 'assistant', content: plain(parts) || '(showed results)' });
+  remember('assistant', plain(parts) || '(showed results)');
   return parts;
 }
 function respond(fn) {
   busy = true;
-  const d = el('div', 'kb-m kb-bot'), dots = el('div', 'kb-dots'); dots.append(el('i'), el('i'), el('i')); dots.setAttribute('aria-label', '…'); d.appendChild(dots);
+  const d = el('div', 'kb-m kb-bot'), dots = el('div', 'kb-typing'); dots.innerHTML = '<span class="d"><i></i><i></i><i></i></span>'; dots.append(el('span', '', u('typing'))); d.appendChild(dots);
   log.appendChild(d); log.scrollTop = log.scrollHeight;
   const t0 = Date.now();
   Promise.resolve().then(fn).catch(() => { RL = SL(); return hFallback(); }).then(parts => {
@@ -417,13 +455,26 @@ function respond(fn) {
   });
 }
 let started = false;
-function openChat() {
+function openChat(quiet) {
   panel.classList.add('open'); fab.classList.add('hide'); fab.setAttribute('aria-expanded', 'true');
   if (!started) { started = true; RL = SL(); addBot(hWelcome()); }
-  setTimeout(() => inp.focus(), 50);
+  ST.open = true; save(); log.scrollTop = log.scrollHeight;
+  if (quiet !== true) setTimeout(() => inp.focus(), 50);
 }
-function closeChat() { panel.classList.remove('open'); fab.classList.remove('hide'); fab.setAttribute('aria-expanded', 'false'); fab.focus(); }
-fab.onclick = openChat; xb.onclick = closeChat;
+function closeChat() { panel.classList.remove('open'); fab.classList.remove('hide'); fab.setAttribute('aria-expanded', 'false'); ST.open = false; save(); fab.focus(); }
+fab.onclick = () => openChat(); xb.onclick = closeChat;
+clr.onclick = () => {
+  if (busy) return;
+  ST.hist.length = 0; ST.log.length = 0; ST.name = ''; MEM.name = ''; try { localStorage.removeItem(KEY); } catch (e) {}
+  log.textContent = ''; RL = SL(); addBot(hWelcome()); inp.focus();
+};
+(function restore() {
+  if (!ST.log.length) return;
+  started = true;
+  ST.log.forEach(e => { if (e.r === 'u') addUser(e.v, true); else addBot(des(e.p), true); });
+  log.scrollTop = log.scrollHeight;
+  if (ST.open) openChat(true);
+})();
 panel.addEventListener('keydown', e => { if (e.key === 'Escape') closeChat(); });
 fm.onsubmit = e => {
   e.preventDefault(); const q = inp.value.trim(); if (!q || busy) return;
