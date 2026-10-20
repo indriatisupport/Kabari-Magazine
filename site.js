@@ -93,7 +93,7 @@ const mName=m=>(lang==='id'?MONTHS_ID:MONTHS_EN)[m-1];
 const title=i=>`${mName(i.m)} ${i.y}`;
 const desc=i=>i.desc?(i.desc[lang]||i.desc.en):t('d_def',{m:mName(i.m),y:i.y,c:t('c_'+i.cat).toLowerCase()});
 const byId=id=>ISSUES.find(i=>i.id===id);
-const cover=i=>i.cover?`<img src="${i.cover}" alt="${title(i)}" loading="lazy">`:`<div class="gen" style="--c:${CAT_COLOR[i.cat]}"><b>KABARI</b><span>${mName(i.m)}</span><em>${i.y}</em><i>${t('c_'+i.cat)}</i></div>`;
+const cover=(i,e)=>i.cover?`<img src="${i.cover}" alt="${title(i)}" width="600" height="800" loading="${e?'eager':'lazy'}">`:`<div class="gen" style="--c:${CAT_COLOR[i.cat]}"><b>KABARI</b><span>${mName(i.m)}</span><em>${i.y}</em><i>${t('c_'+i.cat)}</i></div>`;
 const btn=(href,k,cls)=>(!href&&k==='read'&&CONFIG.issuu)?`<a class="btn ${cls}" href="${CONFIG.issuu}" target="_blank" rel="noopener">${t('issuu')}</a>`:href?`<a class="btn ${cls}" href="${href}"${k==='pdf'?' download':' target="_blank" rel="noopener"'}>${t(k)}</a>`:`<span class="btn off" aria-disabled="true">${t(k)}: ${t('soon').toLowerCase()}</span>`;
 const card=i=>`<button class="card" data-id="${i.id}" aria-label="${title(i)}, ${t('c_'+i.cat)}"><span class="cv">${cover(i)}</span><span class="tag" style="--c:${CAT_COLOR[i.cat]}">${t('c_'+i.cat)}</span><strong>${title(i)}</strong></button>`;
 const nav=[['index','nav_home'],['latest','nav_latest'],['archive','nav_archive'],['about','nav_about'],['contact','nav_contact']];
@@ -133,7 +133,7 @@ const L=ISSUES[0];
 const legal=k=>{const d=LEGAL[k],g=o=>o[lang]||o.en;$('#lg').innerHTML=`<h1 class="sec-t">${g(d.t)}</h1><p class="upd">${t('upd')}: ${g(d.u)}</p>`+d.s.map(([h,p])=>`<h2>${g(h)}</h2><p>${g(p)}</p>`).join('')};
 const pages={
  index(){
-  $('#fan').innerHTML=ISSUES.slice(0,3).reverse().map((i,n)=>`<a class="fc f${n}" href="latest.html" aria-label="${title(i)}">${cover(i)}</a>`).join('');
+  $('#fan').innerHTML=ISSUES.slice(0,3).reverse().map((i,n)=>`<a class="fc f${n}" href="latest.html" aria-label="${title(i)}">${cover(i,1)}</a>`).join('');
   $('#recent').innerHTML=ISSUES.slice(0,4).map(card).join('');
   appBlock();joinBlock();
   $('#topics').innerHTML=CATS.map(c=>`<a class="topic" style="--c:${CAT_COLOR[c]}" href="archive.html?cat=${c}">${t('c_'+c)}</a>`).join('');
@@ -182,4 +182,9 @@ const pages={
 };
 function render(){pages[page]();i18n()}
 shell();render();
-if(CONFIG.signup&&CONFIG.signup.universal)document.body.appendChild(document.createRange().createContextualFragment(CONFIG.signup.universal));
+if(CONFIG.signup&&CONFIG.signup.universal&&page==='index'){
+  let ccDone=false;const loadCC=()=>{if(ccDone)return;ccDone=true;document.body.appendChild(document.createRange().createContextualFragment(CONFIG.signup.universal))};
+  const box=$('#sub');
+  if('IntersectionObserver' in window&&box){new IntersectionObserver((en,ob)=>{if(en[0].isIntersecting){loadCC();ob.disconnect()}},{rootMargin:'700px'}).observe(box)}
+  else setTimeout(loadCC,4000);
+}
