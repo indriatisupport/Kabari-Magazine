@@ -170,7 +170,6 @@ const pages={
   const fa=[['fa_k1','fa_v1'],['fa_k2','fa_v2'],['fa_k3','fa_v3'],['fa_k4','fa_v4'],['fa_k5','fa_v5'],['fa_k6','fa_v6']];
   $('#facts').innerHTML=fa.map(([k,v])=>`<tr><th scope="row">${t(k)}</th><td>${t(v,{a:first,b:t('now')})}</td></tr>`).join('')+`<tr><th scope="row">${t('loc')}</th><td>${CONFIG.location}</td></tr><tr><th scope="row">${t('web')}</th><td><a href="${CONFIG.website}" target="_blank" rel="noopener">kabarinews.com</a></td></tr><tr><th scope="row">Issuu</th><td><a href="${CONFIG.issuu}" target="_blank" rel="noopener">issuu.com/kabari8</a></td></tr><tr><th scope="row">${t('nav_contact')}</th><td><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></td></tr>`;
   $('#tpt').innerHTML=CATS.map(c=>`<tr><th scope="row"><span class="tag" style="--c:${CAT_COLOR[c]}">${t('c_'+c)}</span></th><td>${t('tp_'+c)}</td></tr>`).join('');
-  $('#ayt').innerHTML=yrs.map(y=>{const l=ISSUES.filter(i=>i.y===y);return `<tr><th scope="row">${y}</th><td>${l.length}</td><td>${mName(l[l.length-1].m)} – ${mName(l[0].m)}</td><td><a href="archive.html?year=${y}">${t('ay_go')} →</a></td></tr>`}).join('');
  },
  privacy(){legal('privacy')},
  terms(){legal('terms')},
