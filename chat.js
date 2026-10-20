@@ -1,5 +1,5 @@
 /* =====================================================================
-   Kabari Assistant  |  answers from this website in the browser; if CONFIG.chatEndpoint is set, an AI service writes some replies
+   Kabari Assistant  |  free, runs 100% in the browser (no API, no server)
    Answers from data.js (ISSUES, CONFIG) and site.js (T strings).
    INSTALL: add this line AFTER <script src="site.js"></script> on every page:
             <script src="chat.js"></script>
@@ -292,7 +292,7 @@ const css = `
 .kb-ft{padding:.7rem .8rem;border-top:1px solid var(--line,#E3E8E4);background:#fff}
 .kb-ft form{display:flex;gap:.5rem}.kb-ft input{flex:1;min-width:0;padding:.6rem .8rem;border:2px solid var(--ink,#0A0A0A);border-radius:10px;font:inherit;background:#fff;color:inherit}
 .kb-send{padding:.5rem 1rem;border-radius:10px;background:var(--green,#0F7B3F);color:#fff;font:700 .9rem var(--f2,Inter,system-ui,sans-serif);border:0;cursor:pointer}.kb-send:hover{background:var(--green-d,#0A5C2E)}
-.kb-note{margin-top:.4rem;font-size:.75rem;color:#6B7280;text-align:center}
+.kb-note{margin-top:.4rem;font-size:.72rem;color:#6B7280;text-align:center}
 .kb-typing{display:inline-flex;align-items:center;gap:.55rem;padding:.55rem .85rem;background:#fff;border:1px solid var(--line,#E3E8E4);border-radius:14px;border-top-left-radius:4px;color:#6B7280;font-size:.8rem}
 .kb-typing .d{display:inline-flex;gap:4px;align-items:flex-end;height:10px}.kb-typing i{width:7px;height:7px;border-radius:50%;background:var(--green,#0F7B3F);animation:kbb 1.1s infinite ease-in-out}.kb-typing i:nth-child(2){animation-delay:.15s}.kb-typing i:nth-child(3){animation-delay:.3s}
 @keyframes kbb{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-6px);opacity:1}}
