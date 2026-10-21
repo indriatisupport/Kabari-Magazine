@@ -81,10 +81,41 @@ const T={
  f_terms:{en:"Terms of Service",id:"Ketentuan Layanan"},
  count1:{en:"1 issue",id:"1 edisi"},
  ab3:{en:'Every monthly issue from 2012 onward is kept here so readers, researchers and future generations can find it.',id:'Setiap edisi bulanan sejak 2012 disimpan di sini agar pembaca, peneliti, dan generasi mendatang dapat menemukannya.'},
- ct_t:{en:'Contact us',id:'Hubungi kami'},ct_name:{en:'Your name',id:'Nama Anda'},ct_email:{en:'Your email',id:'Email Anda'},ct_subj:{en:'Subject',id:'Subjek'},ct_msg:{en:'Your message',id:'Pesan Anda'},ct_send:{en:'Send message',id:'Kirim pesan'},
+ ct_t:{en:'Get in Touch',id:'Hubungi Kami'},ct_name:{en:'Your name',id:'Nama Anda'},ct_email:{en:'Your email',id:'Email Anda'},ct_subj:{en:'Subject',id:'Subjek'},ct_msg:{en:'Your message',id:'Pesan Anda'},ct_send:{en:'Send message',id:'Kirim pesan'},
  ct_ok:{en:'Message sent. Thank you, we will reply soon.',id:'Pesan terkirim. Terima kasih, kami akan segera membalas.'},ct_err:{en:'Could not send. Please email us directly.',id:'Gagal mengirim. Silakan kirim email langsung.'},
  f_tag:{en:"The largest Indonesian news and multimedia portal in the USA, since 2007.",id:"Portal berita dan multimedia Indonesia terbesar di Amerika Serikat, sejak 2007."},
- f_links:{en:'Explore',id:'Jelajahi'},f_follow:{en:'Follow us',id:'Ikuti kami'},f_rights:{en:'All rights reserved.',id:'Hak cipta dilindungi.'}
+ f_links:{en:'Explore',id:'Jelajahi'},f_follow:{en:'Follow us',id:'Ikuti kami'},f_rights:{en:'All rights reserved.',id:'Hak cipta dilindungi.'},
+ ct_h2:{en:"Send Us a Message",id:"Kirim Pesan kepada Kami"},
+ ct_sub:{en:"Fill out the form below and a team member will be in touch.",id:"Isi formulir di bawah ini dan anggota tim kami akan menghubungi Anda."},
+ ct_req:{en:"* Required",id:"* Wajib diisi"},
+ l_name:{en:"Name",id:"Nama"},l_email:{en:"Email",id:"Email"},l_phone:{en:"Phone",id:"Telepon"},l_opt:{en:"(optional)",id:"(opsional)"},l_inq:{en:"Inquiry type",id:"Jenis pertanyaan"},l_msg:{en:"Message",id:"Pesan"},l_sel:{en:"Select one",id:"Pilih salah satu"},
+ ph_phone:{en:"Your phone number",id:"Nomor telepon Anda"},ph_msg:{en:"How can we help?",id:"Ada yang bisa kami bantu?"},
+ ct_i_general:{en:"General question",id:"Pertanyaan umum"},
+ ct_i_back:{en:"Request a back issue",id:"Permintaan edisi lama"},
+ ct_i_adv:{en:"Advertising or sponsorship",id:"Iklan atau sponsor"},
+ ct_i_part:{en:"Partnership or collaboration",id:"Kemitraan atau kolaborasi"},
+ ct_i_story:{en:"Share a story or contribute",id:"Kirim cerita atau berkontribusi"},
+ ct_i_access:{en:"Trouble reading or downloading an issue",id:"Kesulitan membaca atau mengunduh edisi"},
+ ct_i_sub:{en:"Newsletter or subscription help",id:"Bantuan buletin atau langganan"},
+ ct_i_press:{en:"Press or media",id:"Pers atau media"},
+ ct_i_other:{en:"Other",id:"Lainnya"},
+ ct_hint_back:{en:"Please tell us the month and year of the issue you are looking for.",id:"Mohon sebutkan bulan dan tahun edisi yang Anda cari."},
+ ct_sending:{en:"Sending...",id:"Mengirim..."},
+ e_name:{en:"Please enter your name.",id:"Mohon isi nama Anda."},
+ e_email:{en:"Please enter a valid email address.",id:"Mohon isi alamat email yang valid."},
+ e_phone:{en:"Please enter a valid phone number, or leave it empty.",id:"Mohon isi nomor telepon yang valid, atau kosongkan."},
+ e_inq:{en:"Please choose an inquiry type.",id:"Mohon pilih jenis pertanyaan."},
+ e_msg:{en:"Please write a short message (at least 10 characters).",id:"Mohon tulis pesan singkat (minimal 10 karakter)."},
+ ct_cons1:{en:"By sending this message you agree to our",id:"Dengan mengirim pesan ini, Anda menyetujui"},
+ mw_t:{en:"More Ways to Connect",id:"Cara Lain untuk Terhubung"},mw_email:{en:"Email",id:"Email"},
+ ku_t:{en:"Keep Up with Kabari",id:"Ikuti Kabari"},ku_d:{en:"Be the first to know about new issues, community stories and more.",id:"Jadilah yang pertama tahu tentang edisi baru, kisah komunitas, dan lainnya."},
+ pw_t:{en:"Work With Kabari",id:"Bekerja Sama dengan Kabari"},pw_d:{en:"Choose what fits and the form will be ready for you.",id:"Pilih yang sesuai dan formulir akan disiapkan untuk Anda."},
+ pw_1:{en:"Advertise or sponsor",id:"Pasang iklan atau jadi sponsor"},pw_1d:{en:"Put your brand in front of the Indonesian community in the USA.",id:"Tampilkan merek Anda kepada komunitas Indonesia di Amerika."},
+ pw_2:{en:"Share your story",id:"Bagikan kisah Anda"},pw_2d:{en:"Pitch an article, photo story or community news.",id:"Ajukan artikel, kisah foto, atau kabar komunitas."},
+ pw_3:{en:"Partner with us",id:"Bermitra dengan kami"},pw_3d:{en:"Events, community groups and brand collaborations.",id:"Acara, kelompok komunitas, dan kolaborasi merek."},
+ pw_4:{en:"Request a back issue",id:"Minta edisi lama"},pw_4d:{en:"Looking for an older issue that is not online yet? Ask us.",id:"Mencari edisi lama yang belum tersedia online? Tanyakan kepada kami."},
+ fc_mag:{en:"Magazine",id:"Majalah"},fc_help:{en:"Help Center",id:"Pusat Bantuan"},fc_co:{en:"Company",id:"Perusahaan"},
+ fl_adv:{en:"Advertise with us",id:"Pasang iklan"},fl_part:{en:"Partnerships",id:"Kemitraan"},fl_story:{en:"Submit a story",id:"Kirim cerita"}
 };
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 let lang='en';try{lang=localStorage.getItem('kabariLang')||'en'}catch(e){}
@@ -110,9 +141,10 @@ function joinBlock(){
 }
 function shell(){
   const s=CONFIG.social,names={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
+  const socials=Object.keys(s).filter(k=>s[k]).map(k=>`<a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<li><a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a></li>`).join('');
   $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
-  $('#ftr').innerHTML=`<footer><div class="fg"><div><img class="flogo" src="logo/kabari-logo-masthead-dark.svg" alt="Kabari Magazine"><p data-i="f_tag"></p></div><div><h2 data-i="f_links"></h2><ul>${nav.map(([p,k])=>`<li><a href="${p}.html" data-i="${k}"></a></li>`).join('')}</ul></div><div><h2 data-i="nav_contact"></h2><ul><li><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></li><li>${CONFIG.location}</li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener">Issuu</a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li></ul>${soc?`<h2 data-i="f_follow"></h2><ul>${soc}</ul>`:''}</div></div><p class="copy">© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span> &nbsp;·&nbsp; <a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></p></footer>
+  $('#ftr').innerHTML=`${page!=='index'?`<section class="nb"><div class="nb-in"><div><h2 data-i="sub_t"></h2><p data-i="sub_d"></p></div><a class="btn solid" href="${subHref()}"${(CONFIG.signupUrl&&!(CONFIG.signup&&CONFIG.signup.inline))?' target="_blank" rel="noopener"':''} data-i="sub_btn"></a></div></section>`:''}<footer class="kf"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-logo-masthead-dark.svg" alt="Kabari Magazine"><p data-i="f_tag"></p><a class="btn solid sm" href="latest.html" data-i="h_cta"></a><p class="kf-m"><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></p></div><div><h4 data-i="fc_mag"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="nav_archive"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener" data-i="issuu"></a></li></ul></div><div><h4 data-i="fc_help"></h4><ul><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="privacy.html" data-i="f_priv"></a></li><li><a href="terms.html" data-i="f_terms"></a></li></ul></div><div><h4 data-i="fc_co"></h4><ul><li><a href="about.html" data-i="nav_about"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_adv"></a></li><li><a href="contact.html?topic=partnership" data-i="fl_part"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socials?`<div><h4 data-i="f_follow"></h4><div class="kf-s">${socials}</div></div>`:''}</div><p class="copy">© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span> &nbsp;·&nbsp; <a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></p></footer>
   <dialog id="dlg"><button class="x" aria-label="Close">×</button><div class="mg"><div class="mc"></div><div><span class="tag"></span><h2 id="mt"></h2><p class="md"></p><div class="acts"></div></div></div></dialog>`;
   {const j=document.createElement('script');j.type='application/ld+json';j.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'Kabari Magazine',url:CONFIG.website,foundingDate:'2007',address:{'@type':'PostalAddress',addressLocality:'San Francisco',addressCountry:'US'},email:CONFIG.email,sameAs:Object.values(CONFIG.social).filter(Boolean).concat(CONFIG.issuu)});document.head.appendChild(j)}
   $('.burger').onclick=e=>{const o=$('#nav').classList.toggle('open');e.target.setAttribute('aria-expanded',o)};
@@ -174,10 +206,45 @@ const pages={
  privacy(){legal('privacy')},
  terms(){legal('terms')},
  contact(){
-  const f=$('#cf');if(f.dataset.b)return;f.dataset.b=1;
-  f.onsubmit=async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f)),st=$('#st');
-   if(!CONFIG.formEndpoint){location.href=`mailto:${CONFIG.email}?subject=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(d.message+'\n\n'+d.name+' <'+d.email+'>')}`;return}
-   try{const r=await fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(d)});if(!r.ok)throw 0;f.reset();st.textContent=t('ct_ok')}catch(x){st.textContent=t('ct_err')}};
+  const f=$('#cf'),sel=$('#f-inq'),keep=sel.value;
+  const TOP=[['general','ct_i_general'],['backissue','ct_i_back'],['advertising','ct_i_adv'],['partnership','ct_i_part'],['story','ct_i_story'],['access','ct_i_access'],['newsletter','ct_i_sub'],['press','ct_i_press'],['other','ct_i_other']];
+  sel.innerHTML=`<option value="">${t('l_sel')}</option>`+TOP.map(([k,l])=>`<option value="${k}">${t(l)}</option>`).join('');
+  sel.value=keep;
+  const sc=CONFIG.social||{},nm={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
+  const pills=Object.keys(sc).filter(k=>sc[k]).map(k=>`<a href="${sc[k]}" target="_blank" rel="noopener">${nm[k]}</a>`).join('');
+  $('#mw').innerHTML=`<h3 data-i="mw_t"></h3><ul class="cl"><li><span data-i="mw_email"></span><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></li><li><span data-i="loc"></span><b>${CONFIG.location}</b></li><li><span data-i="web"></span><a href="${CONFIG.website}" target="_blank" rel="noopener">${CONFIG.website.replace('https://','')}</a></li><li><span>Issuu</span><a href="${CONFIG.issuu}" target="_blank" rel="noopener">${CONFIG.issuu.replace('https://','')}</a></li></ul>`;
+  $('#ku').innerHTML=pills?`<h3 data-i="ku_t"></h3><p data-i="ku_d"></p><div class="pl">${pills}</div>`:'';
+  $('#ku').hidden=!pills;
+  $('#pw').innerHTML=`<h3 data-i="pw_t"></h3><p data-i="pw_d"></p>`+[['advertising','pw_1'],['story','pw_2'],['partnership','pw_3'],['backissue','pw_4']].map(([k,x])=>`<button type="button" class="pw-i" data-topic="${k}"><b data-i="${x}"></b><span data-i="${x}d"></span><em aria-hidden="true">→</em></button>`).join('');
+  const hint=()=>{$('#h-msg').hidden=sel.value!=='backissue'};
+  if(f.dataset.b){hint();return}
+  f.dataset.b=1;
+  const q=new URLSearchParams(location.search).get('topic');if(q&&TOP.some(x=>x[0]===q))sel.value=q;
+  hint();sel.onchange=hint;
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-topic]');if(!b)return;sel.value=b.dataset.topic;hint();
+   const red=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;$('.cform').scrollIntoView({behavior:red?'auto':'smooth',block:'start'});setTimeout(()=>$('#f-msg').focus({preventScroll:true}),350)});
+  ['name','email','phone','inq','msg'].forEach(k=>$('#f-'+k).addEventListener('input',()=>{$('#e-'+k).textContent='';$('#f-'+k).setAttribute('aria-invalid','false')}));
+  f.onsubmit=async e=>{
+   e.preventDefault();
+   const v=Object.fromEntries(new FormData(f)),st=$('#st'),btn=$('#cs');st.className='fs';st.textContent='';
+   const bad={};
+   if(!(v.name||'').trim())bad.name='e_name';
+   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((v.email||'').trim()))bad.email='e_email';
+   if((v.phone||'').trim()&&!/^[+\d][\d\s().\-]{6,19}$/.test(v.phone.trim()))bad.phone='e_phone';
+   if(!v.inquiry)bad.inq='e_inq';
+   if((v.message||'').trim().length<10)bad.msg='e_msg';
+   ['name','email','phone','inq','msg'].forEach(k=>{$('#e-'+k).textContent=bad[k]?t(bad[k]):'';$('#f-'+k).setAttribute('aria-invalid',bad[k]?'true':'false')});
+   const first=Object.keys(bad)[0];if(first){$('#f-'+first).focus();return}
+   const ok=()=>{f.reset();hint();st.className='fs ok';st.textContent=t('ct_ok')};
+   if(v._gotcha){ok();return}
+   const lbl=T[TOP.find(x=>x[0]===v.inquiry)[1]].en;
+   const d={name:v.name.trim(),email:v.email.trim(),phone:(v.phone||'').trim(),inquiry:lbl,message:v.message.trim(),_subject:'Kabari website: '+lbl+' - '+v.name.trim()};
+   if(!CONFIG.formEndpoint){location.href=`mailto:${CONFIG.email}?subject=${encodeURIComponent(d._subject)}&body=${encodeURIComponent(d.message+'\n\n'+d.name+' <'+d.email+'>'+(d.phone?'\nPhone: '+d.phone:''))}`;return}
+   btn.disabled=true;btn.textContent=t('ct_sending');
+   try{const r=await fetch(CONFIG.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(d)});if(!r.ok)throw 0;ok()}
+   catch(x){st.className='fs bad';st.textContent=t('ct_err')}
+   btn.disabled=false;btn.textContent=t('ct_send');
+  };
  }
 };
 function render(){pages[page]();i18n()}
