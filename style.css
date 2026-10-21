@@ -77,6 +77,9 @@ dialog h2{font-size:2rem;margin:.6rem 0}.md{margin-bottom:1.5rem}.acts{display:f
 .yrs button{flex:none;padding:.75rem 1.05rem;font:600 .95rem var(--f2);font-variant-numeric:tabular-nums;letter-spacing:.01em;color:#6B7280;border-bottom:3px solid transparent;margin-bottom:-1px;scroll-snap-align:center;transition:color .2s,border-color .2s}
 .yrs button:hover{color:var(--ink);border-color:#CBD5CE}
 .yrs button[aria-pressed=true]{color:var(--ink);border-color:var(--green)}
+/* Home Page Cover Resolution */
+   .fc img{width:100%;height:100%;object-fit:cover}
+   .mc img{width:100%}
 
 .abh{background:var(--soft);border-bottom:1px solid var(--line)}.abh .wrap{padding-bottom:3.5rem}
 .eye{display:inline-block;font-weight:600;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:1rem}
