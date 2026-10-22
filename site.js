@@ -119,7 +119,7 @@ const T={
  ins_t:{en:"Need Insurance?",id:"Butuh Asuransi?"},ins_d:{en:"Looking for the right coverage? April Insurance Agency is here to help you find it.",id:"Mencari perlindungan yang tepat? April Insurance Agency siap membantu Anda menemukannya."},ins_l:{en:"Visit April Insurance Agency",id:"Kunjungi April Insurance Agency"},
   s_open:{en:"Search",id:"Cari"},ac_nav:{en:"Account",id:"Akun"},s_latest:{en:"Latest issues",id:"Edisi terbaru"},s_all:{en:"View all results in the archive →",id:"Lihat semua hasil di arsip →"},
  mv_t:{en:"Most Viewed Issues",id:"Edisi Paling Banyak Dilihat"},
-//  fav_add:{en:"Add to favorites",id:"Tambah ke favorit"},fav_saved:{en:"Saved to favorites",id:"Tersimpan di favorit"},fav_remove:{en:"Remove from favorites",id:"Hapus dari favorit"},
+ fav_add:{en:"Add to favorites",id:"Tambah ke favorit"},fav_saved:{en:"Saved to favorites",id:"Tersimpan di favorit"},fav_remove:{en:"Remove from favorites",id:"Hapus dari favorit"},
  fav_added:{en:"Saved to your favorites.",id:"Disimpan ke favorit Anda."},fav_removed:{en:"Removed from favorites.",id:"Dihapus dari favorit."},
  fav_local:{en:"Saved on this device.",id:"Disimpan di perangkat ini."},fav_local_in:{en:"Saved on this device. Sign in to keep it in your account.",id:"Disimpan di perangkat ini. Masuk untuk menyimpannya di akun Anda."},fav_err:{en:"Could not save. Please try again.",id:"Gagal menyimpan. Coba lagi."},
  ac_t:{en:"My Account",id:"Akun Saya"},ac_signin:{en:"Sign in",id:"Masuk"},ac_create:{en:"Create account",id:"Buat akun"},ac_pw:{en:"Password",id:"Kata sandi"},ac_forgot:{en:"Forgot password?",id:"Lupa kata sandi?"},ac_or:{en:"or",id:"atau"},ac_google:{en:"Continue with Google",id:"Lanjutkan dengan Google"},
