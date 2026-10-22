@@ -115,16 +115,26 @@ const T={
  pw_3:{en:"Partner with us",id:"Bermitra dengan kami"},pw_3d:{en:"Events, community groups and brand collaborations.",id:"Acara, kelompok komunitas, dan kolaborasi merek."},
  pw_4:{en:"Request a back issue",id:"Minta edisi lama"},pw_4d:{en:"Looking for an older issue that is not online yet? Ask us.",id:"Mencari edisi lama yang belum tersedia online? Tanyakan kepada kami."},
  fc_mag:{en:"Magazine",id:"Majalah"},fc_help:{en:"Help Center",id:"Pusat Bantuan"},fc_co:{en:"Company",id:"Perusahaan"},
-<<<<<<< HEAD
  fl_adv:{en:"Advertise with us",id:"Pasang iklan"},fl_part:{en:"Partnerships",id:"Kemitraan"},fl_story:{en:"Submit a story",id:"Kirim cerita"},
  ins_t:{en:"Need Insurance?",id:"Butuh Asuransi?"},ins_d:{en:"Looking for the right coverage? April Insurance Agency is here to help you find it.",id:"Mencari perlindungan yang tepat? April Insurance Agency siap membantu Anda menemukannya."},ins_l:{en:"Visit April Insurance Agency",id:"Kunjungi April Insurance Agency"},
+  s_open:{en:"Search",id:"Cari"},ac_nav:{en:"Account",id:"Akun"},s_latest:{en:"Latest issues",id:"Edisi terbaru"},s_all:{en:"View all results in the archive →",id:"Lihat semua hasil di arsip →"},
+ mv_t:{en:"Most Viewed Issues",id:"Edisi Paling Banyak Dilihat"},
+ fav_add:{en:"Add to favorites",id:"Tambah ke favorit"},fav_saved:{en:"Saved to favorites",id:"Tersimpan di favorit"},fav_remove:{en:"Remove from favorites",id:"Hapus dari favorit"},
+ fav_added:{en:"Saved to your favorites.",id:"Disimpan ke favorit Anda."},fav_removed:{en:"Removed from favorites.",id:"Dihapus dari favorit."},
+ fav_local:{en:"Saved on this device.",id:"Disimpan di perangkat ini."},fav_local_in:{en:"Saved on this device. Sign in to keep it in your account.",id:"Disimpan di perangkat ini. Masuk untuk menyimpannya di akun Anda."},fav_err:{en:"Could not save. Please try again.",id:"Gagal menyimpan. Coba lagi."},
+ ac_t:{en:"My Account",id:"Akun Saya"},ac_signin:{en:"Sign in",id:"Masuk"},ac_create:{en:"Create account",id:"Buat akun"},ac_pw:{en:"Password",id:"Kata sandi"},ac_forgot:{en:"Forgot password?",id:"Lupa kata sandi?"},ac_or:{en:"or",id:"atau"},ac_google:{en:"Continue with Google",id:"Lanjutkan dengan Google"},
+ ac_out:{en:"Sign out",id:"Keluar"},ac_as:{en:"Signed in as",id:"Masuk sebagai"},ac_favs:{en:"My favorites",id:"Favorit saya"},
+ ac_empty:{en:"No favorites yet. Tap the heart on any issue to save it here.",id:"Belum ada favorit. Ketuk ikon hati pada edisi mana pun untuk menyimpannya di sini."},
+ ac_off:{en:"Account sign-in is coming soon. For now, your favorites are saved on this device.",id:"Masuk akun segera hadir. Untuk saat ini, favorit Anda disimpan di perangkat ini."},
+ ac_load:{en:"Loading...",id:"Memuat..."},ac_agree:{en:"By continuing you agree to our",id:"Dengan melanjutkan, Anda menyetujui"},
+ ac_reset_sent:{en:"If an account exists for that email, a reset link has been sent.",id:"Jika ada akun dengan email tersebut, tautan pengaturan ulang telah dikirim."},
+ e_pw:{en:"Password must be at least 6 characters.",id:"Kata sandi minimal 6 karakter."},a_bad:{en:"Email or password is incorrect.",id:"Email atau kata sandi salah."},
+ a_inuse:{en:"An account with this email already exists. Try signing in.",id:"Akun dengan email ini sudah ada. Coba masuk."},a_many:{en:"Too many attempts. Please try again later.",id:"Terlalu banyak percobaan. Coba lagi nanti."},
+ a_net:{en:"Could not connect. Please check your internet and try again.",id:"Tidak dapat terhubung. Periksa internet Anda dan coba lagi."},a_gen:{en:"Something went wrong. Please try again.",id:"Terjadi kesalahan. Silakan coba lagi."},
  sb_t:{en:"Stories from Home, Straight to Your Inbox",id:"Kisah dari Tanah Air, Langsung ke Email Anda"},
  sb_l:{en:"2007",id:"2007"},sb_ld:{en:"Publishing since 2007: the largest Indonesian news and multimedia portal in the USA.",id:"Terbit sejak 2007: portal berita dan multimedia Indonesia terbesar di Amerika Serikat."},
  sb_r:{en:"Monthly",id:"Bulanan"},sb_rd:{en:"A new issue every month, with news, culture, community, business and lifestyle stories in English and Indonesian.",id:"Edisi baru setiap bulan, dengan kisah berita, budaya, komunitas, bisnis, dan gaya hidup dalam bahasa Inggris dan Indonesia."},
  nl_ok:{en:"Thank you! We have received your email and will add you to the list.",id:"Terima kasih! Email Anda sudah kami terima dan akan kami tambahkan ke daftar."}
-=======
- fl_adv:{en:"Advertise with us",id:"Pasang iklan"},fl_part:{en:"Partnerships",id:"Kemitraan"},fl_story:{en:"Submit a story",id:"Kirim cerita"}
->>>>>>> b2becf0f200ef2d60bfecaec52eb31017c4579b8
 };
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 let lang='en';try{lang=localStorage.getItem('kabariLang')||'en'}catch(e){}
@@ -135,7 +145,7 @@ const desc=i=>i.desc?(i.desc[lang]||i.desc.en):t('d_def',{m:mName(i.m),y:i.y,c:t
 const byId=id=>ISSUES.find(i=>i.id===id);
 const cover=(i,e)=>i.cover?`<img src="${i.cover}" alt="${title(i)}" width="600" height="800" loading="${e?'eager':'lazy'}">`:`<div class="gen" style="--c:${CAT_COLOR[i.cat]}"><b>KABARI</b><span>${mName(i.m)}</span><em>${i.y}</em><i>${t('c_'+i.cat)}</i></div>`;
 const btn=(href,k,cls)=>(!href&&k==='read'&&CONFIG.issuu)?`<a class="btn ${cls}" href="${CONFIG.issuu}" target="_blank" rel="noopener">${t('issuu')}</a>`:href?`<a class="btn ${cls}" href="${href}"${k==='pdf'?' download':' target="_blank" rel="noopener"'}>${t(k)}</a>`:`<span class="btn off" aria-disabled="true">${t(k)}: ${t('soon').toLowerCase()}</span>`;
-const card=i=>`<button class="card" data-id="${i.id}" aria-label="${title(i)}, ${t('c_'+i.cat)}"><span class="cv">${cover(i)}</span><span class="tag" style="--c:${CAT_COLOR[i.cat]}">${t('c_'+i.cat)}</span><strong>${title(i)}</strong></button>`;
+const card=i=>`<div class="cardw"><button class="card" data-id="${i.id}" aria-label="${title(i)}, ${t('c_'+i.cat)}"><span class="cv">${cover(i)}</span><span class="tag" style="--c:${CAT_COLOR[i.cat]}">${t('c_'+i.cat)}</span><strong>${title(i)}</strong></button>${heart(i.id)}</div>`;
 const nav=[['index','nav_home'],['latest','nav_latest'],['archive','nav_archive'],['about','nav_about'],['contact','nav_contact']];
 const page=document.body.dataset.page;
 const SOC_NAMES={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
@@ -155,30 +165,113 @@ function joinBlock(){
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<a class="btn line" href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
   const fb=$('#follow');if(!fb.dataset.b){fb.dataset.b=1;fb.innerHTML=`<h2 data-i="fol_t"></h2><p data-i="fol_d"></p><div class="row">${soc}</div>`}
 }
+/* ===== favorites, accounts (Firebase), toast, search ===== */
+const FAVKEY='kabariFav',AUTHKEY='kabariAuth';
+let favs=[];try{favs=JSON.parse(localStorage.getItem(FAVKEY)||'[]');if(!Array.isArray(favs))favs=[]}catch(e){favs=[]}
+let USER=undefined,acMode='in',acEmail='';
+const isFav=id=>favs.includes(id);
+const saveLocal=()=>{try{localStorage.setItem(FAVKEY,JSON.stringify(favs))}catch(e){}};
+const HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.7s-7.2-4.4-9.4-8.9C1 8.6 2.8 5 6.3 5c2 0 3.4 1 4.4 2.3h2.6C14.3 6 15.7 5 17.7 5c3.5 0 5.3 3.6 3.7 6.8-2.2 4.5-9.4 8.9-9.4 8.9z"/></svg>';
+const heart=id=>`<button type="button" class="fav" data-fav="${id}" aria-pressed="${isFav(id)}">${HEART}</button>`;
+const favT=id=>`<button type="button" class="btn line favt" data-fav="${id}" aria-pressed="${isFav(id)}">${HEART}<span></span></button>`;
+function favUI(){$$('[data-fav]').forEach(b=>{const on=isFav(b.dataset.fav);b.setAttribute('aria-pressed',on);
+  if(b.classList.contains('favt')){$('span',b).textContent=t(on?'fav_saved':'fav_add')}else{const l=t(on?'fav_remove':'fav_add');b.setAttribute('aria-label',l);b.title=l}})}
+let toastT;
+function toast(msg,href,label){let el=$('#toast');if(!el){el=document.createElement('div');el.id='toast';el.setAttribute('role','status');el.setAttribute('aria-live','polite');document.body.appendChild(el)}
+  el.textContent=msg;if(href){const a=document.createElement('a');a.href=href;a.textContent=label;el.append(' ',a)}
+  el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),4500)}
+
+/* Cloud adapter: Firebase Authentication + Firestore (loaded only when needed) */
+const CLOUD=window.KB_TEST_CLOUD||(()=>{
+  let M=null,auth,db,ready=null;
+  const cfg=()=>CONFIG.firebase||{};
+  const enabled=()=>!!(cfg().apiKey&&cfg().projectId&&cfg().appId);
+  const load=()=>ready||(ready=(async()=>{
+    const B='https://www.gstatic.com/firebasejs/10.12.2/';
+    const [a,au,fs]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
+    const app=a.initializeApp(cfg());auth=au.getAuth(app);db=fs.getFirestore(app);M={au,fs};return M})());
+  const U=u=>u?{uid:u.uid,email:u.email||'',name:u.displayName||''}:null;
+  return{enabled,
+    async onAuth(cb){const m=await load();m.au.onAuthStateChanged(auth,u=>cb(U(u)))},
+    async signIn(e,p){const m=await load();await m.au.signInWithEmailAndPassword(auth,e,p)},
+    async signUp(e,p){const m=await load();await m.au.createUserWithEmailAndPassword(auth,e,p)},
+    async google(){const m=await load();await m.au.signInWithPopup(auth,new m.au.GoogleAuthProvider())},
+    async reset(e){const m=await load();await m.au.sendPasswordResetEmail(auth,e)},
+    async signOut(){const m=await load();await m.au.signOut(auth)},
+    async getFavs(uid){const m=await load();const s=await m.fs.getDoc(m.fs.doc(db,'users',uid));return s.exists()&&Array.isArray(s.data().favs)?s.data().favs:[]},
+    async setFavs(uid,arr){const m=await load();await m.fs.setDoc(m.fs.doc(db,'users',uid),{favs:arr,updated:Date.now()})}
+  }})();
+const authErr=e=>{const c=(e&&e.code)||'';
+  if(/popup-closed|cancelled-popup/.test(c))return '';
+  if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c))return t('a_bad');
+  if(/email-already-in-use/.test(c))return t('a_inuse');
+  if(/weak-password/.test(c))return t('e_pw');
+  if(/invalid-email/.test(c))return t('e_email');
+  if(/too-many-requests/.test(c))return t('a_many');
+  if(/network/.test(c))return t('a_net');
+  return t('a_gen')};
+function acctIcon(){const a=$('.hb-acc');if(!a)return;a.classList.toggle('on',!!USER);const l=USER?t('ac_nav')+': '+USER.email:t('ac_nav');a.setAttribute('aria-label',l);a.title=l}
+function initAuth(){
+  if(!CLOUD.enabled())return;
+  let want=page==='account';try{want=want||localStorage.getItem(AUTHKEY)==='1'}catch(e){}
+  if(!want){USER=null;return}
+  CLOUD.onAuth(async u=>{
+    if(u){try{const remote=await CLOUD.getFavs(u.uid);const merged=[...new Set([...remote,...favs])];favs=merged;saveLocal();if(merged.length!==remote.length)await CLOUD.setFavs(u.uid,merged)}catch(e){}
+      try{localStorage.setItem(AUTHKEY,'1')}catch(e){}USER=u}
+    else{USER=null;try{localStorage.removeItem(AUTHKEY)}catch(e){}}
+    acctIcon();favUI();if(page==='account')render()
+  }).catch(()=>{USER=null;if(page==='account')render()});
+}
+async function toggleFav(id){
+  const on=isFav(id);favs=on?favs.filter(x=>x!==id):[...favs,id];saveLocal();favUI();if(page==='account')render();
+  if(USER){try{await CLOUD.setFavs(USER.uid,favs);toast(t(on?'fav_removed':'fav_added'))}catch(e){toast(t('fav_err'))}}
+  else if(on)toast(t('fav_removed'));
+  else if(CLOUD.enabled())toast(t('fav_local_in'),'account.html',t('ac_signin'));
+  else toast(t('fav_local'));
+}
+/* Search overlay (same matching rules as the Archive page) */
+const hayOf=i=>`${MONTHS_EN[i.m-1]} ${MONTHS_ID[i.m-1]} ${i.y} ${i.cat} ${T['c_'+i.cat].id} ${i.m<10?'0'+i.m:i.m}/${i.y}`.toLowerCase();
+const mini=i=>i.cover?`<img src="${i.cover}" alt="" width="60" height="80" loading="lazy">`:`<span class="mg" style="background:${CAT_COLOR[i.cat]}">${mName(i.m).slice(0,3)}<br>${i.y}</span>`;
+function searchRender(){
+  const q=$('#sq').value.trim().toLowerCase(),words=q.split(/\s+/).filter(Boolean);
+  const all=words.length?ISSUES.filter(i=>words.every(w=>hayOf(i).includes(w))):ISSUES.slice(0,6),list=all.slice(0,8);
+  $('#sc').textContent=words.length?t(all.length===1?'count1':'count',{n:all.length}):t('s_latest');
+  $('#sr').innerHTML=list.length?list.map(i=>`<li><button type="button" class="sr-i" data-sid="${i.id}"><span class="sr-th">${mini(i)}</span><span class="sr-t"><b>${title(i)}</b><small>${t('c_'+i.cat)}</small></span>${(i.read||i.pdf)?`<em>${t('read')}</em>`:''}</button></li>`).join(''):`<li class="sr-empty">${t('none')}</li>`;
+  const a=$('#sall');a.hidden=!words.length||!all.length;a.href='archive.html?q='+encodeURIComponent($('#sq').value.trim());
+}
+function bindSearch(){
+  const d=$('#sdlg');
+  $('#hs').onclick=()=>{$('#sq').value='';searchRender();if(!d.open)d.showModal();$('#sq').focus()};
+  $('#sq').oninput=searchRender;
+  $('.sd-x',d).onclick=()=>d.close();d.addEventListener('click',e=>{if(e.target===d)d.close()});
+  $('#sf').onsubmit=e=>{e.preventDefault();const v=$('#sq').value.trim();if(v)location.href='archive.html?q='+encodeURIComponent(v)};
+  $('#sr').onclick=e=>{const b=e.target.closest('[data-sid]');if(b){d.close();openModal(byId(b.dataset.sid))}};
+}
 function shell(){
   const s=CONFIG.social,names={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
   const socials=Object.keys(s).filter(k=>s[k]).map(k=>`<a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<li><a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a></li>`).join('');
-  $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
-
-  $('#ftr').innerHTML=`<footer class="kf"><div class="kf-in"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-header.svg" alt="Kabari Magazine"><p data-i="f_tag"></p><a class="plink" href="latest.html"><span data-i="h_cta"></span> ↗</a></div><div><h4 data-i="fc_mag"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="nav_archive"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener" data-i="issuu"></a></li></ul></div><div><h4 data-i="fc_help"></h4><ul><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="privacy.html" data-i="f_priv"></a></li><li><a href="terms.html" data-i="f_terms"></a></li></ul></div><div><h4 data-i="fc_co"></h4><ul><li><a href="about.html" data-i="nav_about"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_adv"></a></li><li><a href="contact.html?topic=partnership" data-i="fl_part"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socBtns()?`<div><h4 data-i="f_follow"></h4><div class="sis">${socBtns()}</div></div>`:''}</div><div class="kf-bot"><span>© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span></span><span><a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></span></div></div></footer>
-=======
-  $('#ftr').innerHTML=`${page!=='index'?`<section class="nb"><div class="nb-in"><div><h2 data-i="sub_t"></h2><p data-i="sub_d"></p></div><a class="btn solid" href="${subHref()}"${(CONFIG.signupUrl&&!(CONFIG.signup&&CONFIG.signup.inline))?' target="_blank" rel="noopener"':''} data-i="sub_btn"></a></div></section>`:''}<footer class="kf"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-logo-masthead-dark.svg" alt="Kabari Magazine"><p data-i="f_tag"></p><a class="btn solid sm" href="latest.html" data-i="h_cta"></a><p class="kf-m"><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></p></div><div><h4 data-i="fc_mag"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="nav_archive"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener" data-i="issuu"></a></li></ul></div><div><h4 data-i="fc_help"></h4><ul><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="privacy.html" data-i="f_priv"></a></li><li><a href="terms.html" data-i="f_terms"></a></li></ul></div><div><h4 data-i="fc_co"></h4><ul><li><a href="about.html" data-i="nav_about"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_adv"></a></li><li><a href="contact.html?topic=partnership" data-i="fl_part"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socials?`<div><h4 data-i="f_follow"></h4><div class="kf-s">${socials}</div></div>`:''}</div><p class="copy">© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span> &nbsp;·&nbsp; <a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></p></footer>
-
+  $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="hbtns"><button type="button" class="hb" id="hs" data-al="s_open"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button><a class="hb hb-acc" href="account.html" data-al="ac_nav"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.6 3.8-5.6 7.5-5.6s6.7 2 7.5 5.6"/></svg></a></div><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
+  $('#ftr').innerHTML=`<footer class="kf"><div class="kf-in"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-header.svg" alt="Kabari Magazine"><p data-i="f_tag"></p><a class="plink" href="latest.html"><span data-i="h_cta"></span> ↗</a></div><div><h4 data-i="fc_mag"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="nav_archive"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener" data-i="issuu"></a></li></ul></div><div><h4 data-i="fc_help"></h4><ul><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="privacy.html" data-i="f_priv"></a></li><li><a href="terms.html" data-i="f_terms"></a></li><li><a href="account.html" data-i="ac_nav"></a></li></ul></div><div><h4 data-i="fc_co"></h4><ul><li><a href="about.html" data-i="nav_about"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_adv"></a></li><li><a href="contact.html?topic=partnership" data-i="fl_part"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socBtns()?`<div><h4 data-i="f_follow"></h4><div class="sis">${socBtns()}</div></div>`:''}</div><div class="kf-bot"><span>© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span></span><span><a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></span></div></div></footer>
+  <dialog id="sdlg" class="sd"><form id="sf" class="sd-top" role="search"><input id="sq" type="search" autocomplete="off" data-ph="search" data-al="search"><button type="button" class="sd-x" data-al="close">×</button></form><p id="sc" class="sd-c" aria-live="polite"></p><ul id="sr" class="sd-list"></ul><a id="sall" class="sd-all" data-i="s_all" hidden></a></dialog>
   <dialog id="dlg"><button class="x" aria-label="Close">×</button><div class="mg"><div class="mc"></div><div><span class="tag"></span><h2 id="mt"></h2><p class="md"></p><div class="acts"></div></div></div></dialog>`;
   {const j=document.createElement('script');j.type='application/ld+json';j.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'Kabari Magazine',url:CONFIG.website,foundingDate:'2007',address:{'@type':'PostalAddress',addressLocality:'San Francisco',addressCountry:'US'},email:CONFIG.email,sameAs:Object.values(CONFIG.social).filter(Boolean).concat(CONFIG.issuu)});document.head.appendChild(j)}
+  bindSearch();
+  document.addEventListener('click',e=>{const f=e.target.closest('[data-fav]');if(f){e.preventDefault();toggleFav(f.dataset.fav)}});
   $('.burger').onclick=e=>{const o=$('#nav').classList.toggle('open');e.target.setAttribute('aria-expanded',o)};
   $$('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.l));
   const d=$('#dlg');$('.x',d).onclick=()=>d.close();d.addEventListener('click',e=>{if(e.target===d)d.close()});
   document.addEventListener('click',e=>{const c=e.target.closest('.card');if(c)openModal(byId(c.dataset.id))});
 }
-function openModal(i){const d=$('#dlg');$('.mc',d).innerHTML=cover(i);const g=$('.tag',d);g.textContent=t('c_'+i.cat);g.style.setProperty('--c',CAT_COLOR[i.cat]);$('#mt',d).textContent=title(i);$('.md',d).textContent=desc(i);$('.acts',d).innerHTML=btn(i.read,'read','solid')+btn(i.pdf,'pdf','line');d.dataset.id=i.id;if(!d.open)d.showModal()}
+function openModal(i){const d=$('#dlg');$('.mc',d).innerHTML=cover(i);const g=$('.tag',d);g.textContent=t('c_'+i.cat);g.style.setProperty('--c',CAT_COLOR[i.cat]);$('#mt',d).textContent=title(i);$('.md',d).textContent=desc(i);$('.acts',d).innerHTML=btn(i.read,'read','solid')+btn(i.pdf,'pdf','line')+favT(i.id);d.dataset.id=i.id;favUI();if(!d.open)d.showModal()}
 function i18n(){
   document.documentElement.lang=lang;
   $$('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
   $$('[data-ph]').forEach(e=>e.placeholder=t(e.dataset.ph));
   $$('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===lang));
+  $$('[data-al]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.al)));
   const d=$('#dlg');if(d&&d.open)openModal(byId(d.dataset.id));
+  favUI();acctIcon();if($('#sdlg')&&$('#sdlg').open)searchRender();
 }
 function setLang(l){lang=l;try{localStorage.setItem('kabariLang',l)}catch(e){}i18n();render()}
 const L=ISSUES[0];
@@ -187,16 +280,17 @@ const pages={
  index(){
   $('#fan').innerHTML=ISSUES.slice(0,3).reverse().map((i,n)=>`<a class="fc f${n}" href="latest.html" aria-label="${title(i)}">${cover(i,1)}</a>`).join('');
   $('#recent').innerHTML=ISSUES.slice(0,4).map(card).join('');
+  {let pop=(CONFIG.popular||[]).map(byId).filter(Boolean);if(!pop.length)pop=ISSUES.filter(i=>i.cover).slice(4,8);$('#mv').innerHTML=pop.slice(0,4).map(card).join('')}
   appBlock();joinBlock();
   $('#topics').innerHTML=CATS.map(c=>`<a class="topic" style="--c:${CAT_COLOR[c]}" href="archive.html?cat=${c}">${t('c_'+c)}</a>`).join('');
  },
  latest(){
   $('#lc').innerHTML=cover(L);$('#lt').textContent=title(L);$('#ld').textContent=desc(L);
   const g=$('#lg');g.textContent=t('c_'+L.cat);g.style.setProperty('--c',CAT_COLOR[L.cat]);
-  $('#la').innerHTML=btn(L.read,'read','solid')+btn(L.pdf,'pdf','line');
+  $('#la').innerHTML=btn(L.read,'read','solid')+btn(L.pdf,'pdf','line')+favT(L.id);
  },
  archive(){
-  const p=new URLSearchParams(location.search),S=pages.S||(pages.S={y:p.get('year')||'all',c:CATS.includes(p.get('cat'))?p.get('cat'):'all',q:''});
+  const p=new URLSearchParams(location.search),S=pages.S||(pages.S={y:p.get('year')||'all',c:CATS.includes(p.get('cat'))?p.get('cat'):'all',q:p.get('q')||''});
   const yrs=['all'];for(let y=L.y;y>=CONFIG.startYear;y--)yrs.push(String(y));
   $('#years').innerHTML=yrs.map(y=>`<button data-y="${y}" aria-pressed="${S.y===y}">${y==='all'?t('all'):y}</button>`).join('');
   {const a=$('#years [aria-pressed=true]'),y=$('#years');if(a)y.scrollLeft=a.offsetLeft-y.clientWidth/2+a.offsetWidth/2}
@@ -223,6 +317,38 @@ const pages={
   $('#facts').innerHTML=fa.map(([k,v])=>`<tr><th scope="row">${t(k)}</th><td>${t(v,{a:first,b:t('now')})}</td></tr>`).join('')+`<tr><th scope="row">${t('loc')}</th><td>${CONFIG.location}</td></tr><tr><th scope="row">${t('web')}</th><td><a href="${CONFIG.website}" target="_blank" rel="noopener">kabarinews.com</a></td></tr><tr><th scope="row">Issuu</th><td><a href="${CONFIG.issuu}" target="_blank" rel="noopener">issuu.com/kabari8</a></td></tr><tr><th scope="row">${t('nav_contact')}</th><td><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></td></tr>`;
   $('#tpt').innerHTML=CATS.map(c=>`<tr><th scope="row"><span class="tag" style="--c:${CAT_COLOR[c]}">${t('c_'+c)}</span></th><td>${t('tp_'+c)}</td></tr>`).join('');
  },
+ account(){
+  const box=$('#acbox');
+  const list=favs.map(byId).filter(Boolean);
+  const favSec=`<h2 class="ac-h" data-i="ac_favs"></h2>`+(list.length?`<div class="grid">${list.map(card).join('')}</div>`:`<p class="ac-empty" data-i="ac_empty"></p><a class="sbtn ac-btn" href="archive.html" data-i="nav_archive"></a>`);
+  if(!CLOUD.enabled()){box.innerHTML=`<p class="ac-note" data-i="ac_off"></p>`+favSec;return}
+  if(USER===undefined){box.innerHTML=`<p class="ac-note" data-i="ac_load"></p>`;return}
+  if(USER){
+    box.innerHTML=`<div class="ac-top"><p><span data-i="ac_as"></span> <b id="ac-em"></b></p><button type="button" class="sbtn" id="so" data-i="ac_out"></button></div>`+favSec;
+    $('#ac-em').textContent=USER.email;
+    $('#so').onclick=async()=>{try{await CLOUD.signOut()}catch(e){}favs=[];saveLocal();USER=null;try{localStorage.removeItem(AUTHKEY)}catch(e){}acctIcon();render()};
+    return}
+  const up=acMode==='up';
+  box.innerHTML=`<div class="ac-card"><div class="ac-tabs" role="tablist"><button type="button" role="tab" id="tab-in" aria-selected="${!up}" data-i="ac_signin"></button><button type="button" role="tab" id="tab-up" aria-selected="${up}" data-i="ac_create"></button></div>
+<form id="af" class="ff" novalidate><div><label for="a-email" data-i="l_email"></label><input id="a-email" type="email" autocomplete="email" required></div><div><label for="a-pw" data-i="ac_pw"></label><input id="a-pw" type="password" autocomplete="${up?'new-password':'current-password'}" required></div>
+<p class="err" id="a-err" role="alert"></p><p class="fs" id="a-ok" role="status"></p><div class="sbw"><button class="sbtn ac-wide" type="submit" id="a-go" data-i="${up?'ac_create':'ac_signin'}"></button></div>
+${up?'':'<p class="ac-links"><button type="button" class="lnk" id="a-forgot" data-i="ac_forgot"></button></p>'}<p class="ac-or" data-i="ac_or"></p><button type="button" class="gbtn" id="a-g" data-i="ac_google"></button></form>
+<p class="cons ac-cons"><span data-i="ac_agree"></span> <a href="terms.html" data-i="f_terms"></a> &amp; <a href="privacy.html" data-i="f_priv"></a>.</p></div>`+favSec;
+  $('#a-email').value=acEmail;
+  const go=m=>{acEmail=$('#a-email').value;acMode=m;render()};
+  $('#tab-in').onclick=()=>go('in');$('#tab-up').onclick=()=>go('up');
+  const err=m=>{$('#a-err').textContent=m||'';$('#a-ok').textContent=''};
+  $('#af').onsubmit=async e=>{e.preventDefault();err('');const em=$('#a-email').value.trim(),pw=$('#a-pw').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){err(t('e_email'));$('#a-email').focus();return}
+    if(pw.length<6){err(t('e_pw'));$('#a-pw').focus();return}
+    const b=$('#a-go');b.disabled=true;
+    try{await(up?CLOUD.signUp(em,pw):CLOUD.signIn(em,pw))}catch(x){err(authErr(x));b.disabled=false}};
+  $('#a-g').onclick=async()=>{err('');try{await CLOUD.google()}catch(x){err(authErr(x))}};
+  const fg=$('#a-forgot');if(fg)fg.onclick=async()=>{err('');const em=$('#a-email').value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){err(t('e_email'));$('#a-email').focus();return}
+    try{await CLOUD.reset(em)}catch(x){if(!/user-not-found/.test((x&&x.code)||''))return err(authErr(x))}
+    $('#a-ok').textContent=t('ac_reset_sent')};
+ },
  privacy(){legal('privacy')},
  terms(){legal('terms')},
  contact(){
@@ -230,29 +356,16 @@ const pages={
   const TOP=[['general','ct_i_general'],['backissue','ct_i_back'],['advertising','ct_i_adv'],['partnership','ct_i_part'],['story','ct_i_story'],['access','ct_i_access'],['newsletter','ct_i_sub'],['press','ct_i_press'],['other','ct_i_other']];
   sel.innerHTML=`<option value="">${t('l_sel')}</option>`+TOP.map(([k,l])=>`<option value="${k}">${t(l)}</option>`).join('');
   sel.value=keep;
-
   $('#mw').innerHTML=`<h3 data-i="mw_t"></h3><p><strong><span data-i="mw_email"></span>:</strong><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></p><p><strong><span data-i="loc"></span>:</strong><span>${CONFIG.location}</span></p>`;
   $('#ku').innerHTML=`<h3 data-i="ku_t"></h3><p class="kd" data-i="ku_d"></p><div class="sis">${socBtns()}</div>`;
   const aiUrl=CONFIG.insuranceUrl||'https://aprilinsurance.com/?utm_source=kabarinews&utm_medium=referral&utm_campaign=contact_page';
   $('#ai').innerHTML=`<h3 data-i="ins_t"></h3><p class="kd" data-i="ins_d"></p><div class="xl"><a href="${aiUrl}" target="_blank" rel="noopener"><span data-i="ins_l"></span> →</a></div>`;
   const cc=$('#ctct');if(cc&&!cc.dataset.b&&CONFIG.signup&&CONFIG.signup.inline){cc.dataset.b=1;cc.appendChild(document.createRange().createContextualFragment(CONFIG.signup.inline))}
-
-  const sc=CONFIG.social||{},nm={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
-  const pills=Object.keys(sc).filter(k=>sc[k]).map(k=>`<a href="${sc[k]}" target="_blank" rel="noopener">${nm[k]}</a>`).join('');
-  $('#mw').innerHTML=`<h3 data-i="mw_t"></h3><ul class="cl"><li><span data-i="mw_email"></span><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></li><li><span data-i="loc"></span><b>${CONFIG.location}</b></li><li><span data-i="web"></span><a href="${CONFIG.website}" target="_blank" rel="noopener">${CONFIG.website.replace('https://','')}</a></li><li><span>Issuu</span><a href="${CONFIG.issuu}" target="_blank" rel="noopener">${CONFIG.issuu.replace('https://','')}</a></li></ul>`;
-  $('#ku').innerHTML=pills?`<h3 data-i="ku_t"></h3><p data-i="ku_d"></p><div class="pl">${pills}</div>`:'';
-  $('#ku').hidden=!pills;
-  $('#pw').innerHTML=`<h3 data-i="pw_t"></h3><p data-i="pw_d"></p>`+[['advertising','pw_1'],['story','pw_2'],['partnership','pw_3'],['backissue','pw_4']].map(([k,x])=>`<button type="button" class="pw-i" data-topic="${k}"><b data-i="${x}"></b><span data-i="${x}d"></span><em aria-hidden="true">→</em></button>`).join('');
-
   const hint=()=>{$('#h-msg').hidden=sel.value!=='backissue'};
   if(f.dataset.b){hint();return}
   f.dataset.b=1;
   const q=new URLSearchParams(location.search).get('topic');if(q&&TOP.some(x=>x[0]===q))sel.value=q;
   hint();sel.onchange=hint;
-
-
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-topic]');if(!b)return;sel.value=b.dataset.topic;hint();
-   const red=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;$('.cform').scrollIntoView({behavior:red?'auto':'smooth',block:'start'});setTimeout(()=>$('#f-msg').focus({preventScroll:true}),350)});
   ['name','email','phone','inq','msg'].forEach(k=>$('#f-'+k).addEventListener('input',()=>{$('#e-'+k).textContent='';$('#f-'+k).setAttribute('aria-invalid','false')}));
   f.onsubmit=async e=>{
    e.preventDefault();
@@ -278,7 +391,7 @@ const pages={
  }
 };
 function render(){pages[page]();i18n()}
-shell();render();
+shell();render();initAuth();
 if(CONFIG.signup&&CONFIG.signup.universal&&page==='contact'){
   let ccDone=false;const loadCC=()=>{if(ccDone)return;ccDone=true;document.body.appendChild(document.createRange().createContextualFragment(CONFIG.signup.universal))};
   const box=$('#subscribe');
