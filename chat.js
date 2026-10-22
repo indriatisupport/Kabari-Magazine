@@ -116,7 +116,7 @@ const hArchive = () => {
     links([{ l: { en: 'Open the archive', id: 'Buka arsip' }, href: 'archive.html' }])];
 };
 const hSubscribe = () => {
-  const href = (CONFIG.signup && CONFIG.signup.inline) ? 'index.html#sub' : (CONFIG.signupUrl || 'mailto:' + CONFIG.email + '?subject=Subscribe');
+  const href = (CONFIG.signup && CONFIG.signup.inline) ? 'contact.html#subscribe' : (CONFIG.signupUrl || 'mailto:' + CONFIG.email + '?subject=Subscribe');
   return [P('Subscribe by email and we will let you know when each new issue is published. You can unsubscribe at any time.',
             'Berlangganan lewat email dan kami akan memberi tahu Anda saat setiap edisi baru terbit. Anda dapat berhenti berlangganan kapan saja.'),
           links([{ l: { en: 'Go to the subscribe form', id: 'Ke formulir langganan' }, href }])];
@@ -407,7 +407,7 @@ function facts() {
     'Archive: ' + ISSUES.length + ' monthly issues from ' + CONFIG.startYear + ' to ' + MONTHS_EN[L0.m - 1] + ' ' + L0.y + '. Issues with an online copy (read online or PDF) on this site: ' + onl + '. Other issues are listed but not uploaded yet; send people to Issuu (' + CONFIG.issuu + ') or email.',
     'Topics: ' + CATS.map(c => T['c_' + c].en + ' (' + T['tp_' + c].en + ')').join(' '),
     'Contact: email ' + CONFIG.email + '; location ' + CONFIG.location + '; website ' + CONFIG.website + '; Issuu ' + CONFIG.issuu + '; socials: ' + (soc || 'none'),
-    'Newsletter: subscribe with the form on the home page; every email has an unsubscribe link.',
+    'Newsletter: subscribe with the signup form at the bottom of the Contact page; every email has an unsubscribe link.',
     'Pages: Home, Latest Issue, Archives, About, Contact, Privacy Policy, Terms of Service. Languages: English and Indonesian (EN/ID switch at the top).',
     'Terms: issues can be read and downloaded for personal, non-commercial use; copying or reselling needs written permission.'
   ].join('\n');

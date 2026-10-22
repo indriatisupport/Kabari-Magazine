@@ -115,7 +115,16 @@ const T={
  pw_3:{en:"Partner with us",id:"Bermitra dengan kami"},pw_3d:{en:"Events, community groups and brand collaborations.",id:"Acara, kelompok komunitas, dan kolaborasi merek."},
  pw_4:{en:"Request a back issue",id:"Minta edisi lama"},pw_4d:{en:"Looking for an older issue that is not online yet? Ask us.",id:"Mencari edisi lama yang belum tersedia online? Tanyakan kepada kami."},
  fc_mag:{en:"Magazine",id:"Majalah"},fc_help:{en:"Help Center",id:"Pusat Bantuan"},fc_co:{en:"Company",id:"Perusahaan"},
+<<<<<<< HEAD
+ fl_adv:{en:"Advertise with us",id:"Pasang iklan"},fl_part:{en:"Partnerships",id:"Kemitraan"},fl_story:{en:"Submit a story",id:"Kirim cerita"},
+ ins_t:{en:"Need Insurance?",id:"Butuh Asuransi?"},ins_d:{en:"Looking for the right coverage? April Insurance Agency is here to help you find it.",id:"Mencari perlindungan yang tepat? April Insurance Agency siap membantu Anda menemukannya."},ins_l:{en:"Visit April Insurance Agency",id:"Kunjungi April Insurance Agency"},
+ sb_t:{en:"Stories from Home, Straight to Your Inbox",id:"Kisah dari Tanah Air, Langsung ke Email Anda"},
+ sb_l:{en:"2007",id:"2007"},sb_ld:{en:"Publishing since 2007: the largest Indonesian news and multimedia portal in the USA.",id:"Terbit sejak 2007: portal berita dan multimedia Indonesia terbesar di Amerika Serikat."},
+ sb_r:{en:"Monthly",id:"Bulanan"},sb_rd:{en:"A new issue every month, with news, culture, community, business and lifestyle stories in English and Indonesian.",id:"Edisi baru setiap bulan, dengan kisah berita, budaya, komunitas, bisnis, dan gaya hidup dalam bahasa Inggris dan Indonesia."},
+ nl_ok:{en:"Thank you! We have received your email and will add you to the list.",id:"Terima kasih! Email Anda sudah kami terima dan akan kami tambahkan ke daftar."}
+=======
  fl_adv:{en:"Advertise with us",id:"Pasang iklan"},fl_part:{en:"Partnerships",id:"Kemitraan"},fl_story:{en:"Submit a story",id:"Kirim cerita"}
+>>>>>>> b2becf0f200ef2d60bfecaec52eb31017c4579b8
 };
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 let lang='en';try{lang=localStorage.getItem('kabariLang')||'en'}catch(e){}
@@ -129,14 +138,21 @@ const btn=(href,k,cls)=>(!href&&k==='read'&&CONFIG.issuu)?`<a class="btn ${cls}"
 const card=i=>`<button class="card" data-id="${i.id}" aria-label="${title(i)}, ${t('c_'+i.cat)}"><span class="cv">${cover(i)}</span><span class="tag" style="--c:${CAT_COLOR[i.cat]}">${t('c_'+i.cat)}</span><strong>${title(i)}</strong></button>`;
 const nav=[['index','nav_home'],['latest','nav_latest'],['archive','nav_archive'],['about','nav_about'],['contact','nav_contact']];
 const page=document.body.dataset.page;
+const SOC_NAMES={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
+const S1='fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
+const ICO={
+ facebook:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.2v2.3H7.7V13h2.7v8h3.1z"/></svg>',
+ instagram:'<svg viewBox="0 0 24 24" '+S1+' aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></svg>',
+ youtube:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" '+S1+'/><path d="M10 9.6v4.8l4.3-2.4z" fill="currentColor"/></svg>',
+ pinterest:'<svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="18" text-anchor="middle" font-size="16" font-weight="700" font-family="Georgia,serif" fill="currentColor">P</text></svg>',
+ x:'<svg viewBox="0 0 24 24" '+S1+' aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>'
+};
+const socBtns=()=>Object.keys(CONFIG.social||{}).filter(k=>CONFIG.social[k]).map(k=>`<a class="si" href="${CONFIG.social[k]}" target="_blank" rel="noopener" aria-label="${SOC_NAMES[k]}">${ICO[k]||SOC_NAMES[k]}</a>`).join('');
 function appBlock(){const e=$('#app');if(!e)return;const a=CONFIG.apps||{};e.innerHTML=`<div class="appc"><div><h2>${t('app_t')}</h2><p>${t('app_d')}</p></div><div class="row">${a.appStore?`<a class="btn solid" href="${a.appStore}" target="_blank" rel="noopener">${t('app_ios')}</a>`:''}${a.googlePlay?`<a class="btn line" href="${a.googlePlay}" target="_blank" rel="noopener">${t('app_and')}</a>`:''}</div></div>`}
-const subHref=()=>(CONFIG.signup&&CONFIG.signup.inline)?'index.html#sub':(CONFIG.signupUrl||`mailto:${CONFIG.email}?subject=Subscribe`);
+const subHref=()=>(CONFIG.signup&&CONFIG.signup.inline)?'contact.html#subscribe':(CONFIG.signupUrl||`mailto:${CONFIG.email}?subject=Subscribe`);
 function joinBlock(){
   const s=CONFIG.social,names={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<a class="btn line" href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
-  const sb=$('#sub');if(!sb.dataset.b){sb.dataset.b=1;const emb=CONFIG.signup&&CONFIG.signup.inline;
-   sb.innerHTML=`<h2 data-i="sub_t"></h2>${emb?'<div id="ctct"></div>':`<a class="btn solid" data-i="sub_btn" href="${subHref()}"${CONFIG.signupUrl?' target="_blank" rel="noopener"':''}></a>`}`;
-   if(emb)$('#ctct').appendChild(document.createRange().createContextualFragment(CONFIG.signup.inline))}
   const fb=$('#follow');if(!fb.dataset.b){fb.dataset.b=1;fb.innerHTML=`<h2 data-i="fol_t"></h2><p data-i="fol_d"></p><div class="row">${soc}</div>`}
 }
 function shell(){
@@ -144,7 +160,11 @@ function shell(){
   const socials=Object.keys(s).filter(k=>s[k]).map(k=>`<a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<li><a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a></li>`).join('');
   $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
+<<<<<<< HEAD
+  $('#ftr').innerHTML=`<footer class="kf"><div class="kf-in"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-header.svg" alt="Kabari Magazine"><p data-i="f_tag"></p><a class="plink" href="latest.html"><span data-i="h_cta"></span> ↗</a></div><div><h4 data-i="fc_mag"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="nav_archive"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener" data-i="issuu"></a></li></ul></div><div><h4 data-i="fc_help"></h4><ul><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="privacy.html" data-i="f_priv"></a></li><li><a href="terms.html" data-i="f_terms"></a></li></ul></div><div><h4 data-i="fc_co"></h4><ul><li><a href="about.html" data-i="nav_about"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_adv"></a></li><li><a href="contact.html?topic=partnership" data-i="fl_part"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socBtns()?`<div><h4 data-i="f_follow"></h4><div class="sis">${socBtns()}</div></div>`:''}</div><div class="kf-bot"><span>© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span></span><span><a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></span></div></div></footer>
+=======
   $('#ftr').innerHTML=`${page!=='index'?`<section class="nb"><div class="nb-in"><div><h2 data-i="sub_t"></h2><p data-i="sub_d"></p></div><a class="btn solid" href="${subHref()}"${(CONFIG.signupUrl&&!(CONFIG.signup&&CONFIG.signup.inline))?' target="_blank" rel="noopener"':''} data-i="sub_btn"></a></div></section>`:''}<footer class="kf"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-logo-masthead-dark.svg" alt="Kabari Magazine"><p data-i="f_tag"></p><a class="btn solid sm" href="latest.html" data-i="h_cta"></a><p class="kf-m"><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></p></div><div><h4 data-i="fc_mag"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="nav_archive"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener" data-i="issuu"></a></li></ul></div><div><h4 data-i="fc_help"></h4><ul><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="privacy.html" data-i="f_priv"></a></li><li><a href="terms.html" data-i="f_terms"></a></li></ul></div><div><h4 data-i="fc_co"></h4><ul><li><a href="about.html" data-i="nav_about"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_adv"></a></li><li><a href="contact.html?topic=partnership" data-i="fl_part"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socials?`<div><h4 data-i="f_follow"></h4><div class="kf-s">${socials}</div></div>`:''}</div><p class="copy">© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span> &nbsp;·&nbsp; <a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></p></footer>
+>>>>>>> b2becf0f200ef2d60bfecaec52eb31017c4579b8
   <dialog id="dlg"><button class="x" aria-label="Close">×</button><div class="mg"><div class="mc"></div><div><span class="tag"></span><h2 id="mt"></h2><p class="md"></p><div class="acts"></div></div></div></dialog>`;
   {const j=document.createElement('script');j.type='application/ld+json';j.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'Kabari Magazine',url:CONFIG.website,foundingDate:'2007',address:{'@type':'PostalAddress',addressLocality:'San Francisco',addressCountry:'US'},email:CONFIG.email,sameAs:Object.values(CONFIG.social).filter(Boolean).concat(CONFIG.issuu)});document.head.appendChild(j)}
   $('.burger').onclick=e=>{const o=$('#nav').classList.toggle('open');e.target.setAttribute('aria-expanded',o)};
@@ -210,19 +230,30 @@ const pages={
   const TOP=[['general','ct_i_general'],['backissue','ct_i_back'],['advertising','ct_i_adv'],['partnership','ct_i_part'],['story','ct_i_story'],['access','ct_i_access'],['newsletter','ct_i_sub'],['press','ct_i_press'],['other','ct_i_other']];
   sel.innerHTML=`<option value="">${t('l_sel')}</option>`+TOP.map(([k,l])=>`<option value="${k}">${t(l)}</option>`).join('');
   sel.value=keep;
+<<<<<<< HEAD
+  $('#mw').innerHTML=`<h3 data-i="mw_t"></h3><p><strong><span data-i="mw_email"></span>:</strong><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></p><p><strong><span data-i="loc"></span>:</strong><span>${CONFIG.location}</span></p>`;
+  $('#ku').innerHTML=`<h3 data-i="ku_t"></h3><p class="kd" data-i="ku_d"></p><div class="sis">${socBtns()}</div>`;
+  const aiUrl=CONFIG.insuranceUrl||'https://aprilinsurance.com/?utm_source=kabarinews&utm_medium=referral&utm_campaign=contact_page';
+  $('#ai').innerHTML=`<h3 data-i="ins_t"></h3><p class="kd" data-i="ins_d"></p><div class="xl"><a href="${aiUrl}" target="_blank" rel="noopener"><span data-i="ins_l"></span> →</a></div>`;
+  const cc=$('#ctct');if(cc&&!cc.dataset.b&&CONFIG.signup&&CONFIG.signup.inline){cc.dataset.b=1;cc.appendChild(document.createRange().createContextualFragment(CONFIG.signup.inline))}
+=======
   const sc=CONFIG.social||{},nm={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
   const pills=Object.keys(sc).filter(k=>sc[k]).map(k=>`<a href="${sc[k]}" target="_blank" rel="noopener">${nm[k]}</a>`).join('');
   $('#mw').innerHTML=`<h3 data-i="mw_t"></h3><ul class="cl"><li><span data-i="mw_email"></span><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></li><li><span data-i="loc"></span><b>${CONFIG.location}</b></li><li><span data-i="web"></span><a href="${CONFIG.website}" target="_blank" rel="noopener">${CONFIG.website.replace('https://','')}</a></li><li><span>Issuu</span><a href="${CONFIG.issuu}" target="_blank" rel="noopener">${CONFIG.issuu.replace('https://','')}</a></li></ul>`;
   $('#ku').innerHTML=pills?`<h3 data-i="ku_t"></h3><p data-i="ku_d"></p><div class="pl">${pills}</div>`:'';
   $('#ku').hidden=!pills;
   $('#pw').innerHTML=`<h3 data-i="pw_t"></h3><p data-i="pw_d"></p>`+[['advertising','pw_1'],['story','pw_2'],['partnership','pw_3'],['backissue','pw_4']].map(([k,x])=>`<button type="button" class="pw-i" data-topic="${k}"><b data-i="${x}"></b><span data-i="${x}d"></span><em aria-hidden="true">→</em></button>`).join('');
+>>>>>>> b2becf0f200ef2d60bfecaec52eb31017c4579b8
   const hint=()=>{$('#h-msg').hidden=sel.value!=='backissue'};
   if(f.dataset.b){hint();return}
   f.dataset.b=1;
   const q=new URLSearchParams(location.search).get('topic');if(q&&TOP.some(x=>x[0]===q))sel.value=q;
   hint();sel.onchange=hint;
+<<<<<<< HEAD
+=======
   document.addEventListener('click',e=>{const b=e.target.closest('[data-topic]');if(!b)return;sel.value=b.dataset.topic;hint();
    const red=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;$('.cform').scrollIntoView({behavior:red?'auto':'smooth',block:'start'});setTimeout(()=>$('#f-msg').focus({preventScroll:true}),350)});
+>>>>>>> b2becf0f200ef2d60bfecaec52eb31017c4579b8
   ['name','email','phone','inq','msg'].forEach(k=>$('#f-'+k).addEventListener('input',()=>{$('#e-'+k).textContent='';$('#f-'+k).setAttribute('aria-invalid','false')}));
   f.onsubmit=async e=>{
    e.preventDefault();
@@ -249,9 +280,9 @@ const pages={
 };
 function render(){pages[page]();i18n()}
 shell();render();
-if(CONFIG.signup&&CONFIG.signup.universal&&page==='index'){
+if(CONFIG.signup&&CONFIG.signup.universal&&page==='contact'){
   let ccDone=false;const loadCC=()=>{if(ccDone)return;ccDone=true;document.body.appendChild(document.createRange().createContextualFragment(CONFIG.signup.universal))};
-  const box=$('#sub');
+  const box=$('#subscribe');
   if('IntersectionObserver' in window&&box){new IntersectionObserver((en,ob)=>{if(en[0].isIntersecting){loadCC();ob.disconnect()}},{rootMargin:'700px'}).observe(box)}
   else setTimeout(loadCC,4000);
 }
