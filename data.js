@@ -19,7 +19,9 @@ const CONFIG={
   },
   signupUrl:'',                   // Constant Contact sign-up form link (see instructions). Empty = Subscribe opens an email to info@
   apps:{appStore:'',googlePlay:''},  // paste the App Store / Google Play URLs of the Kabari app
-  social:{facebook:'https://facebook.com/ikutkabari',instagram:'https://instagram.com/ikutkabari',pinterest:'https://pinterest.com/kabari',x:'',youtube:''}
+  social:{facebook:'https://facebook.com/ikutkabari',instagram:'https://instagram.com/ikutkabari',pinterest:'https://pinterest.com/kabari',x:'',youtube:''},
+// Firebase setup
+   firebase:{apiKey:'AIzaSyBiE2eV2yL8K0AKicLHsX2SrrmXhwqK1IA',authDomain:'kabari-magazine-login.firebaseapp.com',projectId:'kabari-magazine-login',appId:'1:897011551840:web:f2eebee717a07d1aff7d05'},
 };
 /* Real covers / links per issue. Key = "YYYY-M". Anything not listed gets a generated cover and "Coming soon" buttons.
    Example: "2026-9":{cover:"covers/2026-09.jpg",read:"https://...",pdf:"pdf/2026-09.pdf",desc:{en:"...",id:"..."}} */

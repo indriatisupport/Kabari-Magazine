@@ -231,7 +231,7 @@ async function toggleFav(id){
 }
 /* Search overlay (same matching rules as the Archive page) */
 const hayOf=i=>`${MONTHS_EN[i.m-1]} ${MONTHS_ID[i.m-1]} ${i.y} ${i.cat} ${T['c_'+i.cat].id} ${i.m<10?'0'+i.m:i.m}/${i.y}`.toLowerCase();
-const mini=i=>i.cover?`<img src="${i.cover}" alt="" width="60" height="80" loading="lazy">`:`<span class="mg" style="background:${CAT_COLOR[i.cat]}">${mName(i.m).slice(0,3)}<br>${i.y}</span>`;
+const mini=i=>i.cover?`<img src="${i.cover}" alt="" width="60" height="80" loading="lazy">`:`<span class="mgn" style="background:${CAT_COLOR[i.cat]}">${mName(i.m).slice(0,3)}<br>${i.y}</span>`;
 function searchRender(){
   const q=$('#sq').value.trim().toLowerCase(),words=q.split(/\s+/).filter(Boolean);
   const all=words.length?ISSUES.filter(i=>words.every(w=>hayOf(i).includes(w))):ISSUES.slice(0,6),list=all.slice(0,8);
@@ -281,7 +281,7 @@ const pages={
   $('#fan').innerHTML=ISSUES.slice(0,3).reverse().map((i,n)=>`<a class="fc f${n}" href="latest.html" aria-label="${title(i)}">${cover(i,1)}</a>`).join('');
   $('#recent').innerHTML=ISSUES.slice(0,4).map(card).join('');
   {let pop=(CONFIG.popular||[]).map(byId).filter(Boolean);if(!pop.length)pop=ISSUES.filter(i=>i.cover).slice(4,8);$('#mv').innerHTML=pop.slice(0,4).map(card).join('')}
-  appBlock();joinBlock();
+  appBlock();
   $('#topics').innerHTML=CATS.map(c=>`<a class="topic" style="--c:${CAT_COLOR[c]}" href="archive.html?cat=${c}">${t('c_'+c)}</a>`).join('');
  },
  latest(){
@@ -326,7 +326,7 @@ const pages={
   if(USER){
     box.innerHTML=`<div class="ac-top"><p><span data-i="ac_as"></span> <b id="ac-em"></b></p><button type="button" class="sbtn" id="so" data-i="ac_out"></button></div>`+favSec;
     $('#ac-em').textContent=USER.email;
-    $('#so').onclick=async()=>{try{await CLOUD.signOut()}catch(e){}favs=[];saveLocal();USER=null;try{localStorage.removeItem(AUTHKEY)}catch(e){}acctIcon();render()};
+    $('#so').onclick=async()=>{try{await CLOUD.signOut()}catch(e){}favs=[];saveLocal();USER=null;acMode='in';try{localStorage.removeItem(AUTHKEY)}catch(e){}acctIcon();render()};
     return}
   const up=acMode==='up';
   box.innerHTML=`<div class="ac-card"><div class="ac-tabs" role="tablist"><button type="button" role="tab" id="tab-in" aria-selected="${!up}" data-i="ac_signin"></button><button type="button" role="tab" id="tab-up" aria-selected="${up}" data-i="ac_create"></button></div>
