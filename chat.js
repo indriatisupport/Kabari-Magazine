@@ -58,14 +58,13 @@ function dates(n) {
 
 /* ---------- answer builders (each returns an array of "parts") ---------- */
 const MAIL = () => ({ l: { en: 'Email us', id: 'Kirim email' }, href: 'mailto:' + CONFIG.email });
-const ISSUU = () => ({ l: 'Issuu', href: CONFIG.issuu, ext: 1 });
 
 function hRange(y, m) {
   const f = CONFIG.startYear, L0 = ISSUES[0];
   if (y < f) return [
-    P(`Our online archive starts in ${f}, so ${m ? mn(m) + ' ' : ''}${y} isn't listed here. Kabari has been publishing since 2007, and you may find older editions on our Issuu page.`,
-      `Arsip online kami dimulai pada ${f}, jadi ${m ? mn(m) + ' ' : ''}${y} tidak tersedia di sini. Kabari terbit sejak 2007, dan edisi lama mungkin ada di halaman Issuu kami.`),
-    links([ISSUU()]), chips([{ l: String(f), run: () => hYear(f) }])];
+    P(`Our online archive starts in ${f}, so ${m ? mn(m) + ' ' : ''}${y} isn't listed here. Kabari has been publishing since 2007. If you need an older edition, email us and we will do our best to help.`,
+      `Arsip online kami dimulai pada ${f}, jadi ${m ? mn(m) + ' ' : ''}${y} tidak tersedia di sini. Kabari terbit sejak 2007; jika Anda butuh edisi lama, kirim email kepada kami.`),
+    links([MAIL()]), chips([{ l: String(f), run: () => hYear(f) }])];
   return [
     P(`${m ? mn(m) + ' ' : ''}${y} hasn't been published yet. The latest issue is ${mn(L0.m)} ${L0.y}:`,
       `${m ? mn(m) + ' ' : ''}${y} belum terbit. Edisi terbaru adalah ${mn(L0.m)} ${L0.y}:`), issue(L0)];
@@ -79,8 +78,8 @@ function hIssue(y, m) {
   const i = ISSUES.find(z => z.y === y && z.m === m);
   if (i.read || i.pdf) return [P(`Here is the ${mn(m)} ${y} issue:`, `Ini edisi ${mn(m)} ${y}:`), issue(i)];
   return [
-    P(`The ${mn(m)} ${y} issue is in our archive list, but its online copy hasn't been uploaded yet. You can look for it on Kabari's Issuu page, or email us and we'll help.`,
-      `Edisi ${mn(m)} ${y} tercatat di arsip kami, tetapi salinan onlinenya belum diunggah. Anda bisa mencarinya di halaman Issuu Kabari, atau kirim email kepada kami.`),
+    P(`The ${mn(m)} ${y} issue is in our archive list, but its online copy hasn't been uploaded yet. Please email us and we'll help you find it.`,
+      `Edisi ${mn(m)} ${y} tercatat di arsip kami, tetapi salinan onlinenya belum diunggah. Silakan kirim email kepada kami dan kami akan membantu.`),
     issue(i), links([MAIL()])];
 }
 function hYear(y) {
@@ -129,7 +128,7 @@ const hLocation = () => [
     `Majalah Kabari berbasis di ${CONFIG.location}, melayani komunitas Indonesia di seluruh Amerika Serikat.`),
   links([MAIL()])];
 const hAbout = () => [P(tt('ab1') + ' ' + tt('ab2'), tt('ab1') + ' ' + tt('ab2')), links([{ l: { en: 'About page', id: 'Halaman Tentang' }, href: 'about.html' }])];
-const hHistory = () => [P(`${tt('tl07')} ${tt('tl12')} ${tt('tl17')}`, `${tt('tl07')} ${tt('tl12')} ${tt('tl17')}`), links([{ l: { en: 'Read our story', id: 'Baca kisah kami' }, href: 'about.html' }])];
+const hHistory = () => [P(`${tt('tl07')} ${tt('tl12')}`, `${tt('tl07')} ${tt('tl12')}`), links([{ l: { en: 'Read our story', id: 'Baca kisah kami' }, href: 'about.html' }])];
 const hTopics = () => [
   P('Kabari covers ' + CATS.map(c => tt('c_' + c) + ' (' + tt('tp_' + c).replace(/\.$/, '').toLowerCase() + ')').join('; ') + '.',
     'Kabari meliput ' + CATS.map(c => tt('c_' + c) + ' (' + tt('tp_' + c).replace(/\.$/, '').toLowerCase() + ')').join('; ') + '.'),
@@ -164,8 +163,6 @@ const hAdvertise = () => [
     `Untuk iklan, kerja sama, atau pengiriman artikel, silakan kirim email ke ${CONFIG.email} dengan deskripsi singkat dan tim Kabari akan menghubungi Anda.`),
   links([MAIL(), { l: { en: 'Contact form', id: 'Formulir kontak' }, href: 'contact.html' }])];
 const hLang = () => [P('The site and this assistant work in English and Indonesian. Use the EN / ID switch at the top of the page.', 'Situs dan asisten ini tersedia dalam bahasa Inggris dan Indonesia. Gunakan tombol EN / ID di bagian atas halaman.')];
-const hWeb = () => [P(`Our website is ${CONFIG.website.replace('https://', '')}, and our digital editions are on Issuu.`, `Situs kami adalah ${CONFIG.website.replace('https://', '')}, dan edisi digital kami ada di Issuu.`), links([{ l: { en: 'Website', id: 'Situs web' }, href: CONFIG.website, ext: 1 }, ISSUU()])];
-const hIssuu = () => [P('Kabari publishes its digital editions on Issuu.', 'Kabari menerbitkan edisi digitalnya di Issuu.'), links([ISSUU()])];
 const hPrivacy = () => [aiOn()
   ? P('Our Privacy Policy explains what we collect and how we use it. Please note that chat messages are sent to an AI service to write replies, so please don’t share personal details here.', 'Kebijakan Privasi kami menjelaskan data yang kami kumpulkan dan penggunaannya. Perlu diketahui, pesan chat dikirim ke layanan AI untuk menulis balasan, jadi mohon jangan membagikan data pribadi di sini.')
   : P('Our Privacy Policy explains what we collect and how we use it. This chat runs in your browser and does not send your messages anywhere.', 'Kebijakan Privasi kami menjelaskan data yang kami kumpulkan dan penggunaannya. Chat ini berjalan di browser Anda dan tidak mengirim pesan Anda ke mana pun.'),
@@ -234,8 +231,6 @@ const RULES = [
   [/\b(contact|e-?mail|reach (you|out)|hubungi|kontak|surel|phone|telepon|call you|talk to|support|customer)\b/, hContact, 'info'],
   [/\b(location|located|address|where (is|are) (you|kabari|your|the office)|based|office|lokasi|alamat|dimana|di mana|kantor|san francisco)\b/, hLocation, 'info'],
   [/\b(social|facebook|instagram|pinterest|youtube|twitter|medsos|media sosial|follow|ikuti|ig|fb)\b/, hSocial, 'info'],
-  [/\bissuu\b/, hIssuu, 'info'],
-  [/\b(website|web site|situs|kabarinews|url)\b/, hWeb, 'info'],
   [/\b(privacy|privasi|personal data|cookies?|data pribadi)\b/, hPrivacy, 'info'],
   [/\b(terms|ketentuan|syarat|copyright|hak cipta|legal)\b/, hTerms, 'info'],
   [/\b(history|sejarah|founded|since when|sejak kapan|berdiri|established|how old|started|began|when did|2007)\b/, hHistory, 'info'],
@@ -353,7 +348,6 @@ function issueEl(i) {
   const row = el('div', 'kb-row');
   if (i.read) row.appendChild(linkEl({ l: u('read'), href: i.read, ext: 1 }, true));
   if (i.pdf) row.appendChild(linkEl({ l: u('pdf'), href: i.pdf, dl: 1 }, false));
-  if (!ok) row.appendChild(linkEl({ l: 'Issuu', href: CONFIG.issuu, ext: 1 }, true));
   if (typeof openModal === 'function') {
     const d = el('button', 'kb-b', u('det')); d.type = 'button'; d.onclick = () => openModal(i); row.appendChild(d);
   }
@@ -401,12 +395,12 @@ function facts() {
   const a = CONFIG.apps || {};
   return [
     'About: ' + T.ab1.en + ' ' + T.ab2.en,
-    'History: ' + T.tl07.en + ' ' + T.tl12.en + ' ' + T.tl17.en,
+    'History: ' + T.tl07.en + ' ' + T.tl12.en,
     'Mobile app: ' + T.ab4.en + ' ' + ((a.appStore || a.googlePlay) ? 'Links: ' + [a.appStore, a.googlePlay].filter(Boolean).join(' ') : 'Store links are not on the website yet.'),
     'Latest issue: ' + MONTHS_EN[L0.m - 1] + ' ' + L0.y + '.',
-    'Archive: ' + ISSUES.length + ' monthly issues from ' + CONFIG.startYear + ' to ' + MONTHS_EN[L0.m - 1] + ' ' + L0.y + '. Issues with an online copy (read online or PDF) on this site: ' + onl + '. Other issues are listed but not uploaded yet; send people to Issuu (' + CONFIG.issuu + ') or email.',
+    'Archive: ' + ISSUES.length + ' monthly issues from ' + CONFIG.startYear + ' to ' + MONTHS_EN[L0.m - 1] + ' ' + L0.y + '. Issues with an online copy (read online or PDF) on this site: ' + onl + '. Other issues are listed but not uploaded yet; send people to email the team.',
     'Topics: ' + CATS.map(c => T['c_' + c].en + ' (' + T['tp_' + c].en + ')').join(' '),
-    'Contact: email ' + CONFIG.email + '; location ' + CONFIG.location + '; website ' + CONFIG.website + '; Issuu ' + CONFIG.issuu + '; socials: ' + (soc || 'none'),
+    'Contact: email ' + CONFIG.email + '; location ' + CONFIG.location + '; socials: ' + (soc || 'none'),
     'Newsletter: subscribe with the signup form at the bottom of the Contact page; every email has an unsubscribe link.',
     'Pages: Home, Latest Issue, Archives, About, Contact, Privacy Policy, Terms of Service. Languages: English and Indonesian (EN/ID switch at the top).',
     'Terms: issues can be read and downloaded for personal, non-commercial use; copying or reselling needs written permission.'

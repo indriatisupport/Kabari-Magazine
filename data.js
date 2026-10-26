@@ -6,7 +6,6 @@ const CONFIG={
   chatEndpoint:'https://kabari-chat.indriatisupport.workers.dev',
   formEndpoint:'https://formspree.io/f/xqpewbpb',                // paste a Formspree URL (https://formspree.io/f/xxxx) to receive messages by form; empty = opens email app
   website:'https://kabarinews.com',
-  issuu:'https://issuu.com/kabari8',   // official Kabari page on Issuu; used as the "Read" fallback until an issue has its own link
   location:'San Francisco, United States',
   signup:{                        // Constant Contact INLINE form: paste the two codes between the backticks ` `
     universal:`<!-- Begin Constant Contact Active Forms -->

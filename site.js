@@ -63,12 +63,10 @@ const T={
  cta_t:{en:'Explore every issue',id:'Jelajahi setiap edisi'},
  cta_d:{en:'Browse the full archive or get in touch with the Kabari team.',id:'Telusuri seluruh arsip atau hubungi tim Kabari.'},
  ab4:{en:"As the digital world grew, Kabari became the first Indonesian magazine in the USA to create its own mobile application, so readers can follow every issue on iOS and Android devices.",id:"Seiring berkembangnya dunia digital, Kabari menjadi majalah Indonesia pertama di Amerika Serikat yang membuat aplikasi seluler sendiri, sehingga pembaca dapat mengikuti setiap edisi di perangkat iOS dan Android."},
- tl17:{en:"Kabari's digital editions go online on Issuu, where more than 150 publications are now available to read.",id:"Edisi digital Kabari hadir di Issuu, tempat lebih dari 150 publikasi kini dapat dibaca."},
  app_t:{en:"Read Kabari on your phone",id:"Baca Kabari di ponsel Anda"},
  app_d:{en:"Kabari is the first Indonesian magazine in the USA with its own mobile app, available for iOS and Android on the App Store and Google Play.",id:"Kabari adalah majalah Indonesia pertama di Amerika Serikat dengan aplikasi seluler sendiri, tersedia untuk iOS dan Android di App Store dan Google Play."},
  app_ios:{en:"Download on the App Store",id:"Unduh di App Store"},
  app_and:{en:"Get it on Google Play",id:"Dapatkan di Google Play"},
- issuu:{en:"View on Issuu",id:"Lihat di Issuu"},
  loc:{en:"Location",id:"Lokasi"},
  web:{en:"Website",id:"Situs web"},
  sub_t:{en:"Never miss an issue",id:"Jangan lewatkan setiap edisi"},
@@ -131,6 +129,20 @@ const T={
  e_pw:{en:"Password must be at least 6 characters.",id:"Kata sandi minimal 6 karakter."},a_bad:{en:"Email or password is incorrect.",id:"Email atau kata sandi salah."},
  a_inuse:{en:"An account with this email already exists. Try signing in.",id:"Akun dengan email ini sudah ada. Coba masuk."},a_many:{en:"Too many attempts. Please try again later.",id:"Terlalu banyak percobaan. Coba lagi nanti."},
  a_net:{en:"Could not connect. Please check your internet and try again.",id:"Tidak dapat terhubung. Periksa internet Anda dan coba lagi."},a_gen:{en:"Something went wrong. Please try again.",id:"Terjadi kesalahan. Silakan coba lagi."},
+ a_off:{en:"Email sign-up is not turned on yet. Please contact us.",id:"Pendaftaran email belum diaktifkan. Silakan hubungi kami."},a_domain:{en:"This website address is not allowed for sign-in yet. Please contact us.",id:"Alamat situs ini belum diizinkan untuk masuk. Silakan hubungi kami."},a_policy:{en:"Password does not meet the requirements. Try a longer one with upper and lower case letters, numbers and a symbol.",id:"Kata sandi belum memenuhi syarat. Coba yang lebih panjang dengan huruf besar dan kecil, angka, dan simbol."},
+  fc_acc:{en:"Kabari Account",id:"Akun Kabari"},fc_store:{en:"Kabari Store",id:"Toko Kabari"},fc_about:{en:"About Kabari",id:"Tentang Kabari"},fc_soc:{en:"Kabari Social",id:"Sosial Kabari"},
+ fl_all:{en:"All magazines",id:"Semua majalah"},fl_about:{en:"About us",id:"Tentang kami"},fl_advp:{en:"Advertise or partner",id:"Iklan atau kemitraan"},
+ ac_gate:{en:"Sign in to keep your favorites in your account and see them on any device.",id:"Masuk untuk menyimpan favorit di akun Anda dan melihatnya di perangkat mana pun."},
+ lg_eye:{en:"Kabari Magazine",id:"Majalah Kabari"},lg_h:{en:"Your library of Indonesian stories.",id:"Perpustakaan kisah Indonesia milik Anda."},
+ lg_p:{en:"Sign in to save your favorite issues and pick up where you left off, on any device.",id:"Masuk untuk menyimpan edisi favorit dan melanjutkan dari mana Anda berhenti, di perangkat mana pun."},
+ lg_back:{en:"← Back to site",id:"← Kembali ke situs"},lg_login:{en:"Login",id:"Masuk"},lg_reg:{en:"Register",id:"Daftar"},
+ lg_wel:{en:"Welcome back",id:"Selamat datang kembali"},lg_wel_s:{en:"Log in to see your saved magazines.",id:"Masuk untuk melihat majalah tersimpan Anda."},
+ lg_new:{en:"Join Kabari",id:"Bergabung dengan Kabari"},lg_new_s:{en:"Create your account in seconds.",id:"Buat akun Anda dalam hitungan detik."},
+ lg_pw2:{en:"Confirm password",id:"Konfirmasi kata sandi"},lg_mis:{en:"Passwords do not match.",id:"Kata sandi tidak cocok."},
+ lg_show:{en:"Show password",id:"Tampilkan kata sandi"},lg_hide:{en:"Hide password",id:"Sembunyikan kata sandi"},
+ lg_s1:{en:"Weak",id:"Lemah"},lg_s2:{en:"Okay",id:"Cukup"},lg_s3:{en:"Strong",id:"Kuat"},
+ lg_ok:{en:"Welcome to Kabari",id:"Selamat datang di Kabari"},lg_ok_s:{en:"Taking you to your library...",id:"Mengantar Anda ke perpustakaan..."},
+ lg_c1:{en:"Since 2007",id:"Sejak 2007"},lg_c2:{en:"English & Indonesian",id:"Inggris & Indonesia"},
  sb_t:{en:"Stories from Home, Straight to Your Inbox",id:"Kisah dari Tanah Air, Langsung ke Email Anda"},
  sb_l:{en:"2007",id:"2007"},sb_ld:{en:"Publishing since 2007: the largest Indonesian news and multimedia portal in the USA.",id:"Terbit sejak 2007: portal berita dan multimedia Indonesia terbesar di Amerika Serikat."},
  sb_r:{en:"Monthly",id:"Bulanan"},sb_rd:{en:"A new issue every month, with news, culture, community, business and lifestyle stories in English and Indonesian.",id:"Edisi baru setiap bulan, dengan kisah berita, budaya, komunitas, bisnis, dan gaya hidup dalam bahasa Inggris dan Indonesia."},
@@ -144,7 +156,7 @@ const title=i=>`${mName(i.m)} ${i.y}`;
 const desc=i=>i.desc?(i.desc[lang]||i.desc.en):t('d_def',{m:mName(i.m),y:i.y,c:t('c_'+i.cat).toLowerCase()});
 const byId=id=>ISSUES.find(i=>i.id===id);
 const cover=(i,e)=>i.cover?`<img src="${i.cover}" alt="${title(i)}" width="600" height="800" loading="${e?'eager':'lazy'}">`:`<div class="gen" style="--c:${CAT_COLOR[i.cat]}"><b>KABARI</b><span>${mName(i.m)}</span><em>${i.y}</em><i>${t('c_'+i.cat)}</i></div>`;
-const btn=(href,k,cls)=>(!href&&k==='read'&&CONFIG.issuu)?`<a class="btn ${cls}" href="${CONFIG.issuu}" target="_blank" rel="noopener">${t('issuu')}</a>`:href?`<a class="btn ${cls}" href="${href}"${k==='pdf'?' download':' target="_blank" rel="noopener"'}>${t(k)}</a>`:`<span class="btn off" aria-disabled="true">${t(k)}: ${t('soon').toLowerCase()}</span>`;
+const btn=(href,k,cls)=>href?`<a class="btn ${cls}" href="${href}"${k==='pdf'?' download':' target="_blank" rel="noopener"'}>${t(k)}</a>`:`<span class="btn off" aria-disabled="true">${t(k)}: ${t('soon').toLowerCase()}</span>`;
 const card=i=>`<div class="cardw"><button class="card" data-id="${i.id}" aria-label="${title(i)}, ${t('c_'+i.cat)}"><span class="cv">${cover(i)}</span><span class="tag" style="--c:${CAT_COLOR[i.cat]}">${t('c_'+i.cat)}</span><strong>${title(i)}</strong></button>${heart(i.id)}</div>`;
 const nav=[['index','nav_home'],['latest','nav_latest'],['archive','nav_archive'],['about','nav_about'],['contact','nav_contact']];
 const page=document.body.dataset.page;
@@ -209,18 +221,21 @@ const authErr=e=>{const c=(e&&e.code)||'';
   if(/invalid-email/.test(c))return t('e_email');
   if(/too-many-requests/.test(c))return t('a_many');
   if(/network/.test(c))return t('a_net');
-  return t('a_gen')};
-function acctIcon(){const a=$('.hb-acc');if(!a)return;a.classList.toggle('on',!!USER);const l=USER?t('ac_nav')+': '+USER.email:t('ac_nav');a.setAttribute('aria-label',l);a.title=l}
+  if(/operation-not-allowed|admin-restricted/.test(c))return t('a_off');
+  if(/unauthorized-domain/.test(c))return t('a_domain');
+  if(/password-does-not-meet/.test(c))return t('a_policy');
+  return t('a_gen')+(c?' ('+c.replace('auth/','')+')':'')};
+function acctIcon(){const a=$('.hb-acc');if(!a)return;a.classList.toggle('on',!!USER);a.href=USER?'account.html':'login.html';const l=USER?t('ac_nav')+': '+USER.email:t('ac_nav');a.setAttribute('aria-label',l);a.title=l}
 function initAuth(){
   if(!CLOUD.enabled())return;
-  let want=page==='account';try{want=want||localStorage.getItem(AUTHKEY)==='1'}catch(e){}
+  let want=page==='account'||page==='login';try{want=want||localStorage.getItem(AUTHKEY)==='1'}catch(e){}
   if(!want){USER=null;return}
   CLOUD.onAuth(async u=>{
     if(u){try{const remote=await CLOUD.getFavs(u.uid);const merged=[...new Set([...remote,...favs])];favs=merged;saveLocal();if(merged.length!==remote.length)await CLOUD.setFavs(u.uid,merged)}catch(e){}
       try{localStorage.setItem(AUTHKEY,'1')}catch(e){}USER=u}
     else{USER=null;try{localStorage.removeItem(AUTHKEY)}catch(e){}}
-    acctIcon();favUI();if(page==='account')render()
-  }).catch(()=>{USER=null;if(page==='account')render()});
+    acctIcon();favUI();if(page==='account'||page==='login')render()
+  }).catch(()=>{USER=null;if(page==='account'||page==='login')render()});
 }
 async function toggleFav(id){
   const on=isFav(id);favs=on?favs.filter(x=>x!==id):[...favs,id];saveLocal();favUI();if(page==='account')render();
@@ -248,14 +263,17 @@ function bindSearch(){
   $('#sr').onclick=e=>{const b=e.target.closest('[data-sid]');if(b){d.close();openModal(byId(b.dataset.sid))}};
 }
 function shell(){
+  if(page==='login'){
+    $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><div class="lg-bar"><a class="lg-logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-logo-masthead-dark.svg" alt="Kabari Magazine"></a><div class="lg-bar-r"><a class="lg-back" href="index.html" data-i="lg_back"></a><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></div></div>`;
+    $$('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.l));return}
   const s=CONFIG.social,names={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
   const socials=Object.keys(s).filter(k=>s[k]).map(k=>`<a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<li><a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a></li>`).join('');
-  $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="hbtns"><button type="button" class="hb" id="hs" data-al="s_open"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button><a class="hb hb-acc" href="account.html" data-al="ac_nav"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.6 3.8-5.6 7.5-5.6s6.7 2 7.5 5.6"/></svg></a></div><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
-  $('#ftr').innerHTML=`<footer class="kf"><div class="kf-in"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-header.svg" alt="Kabari Magazine"><p data-i="f_tag"></p><a class="plink" href="latest.html"><span data-i="h_cta"></span> ↗</a></div><div><h4 data-i="fc_mag"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="nav_archive"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li><li><a href="${CONFIG.issuu}" target="_blank" rel="noopener" data-i="issuu"></a></li></ul></div><div><h4 data-i="fc_help"></h4><ul><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="privacy.html" data-i="f_priv"></a></li><li><a href="terms.html" data-i="f_terms"></a></li><li><a href="account.html" data-i="ac_nav"></a></li></ul></div><div><h4 data-i="fc_co"></h4><ul><li><a href="about.html" data-i="nav_about"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_adv"></a></li><li><a href="contact.html?topic=partnership" data-i="fl_part"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socBtns()?`<div><h4 data-i="f_follow"></h4><div class="sis">${socBtns()}</div></div>`:''}</div><div class="kf-bot"><span>© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span></span><span><a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></span></div></div></footer>
+  $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="hbtns"><button type="button" class="hb" id="hs" data-al="s_open"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button><a class="hb hb-acc" href="login.html" data-al="ac_nav"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.6 3.8-5.6 7.5-5.6s6.7 2 7.5 5.6"/></svg></a></div><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
+  $('#ftr').innerHTML=`<footer class="kf"><div class="kf-in"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-header.svg" alt="Kabari Magazine"><p data-i="f_tag"></p></div><div><h4 data-i="fc_acc"></h4><ul><li><a href="login.html" data-i="ac_signin"></a></li><li><a href="login.html?mode=register" data-i="ac_create"></a></li><li><a href="account.html" data-i="ac_favs"></a></li></ul></div><div><h4 data-i="fc_store"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="fl_all"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li></ul></div><div><h4 data-i="fc_about"></h4><ul><li><a href="about.html" data-i="fl_about"></a></li><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_advp"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socBtns()?`<div><h4 data-i="fc_soc"></h4><div class="sis">${socBtns()}</div></div>`:''}</div><div class="kf-bot"><span>© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span></span><span><a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></span></div></div></footer>
   <dialog id="sdlg" class="sd"><form id="sf" class="sd-top" role="search"><input id="sq" type="search" autocomplete="off" data-ph="search" data-al="search"><button type="button" class="sd-x" data-al="close">×</button></form><p id="sc" class="sd-c" aria-live="polite"></p><ul id="sr" class="sd-list"></ul><a id="sall" class="sd-all" data-i="s_all" hidden></a></dialog>
   <dialog id="dlg"><button class="x" aria-label="Close">×</button><div class="mg"><div class="mc"></div><div><span class="tag"></span><h2 id="mt"></h2><p class="md"></p><div class="acts"></div></div></div></dialog>`;
-  {const j=document.createElement('script');j.type='application/ld+json';j.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'Kabari Magazine',url:CONFIG.website,foundingDate:'2007',address:{'@type':'PostalAddress',addressLocality:'San Francisco',addressCountry:'US'},email:CONFIG.email,sameAs:Object.values(CONFIG.social).filter(Boolean).concat(CONFIG.issuu)});document.head.appendChild(j)}
+  {const j=document.createElement('script');j.type='application/ld+json';j.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'Kabari Magazine',url:location.origin+'/',foundingDate:'2007',address:{'@type':'PostalAddress',addressLocality:'San Francisco',addressCountry:'US'},email:CONFIG.email,sameAs:Object.values(CONFIG.social).filter(Boolean)});document.head.appendChild(j)}
   bindSearch();
   document.addEventListener('click',e=>{const f=e.target.closest('[data-fav]');if(f){e.preventDefault();toggleFav(f.dataset.fav)}});
   $('.burger').onclick=e=>{const o=$('#nav').classList.toggle('open');e.target.setAttribute('aria-expanded',o)};
@@ -312,9 +330,9 @@ const pages={
   appBlock();const yrs=[];for(let y=L.y;y>=CONFIG.startYear;y--)yrs.push(y);
   const n=ISSUES.length,first=yrs[yrs.length-1];
   $('#stats').innerHTML=[['2007',t('st_since')],[n,t('st_issues')],[CATS.length,t('st_topics')],['iOS · Android',t('st_langs')]].map(([v,k])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
-  $('#tl').innerHTML=[['2007',t('tl07')],[first,t('tl12')],[2017,t('tl17')],[L.y,t('tlnow',{m:mName(L.m),y:L.y,n})]].map(([y,x])=>`<li><b>${y}</b><p>${x}</p></li>`).join('');
+  $('#tl').innerHTML=[['2007',t('tl07')],[first,t('tl12')],[L.y,t('tlnow',{m:mName(L.m),y:L.y,n})]].map(([y,x])=>`<li><b>${y}</b><p>${x}</p></li>`).join('');
   const fa=[['fa_k1','fa_v1'],['fa_k2','fa_v2'],['fa_k3','fa_v3'],['fa_k4','fa_v4'],['fa_k5','fa_v5'],['fa_k6','fa_v6']];
-  $('#facts').innerHTML=fa.map(([k,v])=>`<tr><th scope="row">${t(k)}</th><td>${t(v,{a:first,b:t('now')})}</td></tr>`).join('')+`<tr><th scope="row">${t('loc')}</th><td>${CONFIG.location}</td></tr><tr><th scope="row">${t('web')}</th><td><a href="${CONFIG.website}" target="_blank" rel="noopener">kabarinews.com</a></td></tr><tr><th scope="row">Issuu</th><td><a href="${CONFIG.issuu}" target="_blank" rel="noopener">issuu.com/kabari8</a></td></tr><tr><th scope="row">${t('nav_contact')}</th><td><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></td></tr>`;
+  $('#facts').innerHTML=fa.map(([k,v])=>`<tr><th scope="row">${t(k)}</th><td>${t(v,{a:first,b:t('now')})}</td></tr>`).join('')+`<tr><th scope="row">${t('loc')}</th><td>${CONFIG.location}</td></tr><tr><th scope="row">${t('nav_contact')}</th><td><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></td></tr>`;
   $('#tpt').innerHTML=CATS.map(c=>`<tr><th scope="row"><span class="tag" style="--c:${CAT_COLOR[c]}">${t('c_'+c)}</span></th><td>${t('tp_'+c)}</td></tr>`).join('');
  },
  account(){
@@ -328,26 +346,46 @@ const pages={
     $('#ac-em').textContent=USER.email;
     $('#so').onclick=async()=>{try{await CLOUD.signOut()}catch(e){}favs=[];saveLocal();USER=null;acMode='in';try{localStorage.removeItem(AUTHKEY)}catch(e){}acctIcon();render()};
     return}
-  const up=acMode==='up';
-  box.innerHTML=`<div class="ac-card"><div class="ac-tabs" role="tablist"><button type="button" role="tab" id="tab-in" aria-selected="${!up}" data-i="ac_signin"></button><button type="button" role="tab" id="tab-up" aria-selected="${up}" data-i="ac_create"></button></div>
-<form id="af" class="ff" novalidate><div><label for="a-email" data-i="l_email"></label><input id="a-email" type="email" autocomplete="email" required></div><div><label for="a-pw" data-i="ac_pw"></label><input id="a-pw" type="password" autocomplete="${up?'new-password':'current-password'}" required></div>
-<p class="err" id="a-err" role="alert"></p><p class="fs" id="a-ok" role="status"></p><div class="sbw"><button class="sbtn ac-wide" type="submit" id="a-go" data-i="${up?'ac_create':'ac_signin'}"></button></div>
-${up?'':'<p class="ac-links"><button type="button" class="lnk" id="a-forgot" data-i="ac_forgot"></button></p>'}<p class="ac-or" data-i="ac_or"></p><button type="button" class="gbtn" id="a-g" data-i="ac_google"></button></form>
-<p class="cons ac-cons"><span data-i="ac_agree"></span> <a href="terms.html" data-i="f_terms"></a> &amp; <a href="privacy.html" data-i="f_priv"></a>.</p></div>`+favSec;
-  $('#a-email').value=acEmail;
-  const go=m=>{acEmail=$('#a-email').value;acMode=m;render()};
-  $('#tab-in').onclick=()=>go('in');$('#tab-up').onclick=()=>go('up');
-  const err=m=>{$('#a-err').textContent=m||'';$('#a-ok').textContent=''};
-  $('#af').onsubmit=async e=>{e.preventDefault();err('');const em=$('#a-email').value.trim(),pw=$('#a-pw').value;
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){err(t('e_email'));$('#a-email').focus();return}
-    if(pw.length<6){err(t('e_pw'));$('#a-pw').focus();return}
-    const b=$('#a-go');b.disabled=true;
-    try{await(up?CLOUD.signUp(em,pw):CLOUD.signIn(em,pw))}catch(x){err(authErr(x));b.disabled=false}};
-  $('#a-g').onclick=async()=>{err('');try{await CLOUD.google()}catch(x){err(authErr(x))}};
-  const fg=$('#a-forgot');if(fg)fg.onclick=async()=>{err('');const em=$('#a-email').value.trim();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){err(t('e_email'));$('#a-email').focus();return}
+  box.innerHTML=`<div class="ac-gate"><p data-i="ac_gate"></p><div class="ac-gb"><a class="sbtn ac-btn" href="login.html" data-i="ac_signin"></a><a class="gbtn ac-btn2" href="login.html?mode=register" data-i="ac_create"></a></div></div>`+favSec;
+ },
+ login(){
+  const f=$('#lgf'),root=$('#main'),card=$('#lgcard');
+  const qs=new URLSearchParams(location.search),nx=qs.get('next');
+  const next=nx&&/^[a-z0-9_.\-]+\.html(\?[^\s]*)?$/i.test(nx)?nx:'account.html';
+  $('#lg-h').innerHTML=t('lg_h').split(' ').map((w,i)=>`<span style="--i:${i}">${w}</span>`).join(' ');
+  if(USER){$('#lg-ok').classList.add('on');if(!f.dataset.go){f.dataset.go=1;setTimeout(()=>location.replace(next),1300)}return}
+  const up=()=>root.classList.contains('is-reg');
+  const fill=()=>{const r=up();$('#lg-t').textContent=t(r?'lg_new':'lg_wel');$('#lg-s').textContent=t(r?'lg_new_s':'lg_wel_s');
+    $('#lg-gol').dataset.i=r?'ac_create':'ac_signin';$('#lg-forgot').hidden=r;$('#lg-pw').autocomplete=r?'new-password':'current-password';
+    $('#lt-in').setAttribute('aria-selected',!r);$('#lt-up').setAttribute('aria-selected',r);$('#lg-pw2').required=r;
+    const e=$('#lg-eye');e.setAttribute('aria-label',t($('#lg-pw').type==='password'?'lg_show':'lg_hide'));strength()};
+  const strength=()=>{const v=$('#lg-pw').value;let s=0;if(v.length>=8)s++;if(/[a-z]/.test(v)&&/[A-Z]/.test(v))s++;if(/\d/.test(v)&&/[^A-Za-z0-9]/.test(v))s++;if(!v)s=0;
+    $('#lg-str').dataset.s=s;$('#lg-strt').textContent=s?t('lg_s'+s):''};
+  const setMode=m=>{root.classList.toggle('is-reg',m==='up');$('#lg-err').textContent='';$('#lg-msg').textContent='';fill();i18n()};
+  if(f.dataset.b){fill();return}
+  f.dataset.b=1;
+  // collage of real covers
+  const pool=ISSUES.filter(i=>i.cover).map(i=>i.cover);
+  if(pool.length){$('#lgc').innerHTML=[0,1,2,3].map(c=>{const it=pool.map((_,k)=>pool[(k+c*2)%pool.length]);return `<div class="lg-col c${c}">${[...it,...it].map(s=>`<div class="lg-c"><img src="${s}" alt="" decoding="async"></div>`).join('')}</div>`}).join('')}
+  const red=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!red)document.addEventListener('mousemove',e=>{const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;const a=$('#lgc');a.style.setProperty('--mx',(x*-28).toFixed(1)+'px');a.style.setProperty('--my',(y*-28).toFixed(1)+'px');card.style.setProperty('--rx',(y*-4).toFixed(2)+'deg');card.style.setProperty('--ry',(x*6).toFixed(2)+'deg')});
+  if(!CLOUD.enabled()){$('#lg-off').hidden=false;f.querySelectorAll('input,button').forEach(x=>x.disabled=true)}
+  $('#lt-in').onclick=()=>setMode('in');$('#lt-up').onclick=()=>setMode('up');
+  $('#lg-pw').oninput=strength;
+  $('#lg-eye').onclick=()=>{const show=$('#lg-pw').type==='password';['#lg-pw','#lg-pw2'].forEach(s=>$(s).type=show?'text':'password');$('#lg-eye').setAttribute('aria-pressed',show);fill()};
+  const err=m=>{$('#lg-err').textContent=m||'';$('#lg-msg').textContent='';if(m){f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')}};
+  const mail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  f.onsubmit=async e=>{e.preventDefault();err('');const em=$('#lg-email').value.trim(),pw=$('#lg-pw').value;
+    if(!mail(em))return err(t('e_email'));
+    if(pw.length<6)return err(t('e_pw'));
+    if(up()&&pw!==$('#lg-pw2').value)return err(t('lg_mis'));
+    const b=$('#lg-go');b.classList.add('is-load');b.disabled=true;
+    try{await(up()?CLOUD.signUp(em,pw):CLOUD.signIn(em,pw))}catch(x){err(authErr(x));b.classList.remove('is-load');b.disabled=false}};
+  $('#lg-g').onclick=async()=>{err('');try{await CLOUD.google()}catch(x){err(authErr(x))}};
+  $('#lg-forgot').onclick=async()=>{err('');const em=$('#lg-email').value.trim();if(!mail(em)){err(t('e_email'));$('#lg-email').focus();return}
     try{await CLOUD.reset(em)}catch(x){if(!/user-not-found/.test((x&&x.code)||''))return err(authErr(x))}
-    $('#a-ok').textContent=t('ac_reset_sent')};
+    $('#lg-msg').textContent=t('ac_reset_sent')};
+  setMode(/^(register|up|signup)$/.test(qs.get('mode')||'')?'up':'in');
  },
  privacy(){legal('privacy')},
  terms(){legal('terms')},
