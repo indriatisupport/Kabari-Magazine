@@ -117,6 +117,7 @@ const T={
   s_open:{en:"Search",id:"Cari"},ac_nav:{en:"Account",id:"Akun"},s_latest:{en:"Latest issues",id:"Edisi terbaru"},s_all:{en:"View all results in the archive →",id:"Lihat semua hasil di arsip →"},
  mv_t:{en:"Most Viewed Issues",id:"Edisi Paling Banyak Dilihat"},
  fav_add:{en:"Add to favorites",id:"Tambah ke favorit"},fav_saved:{en:"Saved to favorites",id:"Tersimpan di favorit"},fav_remove:{en:"Remove from favorites",id:"Hapus dari favorit"},
+ fav_login:{en:"Please log in to your account to add this issue to your favorites.",id:"Silakan masuk ke akun Anda untuk menambahkan edisi ini ke favorit."},
  fav_added:{en:"Saved to your favorites.",id:"Disimpan ke favorit Anda."},fav_removed:{en:"Removed from favorites.",id:"Dihapus dari favorit."},
  fav_local:{en:"Saved on this device.",id:"Disimpan di perangkat ini."},fav_local_in:{en:"Saved on this device. Sign in to keep it in your account.",id:"Disimpan di perangkat ini. Masuk untuk menyimpannya di akun Anda."},fav_err:{en:"Could not save. Please try again.",id:"Gagal menyimpan. Coba lagi."},
  ac_t:{en:"My Account",id:"Akun Saya"},ac_signin:{en:"Sign in",id:"Masuk"},ac_create:{en:"Create account",id:"Buat akun"},ac_pw:{en:"Password",id:"Kata sandi"},ac_forgot:{en:"Forgot password?",id:"Lupa kata sandi?"},ac_or:{en:"or",id:"atau"},ac_google:{en:"Continue with Google",id:"Lanjutkan dengan Google"},
@@ -191,10 +192,11 @@ function monthMatch(i,q){
 const FAVKEY='kabariFav',AUTHKEY='kabariAuth';
 let favs=[];try{favs=JSON.parse(localStorage.getItem(FAVKEY)||'[]');if(!Array.isArray(favs))favs=[]}catch(e){favs=[]}
 let USER=undefined,acMode='in',acEmail='';
-const isFav=id=>favs.includes(id);
+const PENDKEY='kabariPendingFav';
+const isFav=id=>!!USER&&favs.includes(id);
 const saveLocal=()=>{try{localStorage.setItem(FAVKEY,JSON.stringify(favs))}catch(e){}};
 const HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.7s-7.2-4.4-9.4-8.9C1 8.6 2.8 5 6.3 5c2 0 3.4 1 4.4 2.3h2.6C14.3 6 15.7 5 17.7 5c3.5 0 5.3 3.6 3.7 6.8-2.2 4.5-9.4 8.9-9.4 8.9z"/></svg>';
-const heart=id=>USER?`<button type="button" class="fav" data-fav="${id}" aria-pressed="${isFav(id)}">${HEART}</button>`:'';
+const heart=id=>`<button type="button" class="fav" data-fav="${id}" aria-pressed="${isFav(id)}">${HEART}</button>`;
 function favUI(){$$('[data-fav]').forEach(b=>{const on=isFav(b.dataset.fav);b.setAttribute('aria-pressed',on);const l=t(on?'fav_remove':'fav_add');b.setAttribute('aria-label',l);b.title=l})}
 let toastT;
 function toast(msg,href,label){let el=$('#toast');if(!el){el=document.createElement('div');el.id='toast';el.setAttribute('role','status');el.setAttribute('aria-live','polite');document.body.appendChild(el)}
@@ -239,18 +241,20 @@ function initAuth(){
   let want=page==='account'||page==='login';try{want=want||localStorage.getItem(AUTHKEY)==='1'}catch(e){}
   if(!want){USER=null;return}
   CLOUD.onAuth(async u=>{
-    if(u){try{const remote=await CLOUD.getFavs(u.uid);const merged=[...new Set([...remote,...favs])];favs=merged;saveLocal();if(merged.length!==remote.length)await CLOUD.setFavs(u.uid,merged)}catch(e){}
+    if(u){try{const remote=await CLOUD.getFavs(u.uid);let pend=null;if(page!=='login'){try{pend=localStorage.getItem(PENDKEY);localStorage.removeItem(PENDKEY)}catch(e){}}
+      const merged=[...new Set([...remote,...favs,...(pend&&byId(pend)?[pend]:[])])];favs=merged;saveLocal();if(pend&&byId(pend)&&!remote.includes(pend))setTimeout(()=>toast(t('fav_added')),400);if(merged.length!==remote.length)await CLOUD.setFavs(u.uid,merged)}catch(e){}
       try{localStorage.setItem(AUTHKEY,'1')}catch(e){}USER=u}
     else{USER=null;try{localStorage.removeItem(AUTHKEY)}catch(e){}}
     acctIcon();favUI();if(page!=='contact')render()
   }).catch(()=>{USER=null;if(page==='account'||page==='login')render()});
 }
 async function toggleFav(id){
+  if(!USER){ /* heart is always visible, but saving needs an account: remember the tap and ask to sign in */
+    try{localStorage.setItem(PENDKEY,id)}catch(e){}
+    const here=(location.pathname.split('/').pop()||'index.html')+location.search;
+    toast(t('fav_login'),'login.html?next='+encodeURIComponent(here),t('ac_signin'));return}
   const on=isFav(id);favs=on?favs.filter(x=>x!==id):[...favs,id];saveLocal();favUI();if(page==='account')render();
-  if(USER){try{await CLOUD.setFavs(USER.uid,favs);toast(t(on?'fav_removed':'fav_added'))}catch(e){toast(t('fav_err'))}}
-  else if(on)toast(t('fav_removed'));
-  else if(CLOUD.enabled())toast(t('fav_local_in'),'account.html',t('ac_signin'));
-  else toast(t('fav_local'));
+  try{await CLOUD.setFavs(USER.uid,favs);toast(t(on?'fav_removed':'fav_added'))}catch(e){toast(t('fav_err'))}
 }
 /* Search overlay (same matching rules as the Archive page) */
 
