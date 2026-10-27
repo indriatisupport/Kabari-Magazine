@@ -28,8 +28,8 @@ const aiOn = () => typeof CONFIG !== 'undefined' && !!CONFIG.chatEndpoint;
 /* ---------- text normalising and language detection ---------- */
 const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   .replace(/[^a-z0-9\s\/\-.@']/g, ' ').replace(/\s+/g, ' ').trim();
-const ID_W = /\b(edisi|bulan|tahun|terbaru|terkini|berlangganan|langganan|hubungi|kontak|alamat|lokasi|tentang|bagaimana|dimana|siapa|bisa|tolong|halo|hai|terima kasih|makasih|arsip|majalah|unduh|baca|pertama|sebelumnya|berapa|apa|ada|dan|yang|untuk|mei|agustus|januari|februari|maret|juni|juli|oktober|desember|gratis|aplikasi)\b/g;
-const EN_W = /\b(issue|issues|edition|latest|newest|subscribe|contact|where|about|how|what|who|can|please|hello|hi|thanks|the|is|are|do|you|your|download|read|free|app|many)\b/g;
+const ID_W = /\b(edisi|bulan|tahun|terbaru|terkini|berlangganan|langganan|hubungi|kontak|alamat|lokasi|tentang|bagaimana|dimana|siapa|bisa|tolong|halo|hai|terima kasih|makasih|arsip|majalah|unduh|baca|pertama|sebelumnya|berapa|apa|ada|dan|yang|untuk|mei|agustus|januari|februari|maret|juni|juli|oktober|desember|gratis)\b/g;
+const EN_W = /\b(issue|issues|edition|latest|newest|subscribe|contact|where|about|how|what|who|can|please|hello|hi|thanks|the|is|are|do|you|your|download|read|free|many)\b/g;
 function pick(q) {
   const n = norm(q), a = (n.match(ID_W) || []).length, b = (n.match(EN_W) || []).length;
   return a > b ? 'id' : b > a ? 'en' : SL();
@@ -134,15 +134,6 @@ const hTopics = () => [
     'Kabari meliput ' + CATS.map(c => tt('c_' + c) + ' (' + tt('tp_' + c).replace(/\.$/, '').toLowerCase() + ')').join('; ') + '.'),
   P('Each monthly issue mixes these topics. You can browse issues by month and year.', 'Setiap edisi bulanan memuat campuran topik ini. Anda dapat menelusuri edisi per bulan dan tahun.'),
   links([{ l: { en: 'Browse the archive', id: 'Jelajahi arsip' }, href: 'archive.html' }])];
-const hApp = () => {
-  const a = CONFIG.apps || {}, l = [];
-  if (a.appStore) l.push({ l: { en: 'App Store', id: 'App Store' }, href: a.appStore, ext: 1 });
-  if (a.googlePlay) l.push({ l: { en: 'Google Play', id: 'Google Play' }, href: a.googlePlay, ext: 1 });
-  const out = [P(tt('app_d'), tt('app_d'))];
-  if (l.length) out.push(links(l));
-  else out.push(P('The download links are being added to this site soon. Meanwhile you can read the available issues online.', 'Tautan unduhan akan segera ditambahkan di situs ini. Sementara itu, Anda dapat membaca edisi yang tersedia secara online.'), chips([{ l: { en: 'Latest issue', id: 'Edisi terbaru' }, run: hLatest }]));
-  return out;
-};
 const hSocial = n => {
   const s = CONFIG.social || {}, names = { facebook: 'Facebook', instagram: 'Instagram', pinterest: 'Pinterest', x: 'X', youtube: 'YouTube' };
   let keys = Object.keys(s).filter(k => s[k]);
@@ -169,8 +160,8 @@ const hPrivacy = () => [aiOn()
   links([{ l: { en: 'Privacy Policy', id: 'Kebijakan Privasi' }, href: 'privacy.html' }])];
 const hTerms = () => [P('Our Terms of Service cover use of the site, copyright and links to other sites.', 'Ketentuan Layanan kami mencakup penggunaan situs, hak cipta, dan tautan ke situs lain.'), links([{ l: { en: 'Terms of Service', id: 'Ketentuan Layanan' }, href: 'terms.html' }])];
 const hHelp = () => [
-  P('I can find any issue by month and year (for example “Sep 2012” or “Agustus 2025”), list a whole year, open the latest issue, and answer questions about Kabari, subscribing, the app and contacting the team.',
-    'Saya dapat menemukan edisi mana pun berdasarkan bulan dan tahun (misalnya “Sep 2012” atau “Agustus 2025”), menampilkan satu tahun penuh, membuka edisi terbaru, dan menjawab pertanyaan tentang Kabari, berlangganan, aplikasi, dan cara menghubungi tim.'),
+  P('I can find any issue by month and year (for example “Sep 2012” or “Agustus 2025”), list a whole year, open the latest issue, and answer questions about Kabari, subscribing and contacting the team.',
+    'Saya dapat menemukan edisi mana pun berdasarkan bulan dan tahun (misalnya “Sep 2012” atau “Agustus 2025”), menampilkan satu tahun penuh, membuka edisi terbaru, dan menjawab pertanyaan tentang Kabari, berlangganan, dan cara menghubungi tim.'),
   starters()];
 const starters = () => chips([
   { l: { en: 'Latest issue', id: 'Edisi terbaru' }, run: hLatest },
@@ -225,7 +216,6 @@ const RULES = [
   [/\b(latest|newest|most recent|current issue|new issue|terbaru|terkini|edisi baru)\b/, hLatest, 'issue'],
   [/\b(previous issue|last issue|prior issue|sebelumnya)\b/, hPrev, 'issue'],
   [/\b(first issue|oldest|earliest|edisi pertama|tertua|terlama)\b/, hFirst, 'issue'],
-  [/\b(apps?|application|aplikasi|ios|android|iphone|google play|play store|app store)\b/, hApp, 'info'],
   [/\b(free|price|prices|cost|paid|gratis|harga|bayar|berbayar|print copy|hard ?copy|cetak)\b/, hPrice, 'info'],
   [/\b(read|download|pdf|unduh|baca|access|akses)\b/, hRead, 'info'],
   [/\b(contact|e-?mail|reach (you|out)|hubungi|kontak|surel|phone|telepon|call you|talk to|support|customer)\b/, hContact, 'info'],
@@ -392,11 +382,9 @@ function facts() {
   on.forEach(i => { (by[i.y] = by[i.y] || []).push(i.m); });
   const onl = Object.keys(by).sort().map(y => y + ': ' + MONTHS_EN[Math.min(...by[y]) - 1] + ' to ' + MONTHS_EN[Math.max(...by[y]) - 1]).join('; ') || 'none yet';
   const s = CONFIG.social || {}, soc = Object.keys(s).filter(k => s[k]).map(k => k + ' ' + s[k]).join(', ');
-  const a = CONFIG.apps || {};
   return [
     'About: ' + T.ab1.en + ' ' + T.ab2.en,
     'History: ' + T.tl07.en + ' ' + T.tl12.en,
-    'Mobile app: ' + T.ab4.en + ' ' + ((a.appStore || a.googlePlay) ? 'Links: ' + [a.appStore, a.googlePlay].filter(Boolean).join(' ') : 'Store links are not on the website yet.'),
     'Latest issue: ' + MONTHS_EN[L0.m - 1] + ' ' + L0.y + '.',
     'Archive: ' + ISSUES.length + ' monthly issues from ' + CONFIG.startYear + ' to ' + MONTHS_EN[L0.m - 1] + ' ' + L0.y + '. Issues with an online copy (read online or PDF) on this site: ' + onl + '. Other issues are listed but not uploaded yet; send people to email the team.',
     'Topics: ' + CATS.map(c => T['c_' + c].en + ' (' + T['tp_' + c].en + ')').join(' '),

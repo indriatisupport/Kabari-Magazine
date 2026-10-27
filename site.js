@@ -27,7 +27,6 @@ const T={
  st_since:{en:'Publishing since',id:'Terbit sejak'},
  st_issues:{en:'Issues in the archive',id:'Edisi dalam arsip'},
  st_topics:{en:'Topics covered',id:'Topik liputan'},
- st_langs:{en:"Mobile app",id:"Aplikasi seluler"},
  p_t:{en:'What we stand for',id:'Apa yang kami perjuangkan'},
  p1:{en:'Connect',id:'Menghubungkan'},
  p1d:{en:'Linking the homeland with the Indonesian diaspora across the United States.',id:'Menjembatani tanah air dengan diaspora Indonesia di seluruh Amerika Serikat.'},
@@ -67,11 +66,6 @@ const T={
  ay_go:{en:'Open',id:'Buka'},
  cta_t:{en:'Explore every issue',id:'Jelajahi setiap edisi'},
  cta_d:{en:'Browse the full archive or get in touch with the Kabari team.',id:'Telusuri seluruh arsip atau hubungi tim Kabari.'},
- ab4:{en:"As the digital world grew, Kabari became the first Indonesian magazine in the USA to create its own mobile application, so readers can follow every issue on iOS and Android devices.",id:"Seiring berkembangnya dunia digital, Kabari menjadi majalah Indonesia pertama di Amerika Serikat yang membuat aplikasi seluler sendiri, sehingga pembaca dapat mengikuti setiap edisi di perangkat iOS dan Android."},
- app_t:{en:"Read Kabari on your phone",id:"Baca Kabari di ponsel Anda"},
- app_d:{en:"Kabari is the first Indonesian magazine in the USA with its own mobile app, available for iOS and Android on the App Store and Google Play.",id:"Kabari adalah majalah Indonesia pertama di Amerika Serikat dengan aplikasi seluler sendiri, tersedia untuk iOS dan Android di App Store dan Google Play."},
- app_ios:{en:"Download on the App Store",id:"Unduh di App Store"},
- app_and:{en:"Get it on Google Play",id:"Dapatkan di Google Play"},
  loc:{en:"Location",id:"Lokasi"},
  web:{en:"Website",id:"Situs web"},
  sub_t:{en:"Never miss an issue",id:"Jangan lewatkan setiap edisi"},
@@ -175,12 +169,23 @@ const ICO={
  x:'<svg viewBox="0 0 24 24" '+S1+' aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>'
 };
 const socBtns=()=>Object.keys(CONFIG.social||{}).filter(k=>CONFIG.social[k]).map(k=>`<a class="si" href="${CONFIG.social[k]}" target="_blank" rel="noopener" aria-label="${SOC_NAMES[k]}">${ICO[k]||SOC_NAMES[k]}</a>`).join('');
-function appBlock(){const e=$('#app');if(!e)return;const a=CONFIG.apps||{};e.innerHTML=`<div class="appc"><div><h2>${t('app_t')}</h2><p>${t('app_d')}</p></div><div class="row">${a.appStore?`<a class="btn solid" href="${a.appStore}" target="_blank" rel="noopener">${t('app_ios')}</a>`:''}${a.googlePlay?`<a class="btn line" href="${a.googlePlay}" target="_blank" rel="noopener">${t('app_and')}</a>`:''}</div></div>`}
 const subHref=()=>(CONFIG.signup&&CONFIG.signup.inline)?'contact.html#subscribe':(CONFIG.signupUrl||`mailto:${CONFIG.email}?subject=Subscribe`);
 function joinBlock(){
   const s=CONFIG.social,names={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<a class="btn line" href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
   const fb=$('#follow');if(!fb.dataset.b){fb.dataset.b=1;fb.innerHTML=`<h2 data-i="fol_t"></h2><p data-i="fol_d"></p><div class="row">${soc}</div>`}
+}
+/* "Search by Month": numbers 1-12 / 01-12 = month, 4 digits = year, month names (EN/ID) match by their start */
+function monthMatch(i,q){
+  const toks=q.toLowerCase().split(/[\s\/\-.,]+/).filter(Boolean);
+  return toks.every(w=>{
+    if(/^\d+$/.test(w)){
+      const n=+w;
+      if(w.length<=2&&n>=1&&n<=12)return i.m===n;
+      return String(i.y).startsWith(w);
+    }
+    return MONTHS_EN[i.m-1].toLowerCase().startsWith(w)||MONTHS_ID[i.m-1].toLowerCase().startsWith(w);
+  });
 }
 /* ===== favorites, accounts (Firebase), toast, search ===== */
 const FAVKEY='kabariFav',AUTHKEY='kabariAuth';
@@ -248,23 +253,7 @@ async function toggleFav(id){
   else toast(t('fav_local'));
 }
 /* Search overlay (same matching rules as the Archive page) */
-const hayOf=i=>`${MONTHS_EN[i.m-1]} ${MONTHS_ID[i.m-1]} ${i.y} ${i.cat} ${T['c_'+i.cat].id} ${i.m<10?'0'+i.m:i.m}/${i.y}`.toLowerCase();
-const mini=i=>i.cover?`<img src="${i.cover}" alt="" width="60" height="80" loading="lazy">`:`<span class="mgn" style="background:${CAT_COLOR[i.cat]}">${mName(i.m).slice(0,3)}<br>${i.y}</span>`;
-function searchRender(){
-  const q=$('#sq').value.trim().toLowerCase(),words=q.split(/\s+/).filter(Boolean);
-  const all=words.length?ISSUES.filter(i=>words.every(w=>hayOf(i).includes(w))):ISSUES.slice(0,6),list=all.slice(0,8);
-  $('#sc').textContent=words.length?t(all.length===1?'count1':'count',{n:all.length}):t('s_latest');
-  $('#sr').innerHTML=list.length?list.map(i=>`<li><button type="button" class="sr-i" data-sid="${i.id}"><span class="sr-th">${mini(i)}</span><span class="sr-t"><b>${title(i)}</b><small>${t('c_'+i.cat)}</small></span>${(i.read||i.pdf)?`<em>${t('read')}</em>`:''}</button></li>`).join(''):`<li class="sr-empty">${t('none')}</li>`;
-  const a=$('#sall');a.hidden=!words.length||!all.length;a.href='archive.html?q='+encodeURIComponent($('#sq').value.trim());
-}
-function bindSearch(){
-  const d=$('#sdlg');
-  $('#hs').onclick=()=>{$('#sq').value='';searchRender();if(!d.open)d.showModal();$('#sq').focus()};
-  $('#sq').oninput=searchRender;
-  $('.sd-x',d).onclick=()=>d.close();d.addEventListener('click',e=>{if(e.target===d)d.close()});
-  $('#sf').onsubmit=e=>{e.preventDefault();const v=$('#sq').value.trim();if(v)location.href='archive.html?q='+encodeURIComponent(v)};
-  $('#sr').onclick=e=>{const b=e.target.closest('[data-sid]');if(b){d.close();openModal(byId(b.dataset.sid))}};
-}
+
 function shell(){
   if(page==='login'){
     $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><div class="lg-bar"><a class="lg-logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-logo-masthead-dark.svg" alt="Kabari Magazine"></a><div class="lg-bar-r"><a class="lg-back" href="index.html" data-i="lg_back"></a><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></div></div>`;
@@ -272,12 +261,10 @@ function shell(){
   const s=CONFIG.social,names={facebook:'Facebook',instagram:'Instagram',pinterest:'Pinterest',x:'X',youtube:'YouTube'};
   const socials=Object.keys(s).filter(k=>s[k]).map(k=>`<a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a>`).join('');
   const soc=Object.keys(s).filter(k=>s[k]).map(k=>`<li><a href="${s[k]}" target="_blank" rel="noopener">${names[k]}</a></li>`).join('');
-  $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="hbtns"><button type="button" class="hb" id="hs" data-al="s_open"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button><a class="hb hb-acc" href="login.html" data-al="ac_nav"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.6 3.8-5.6 7.5-5.6s6.7 2 7.5 5.6"/></svg></a></div><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
+  $('#hdr').innerHTML=`<a class="skip" href="#main" data-i="skip"></a><header><a class="logo" href="index.html" aria-label="Kabari Magazine home"><img src="logo/kabari-header.svg" alt="Kabari Magazine"></a><button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><nav id="nav">${nav.map(([p,k])=>`<a href="${p}.html" data-i="${k}"${p===page?' aria-current="page"':''}></a>`).join('')}</nav><div class="hbtns"><a class="hb hb-acc" href="login.html" data-al="ac_nav"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.6 3.8-5.6 7.5-5.6s6.7 2 7.5 5.6"/></svg></a></div><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="id">ID</button></div></header>`;
   $('#ftr').innerHTML=`<footer class="kf"><div class="kf-in"><div class="kf-g"><div class="kf-b"><img class="flogo" src="logo/kabari-header.svg" alt="Kabari Magazine"><p data-i="f_tag"></p></div><div><h4 data-i="fc_acc"></h4><ul><li><a href="login.html" data-i="ac_signin"></a></li><li><a href="login.html?mode=register" data-i="ac_create"></a></li><li><a href="account.html" data-i="ac_favs"></a></li></ul></div><div><h4 data-i="fc_store"></h4><ul><li><a href="latest.html" data-i="nav_latest"></a></li><li><a href="archive.html" data-i="fl_all"></a></li><li><a href="contact.html?topic=backissue" data-i="ct_i_back"></a></li><li><a href="${subHref()}" data-i="sub_btn"></a></li></ul></div><div><h4 data-i="fc_about"></h4><ul><li><a href="about.html" data-i="fl_about"></a></li><li><a href="contact.html" data-i="nav_contact"></a></li><li><a href="contact.html?topic=advertising" data-i="fl_advp"></a></li><li><a href="contact.html?topic=story" data-i="fl_story"></a></li></ul></div>${socBtns()?`<div><h4 data-i="fc_soc"></h4><div class="sis">${socBtns()}</div></div>`:''}</div><div class="kf-bot"><span>© ${new Date().getFullYear()} Kabari Magazine. <span data-i="f_rights"></span></span><span><a href="privacy.html" data-i="f_priv"></a> &nbsp;·&nbsp; <a href="terms.html" data-i="f_terms"></a></span></div></div></footer>
-  <dialog id="sdlg" class="sd"><form id="sf" class="sd-top" role="search"><input id="sq" type="search" autocomplete="off" data-ph="search" data-al="search"><button type="button" class="sd-x" data-al="close">×</button></form><p id="sc" class="sd-c" aria-live="polite"></p><ul id="sr" class="sd-list"></ul><a id="sall" class="sd-all" data-i="s_all" hidden></a></dialog>
   <dialog id="dlg"><button class="x" aria-label="Close">×</button><div class="mg"><div class="mc"></div><div><span class="tag"></span><h2 id="mt"></h2><p class="md"></p><div class="acts"></div></div></div></dialog>`;
   {const j=document.createElement('script');j.type='application/ld+json';j.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'Kabari Magazine',url:location.origin+'/',foundingDate:'2007',address:{'@type':'PostalAddress',addressLocality:'San Francisco',addressCountry:'US'},email:CONFIG.email,sameAs:Object.values(CONFIG.social).filter(Boolean)});document.head.appendChild(j)}
-  bindSearch();
   document.addEventListener('click',e=>{const f=e.target.closest('[data-fav]');if(f){e.preventDefault();toggleFav(f.dataset.fav)}});
   $('.burger').onclick=e=>{const o=$('#nav').classList.toggle('open');e.target.setAttribute('aria-expanded',o)};
   $$('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.l));
@@ -292,7 +279,7 @@ function i18n(){
   $$('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===lang));
   $$('[data-al]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.al)));
   const d=$('#dlg');if(d&&d.open)openModal(byId(d.dataset.id));
-  favUI();acctIcon();if($('#sdlg')&&$('#sdlg').open)searchRender();
+  favUI();acctIcon();
 }
 function setLang(l){lang=l;try{localStorage.setItem('kabariLang',l)}catch(e){}i18n();render()}
 const L=ISSUES[0];
@@ -302,7 +289,6 @@ const pages={
   $('#fan').innerHTML=ISSUES.slice(0,3).reverse().map((i,n)=>`<a class="fc f${n}" href="latest.html" aria-label="${title(i)}">${cover(i,1)}</a>`).join('');
   $('#recent').innerHTML=ISSUES.slice(0,4).map(card).join('');
   {let pop=(CONFIG.popular||[]).map(byId).filter(Boolean);if(!pop.length)pop=ISSUES.filter(i=>i.cover).slice(4,8);$('#mv').innerHTML=pop.slice(0,4).map(card).join('')}
-  appBlock();
   $('#topics').innerHTML=CATS.map(c=>`<a class="topic" style="--c:${CAT_COLOR[c]}" href="archive.html?cat=${c}">${t('c_'+c)}</a>`).join('');
  },
  latest(){
@@ -319,9 +305,7 @@ const pages={
   $('#years').innerHTML=['all',...shown].map(y=>`<button type="button" data-y="${y}" aria-pressed="${S.y===y}">${y==='all'?t('all'):y}</button>`).join('');
   const mb=$('#ymore');mb.hidden=yrs.length<=SHOW;mb.textContent=t(S.more?'y_less':'y_more');mb.setAttribute('aria-expanded',S.more);
   $('#cats').innerHTML=['all',...CATS].map(c=>`<button type="button" data-c="${c}" aria-pressed="${S.c===c}">${c==='all'?t('all'):t('c_'+c)}</button>`).join('');
-  const words=S.q.toLowerCase().split(/\s+/).filter(Boolean);
-  const hay=i=>`${MONTHS_EN[i.m-1]} ${MONTHS_ID[i.m-1]} ${i.y} ${i.cat} ${T['c_'+i.cat].id} ${i.m<10?'0'+i.m:i.m}/${i.y}`.toLowerCase();
-  const list=ISSUES.filter(i=>(S.c==='all'||i.cat===S.c)&&(S.y==='all'||String(i.y)===S.y)&&words.every(w=>hay(i).includes(w)));
+  const list=ISSUES.filter(i=>(S.c==='all'||i.cat===S.c)&&(S.y==='all'||String(i.y)===S.y)&&monthMatch(i,S.q));
   $('#count').textContent=t(list.length===1?'count1':'count',{n:list.length});
   $('#grid').innerHTML=list.length?list.map(card).join(''):`<p class="empty">${t('none')}</p>`;
   $('#years').onclick=e=>{const b=e.target.closest('[data-y]');if(b){S.y=b.dataset.y;render();$('#years [aria-pressed=true]').focus({preventScroll:true})}};
@@ -330,9 +314,9 @@ const pages={
   const qi=$('#q');if(qi.value!==S.q)qi.value=S.q;qi.oninput=e=>{S.q=e.target.value;render()};
  },
  about(){
-  appBlock();const yrs=[];for(let y=L.y;y>=CONFIG.startYear;y--)yrs.push(y);
+  const yrs=[];for(let y=L.y;y>=CONFIG.startYear;y--)yrs.push(y);
   const n=ISSUES.length,first=yrs[yrs.length-1];
-  $('#stats').innerHTML=[['2007',t('st_since')],[n,t('st_issues')],[CATS.length,t('st_topics')],['iOS · Android',t('st_langs')]].map(([v,k])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
+  $('#stats').innerHTML=[['2007',t('st_since')],[n,t('st_issues')],[CATS.length,t('st_topics')]].map(([v,k])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
   $('#tl').innerHTML=[['2007',t('tl07')],[first,t('tl12')],[L.y,t('tlnow',{m:mName(L.m),y:L.y,n})]].map(([y,x])=>`<li><b>${y}</b><p>${x}</p></li>`).join('');
   const fa=[['fa_k1','fa_v1'],['fa_k2','fa_v2'],['fa_k3','fa_v3'],['fa_k4','fa_v4'],['fa_k5','fa_v5'],['fa_k6','fa_v6']];
   $('#facts').innerHTML=fa.map(([k,v])=>`<tr><th scope="row">${t(k)}</th><td>${t(v,{a:first,b:t('now')})}</td></tr>`).join('')+`<tr><th scope="row">${t('loc')}</th><td>${CONFIG.location}</td></tr><tr><th scope="row">${t('nav_contact')}</th><td><a href="mailto:${CONFIG.email}">${CONFIG.email}</a></td></tr>`;

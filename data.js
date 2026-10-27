@@ -17,7 +17,6 @@ const CONFIG={
 <!-- End Constant Contact Inline Form Code -->`                     // 2) Inline Code (shows the form on the home page)
   },
   signupUrl:'',                   // Constant Contact sign-up form link (see instructions). Empty = Subscribe opens an email to info@
-  apps:{appStore:'',googlePlay:''},  // paste the App Store / Google Play URLs of the Kabari app
   social:{facebook:'https://facebook.com/ikutkabari',instagram:'https://instagram.com/ikutkabari',pinterest:'https://pinterest.com/kabari',x:'',youtube:''},
 // Firebase setup
 firebase: {
