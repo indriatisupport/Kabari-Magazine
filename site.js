@@ -14,6 +14,11 @@ const T={
  a_title:{en:'Magazine archive',id:'Arsip majalah'},all:{en:'All',id:'Semua'},yr:{en:'Year',id:'Tahun'},cat:{en:'Topic',id:'Topik'},
  search:{en:'Search by month or year',id:'Cari berdasarkan bulan atau tahun'},none:{en:'No issues match. Try another year, topic or search.',id:'Tidak ada edisi yang cocok. Coba tahun, topik, atau kata kunci lain.'},
  count:{en:'{n} issues',id:'{n} edisi'},
+ a_sub:{en:'Every monthly issue of Kabari Magazine in one place. Use the filters to find the one you want.',id:'Setiap edisi bulanan Majalah Kabari di satu tempat. Gunakan filter untuk menemukan edisi yang Anda cari.'},
+ fm_t:{en:'Search by Month',id:'Cari berdasarkan Bulan'},fm_d:{en:'Type a month or a year, like “March” or “2024”.',id:'Ketik bulan atau tahun, seperti “Maret” atau “2024”.'},q_ph:{en:'Search issues',id:'Cari edisi'},
+ ft_t:{en:'Search by Topic',id:'Cari berdasarkan Topik'},ft_d:{en:'Choose the kind of stories you want to read.',id:'Pilih jenis kisah yang ingin Anda baca.'},
+ fy_t:{en:'Search by Year',id:'Cari berdasarkan Tahun'},fy_d:{en:'Show the issues from one year.',id:'Tampilkan edisi dari satu tahun.'},
+ y_more:{en:'See more',id:'Lihat lainnya'},y_less:{en:'See less',id:'Lihat lebih sedikit'},
  ab_t:{en:'About Kabari',id:'Tentang Kabari'},
  ab1:{en:"Kabari Magazine is the largest Indonesian news and multimedia portal in the USA. First published in 2007, it has kept growing ever since, connecting Indonesians across America with news, culture and community.",id:"Majalah Kabari adalah portal berita dan multimedia Indonesia terbesar di Amerika Serikat. Pertama terbit pada 2007, Kabari terus berkembang dan menghubungkan masyarakat Indonesia di seluruh Amerika dengan berita, budaya, dan komunitas."},
  ab2:{en:'Our mission is to connect, inform and inspire, from in-depth reporting on immigration and business to features on food and culture that link the homeland with the diaspora.',id:'Misi kami adalah menghubungkan, menginformasikan, dan menginspirasi, dari liputan mendalam tentang imigrasi dan bisnis hingga kisah kuliner dan budaya yang menjembatani tanah air dan diaspora.'},
@@ -123,7 +128,7 @@ const T={
  ac_t:{en:"My Account",id:"Akun Saya"},ac_signin:{en:"Sign in",id:"Masuk"},ac_create:{en:"Create account",id:"Buat akun"},ac_pw:{en:"Password",id:"Kata sandi"},ac_forgot:{en:"Forgot password?",id:"Lupa kata sandi?"},ac_or:{en:"or",id:"atau"},ac_google:{en:"Continue with Google",id:"Lanjutkan dengan Google"},
  ac_out:{en:"Sign out",id:"Keluar"},ac_as:{en:"Signed in as",id:"Masuk sebagai"},ac_favs:{en:"My favorites",id:"Favorit saya"},
  ac_empty:{en:"No favorites yet. Tap the heart on any issue to save it here.",id:"Belum ada favorit. Ketuk ikon hati pada edisi mana pun untuk menyimpannya di sini."},
- ac_off:{en:"Account sign-in is coming soon. For now, your favorites are saved on this device.",id:"Masuk akun segera hadir. Untuk saat ini, favorit Anda disimpan di perangkat ini."},
+ ac_off:{en:"Account sign-in is coming soon.",id:"Masuk akun segera hadir."},
  ac_load:{en:"Loading...",id:"Memuat..."},ac_agree:{en:"By continuing you agree to our",id:"Dengan melanjutkan, Anda menyetujui"},
  ac_reset_sent:{en:"If an account exists for that email, a reset link has been sent.",id:"Jika ada akun dengan email tersebut, tautan pengaturan ulang telah dikirim."},
  e_pw:{en:"Password must be at least 6 characters.",id:"Kata sandi minimal 6 karakter."},a_bad:{en:"Email or password is incorrect.",id:"Email atau kata sandi salah."},
@@ -184,10 +189,8 @@ let USER=undefined,acMode='in',acEmail='';
 const isFav=id=>favs.includes(id);
 const saveLocal=()=>{try{localStorage.setItem(FAVKEY,JSON.stringify(favs))}catch(e){}};
 const HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.7s-7.2-4.4-9.4-8.9C1 8.6 2.8 5 6.3 5c2 0 3.4 1 4.4 2.3h2.6C14.3 6 15.7 5 17.7 5c3.5 0 5.3 3.6 3.7 6.8-2.2 4.5-9.4 8.9-9.4 8.9z"/></svg>';
-const heart=id=>`<button type="button" class="fav" data-fav="${id}" aria-pressed="${isFav(id)}">${HEART}</button>`;
-const favT=id=>`<button type="button" class="btn line favt" data-fav="${id}" aria-pressed="${isFav(id)}">${HEART}<span></span></button>`;
-function favUI(){$$('[data-fav]').forEach(b=>{const on=isFav(b.dataset.fav);b.setAttribute('aria-pressed',on);
-  if(b.classList.contains('favt')){$('span',b).textContent=t(on?'fav_saved':'fav_add')}else{const l=t(on?'fav_remove':'fav_add');b.setAttribute('aria-label',l);b.title=l}})}
+const heart=id=>USER?`<button type="button" class="fav" data-fav="${id}" aria-pressed="${isFav(id)}">${HEART}</button>`:'';
+function favUI(){$$('[data-fav]').forEach(b=>{const on=isFav(b.dataset.fav);b.setAttribute('aria-pressed',on);const l=t(on?'fav_remove':'fav_add');b.setAttribute('aria-label',l);b.title=l})}
 let toastT;
 function toast(msg,href,label){let el=$('#toast');if(!el){el=document.createElement('div');el.id='toast';el.setAttribute('role','status');el.setAttribute('aria-live','polite');document.body.appendChild(el)}
   el.textContent=msg;if(href){const a=document.createElement('a');a.href=href;a.textContent=label;el.append(' ',a)}
@@ -234,7 +237,7 @@ function initAuth(){
     if(u){try{const remote=await CLOUD.getFavs(u.uid);const merged=[...new Set([...remote,...favs])];favs=merged;saveLocal();if(merged.length!==remote.length)await CLOUD.setFavs(u.uid,merged)}catch(e){}
       try{localStorage.setItem(AUTHKEY,'1')}catch(e){}USER=u}
     else{USER=null;try{localStorage.removeItem(AUTHKEY)}catch(e){}}
-    acctIcon();favUI();if(page==='account'||page==='login')render()
+    acctIcon();favUI();if(page!=='contact')render()
   }).catch(()=>{USER=null;if(page==='account'||page==='login')render()});
 }
 async function toggleFav(id){
@@ -281,7 +284,7 @@ function shell(){
   const d=$('#dlg');$('.x',d).onclick=()=>d.close();d.addEventListener('click',e=>{if(e.target===d)d.close()});
   document.addEventListener('click',e=>{const c=e.target.closest('.card');if(c)openModal(byId(c.dataset.id))});
 }
-function openModal(i){const d=$('#dlg');$('.mc',d).innerHTML=cover(i);const g=$('.tag',d);g.textContent=t('c_'+i.cat);g.style.setProperty('--c',CAT_COLOR[i.cat]);$('#mt',d).textContent=title(i);$('.md',d).textContent=desc(i);$('.acts',d).innerHTML=btn(i.read,'read','solid')+btn(i.pdf,'pdf','line')+favT(i.id);d.dataset.id=i.id;favUI();if(!d.open)d.showModal()}
+function openModal(i){const d=$('#dlg');$('.mc',d).innerHTML=cover(i);const g=$('.tag',d);g.textContent=t('c_'+i.cat);g.style.setProperty('--c',CAT_COLOR[i.cat]);$('#mt',d).textContent=title(i);$('.md',d).textContent=desc(i);$('.acts',d).innerHTML=btn(i.read,'read','solid')+btn(i.pdf,'pdf','line');d.dataset.id=i.id;favUI();if(!d.open)d.showModal()}
 function i18n(){
   document.documentElement.lang=lang;
   $$('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
@@ -305,26 +308,26 @@ const pages={
  latest(){
   $('#lc').innerHTML=cover(L);$('#lt').textContent=title(L);$('#ld').textContent=desc(L);
   const g=$('#lg');g.textContent=t('c_'+L.cat);g.style.setProperty('--c',CAT_COLOR[L.cat]);
-  $('#la').innerHTML=btn(L.read,'read','solid')+btn(L.pdf,'pdf','line')+favT(L.id);
+  $('#la').innerHTML=btn(L.read,'read','solid')+btn(L.pdf,'pdf','line');
  },
  archive(){
-  const p=new URLSearchParams(location.search),S=pages.S||(pages.S={y:p.get('year')||'all',c:CATS.includes(p.get('cat'))?p.get('cat'):'all',q:p.get('q')||''});
-  const yrs=['all'];for(let y=L.y;y>=CONFIG.startYear;y--)yrs.push(String(y));
-  $('#years').innerHTML=yrs.map(y=>`<button data-y="${y}" aria-pressed="${S.y===y}">${y==='all'?t('all'):y}</button>`).join('');
-  {const a=$('#years [aria-pressed=true]'),y=$('#years');if(a)y.scrollLeft=a.offsetLeft-y.clientWidth/2+a.offsetWidth/2}
-  const ys=$('#yslide');if(!ys.dataset.b){ys.dataset.b=1;
-   ys.innerHTML=`<button type="button" class="yall"></button><div class="yr"><input type="range" id="yr" min="${CONFIG.startYear}" max="${L.y}" step="1" aria-label="Year"><output id="yo" for="yr"></output></div>`;
-   $('#yr').oninput=e=>{S.y=e.target.value;render()};$('.yall',ys).onclick=()=>{S.y='all';render()}}
-  {const yr=$('#yr'),yo=$('#yo'),ya=$('.yall',ys);ya.textContent=t('all');ya.setAttribute('aria-pressed',S.y==='all');if(S.y!=='all')yr.value=S.y;yo.textContent=S.y==='all'?t('all'):S.y;yr.classList.toggle('dim',S.y==='all')}
-  $('#cats').innerHTML=['all',...CATS].map(c=>`<button data-c="${c}" aria-pressed="${S.c===c}">${c==='all'?t('all'):t('c_'+c)}</button>`).join('');
+  const p=new URLSearchParams(location.search),S=pages.S||(pages.S={y:p.get('year')||'all',c:CATS.includes(p.get('cat'))?p.get('cat'):'all',q:p.get('q')||'',more:false});
+  const yrs=[];for(let y=L.y;y>=CONFIG.startYear;y--)yrs.push(String(y));
+  const SHOW=5;
+  if(S.y!=='all'&&yrs.indexOf(S.y)>=SHOW)S.more=true;
+  const shown=S.more?yrs:yrs.slice(0,SHOW);
+  $('#years').innerHTML=['all',...shown].map(y=>`<button type="button" data-y="${y}" aria-pressed="${S.y===y}">${y==='all'?t('all'):y}</button>`).join('');
+  const mb=$('#ymore');mb.hidden=yrs.length<=SHOW;mb.textContent=t(S.more?'y_less':'y_more');mb.setAttribute('aria-expanded',S.more);
+  $('#cats').innerHTML=['all',...CATS].map(c=>`<button type="button" data-c="${c}" aria-pressed="${S.c===c}">${c==='all'?t('all'):t('c_'+c)}</button>`).join('');
   const words=S.q.toLowerCase().split(/\s+/).filter(Boolean);
   const hay=i=>`${MONTHS_EN[i.m-1]} ${MONTHS_ID[i.m-1]} ${i.y} ${i.cat} ${T['c_'+i.cat].id} ${i.m<10?'0'+i.m:i.m}/${i.y}`.toLowerCase();
-  const list=ISSUES.filter(i=>(S.c==='all'||i.cat===S.c)&&(words.length?words.every(w=>hay(i).includes(w)):(S.y==='all'||String(i.y)===S.y)));
+  const list=ISSUES.filter(i=>(S.c==='all'||i.cat===S.c)&&(S.y==='all'||String(i.y)===S.y)&&words.every(w=>hay(i).includes(w)));
   $('#count').textContent=t(list.length===1?'count1':'count',{n:list.length});
   $('#grid').innerHTML=list.length?list.map(card).join(''):`<p class="empty">${t('none')}</p>`;
   $('#years').onclick=e=>{const b=e.target.closest('[data-y]');if(b){S.y=b.dataset.y;render();$('#years [aria-pressed=true]').focus({preventScroll:true})}};
   $('#cats').onclick=e=>{const b=e.target.closest('[data-c]');if(b){S.c=b.dataset.c;render();$('#cats [aria-pressed=true]').focus({preventScroll:true})}};
-  const qi=$('#q');qi.value=S.q;qi.oninput=e=>{S.q=e.target.value;render()};
+  mb.onclick=()=>{S.more=!S.more;if(!S.more&&S.y!=='all'&&yrs.indexOf(S.y)>=SHOW)S.y='all';render();mb.focus({preventScroll:true})};
+  const qi=$('#q');if(qi.value!==S.q)qi.value=S.q;qi.oninput=e=>{S.q=e.target.value;render()};
  },
  about(){
   appBlock();const yrs=[];for(let y=L.y;y>=CONFIG.startYear;y--)yrs.push(y);
