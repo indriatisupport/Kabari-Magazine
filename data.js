@@ -1,7 +1,7 @@
 /* ===== EDIT ME: site settings & issue data ===== */
 const CONFIG={
   startYear:2012,                 // first year in archive
-  latest:{y:2026,m:9},            // newest issue (month 1-12). Update when a new issue is published.
+  latest:{y:2026,m:11},            // newest issue (month 1-12). Update when a new issue is published.
   email:'info@kabarinews.com',
   chatEndpoint:'https://kabari-chat.indriatisupport.workers.dev',
   formEndpoint:'https://formspree.io/f/xqpewbpb',                // paste a Formspree URL (https://formspree.io/f/xxxx) to receive messages by form; empty = opens email app
@@ -30,6 +30,8 @@ firebase: {
 /* Real covers / links per issue. Key = "YYYY-M". Anything not listed gets a generated cover and "Coming soon" buttons.
    Example: "2026-9":{cover:"covers/2026-09.jpg",read:"https://...",pdf:"pdf/2026-09.pdf",desc:{en:"...",id:"..."}} */
 const OVERRIDES={
+  "2026-11":{cover:"covers/2026-11.jpg",read:"pdf/2026-11.pdf",pdf:"pdf/2026-11.pdf"},
+  "2026-10":{cover:"covers/2026-10.jpg",read:"pdf/2026-10.pdf",pdf:"pdf/2026-10.pdf"},
   "2026-9":{cover:"covers/2026-09.jpg",read:"pdf/2026-09.pdf",pdf:"pdf/2026-09.pdf"},
   "2026-8":{cover:"covers/2026-08.jpg",read:"pdf/2026-08.pdf",pdf:"pdf/2026-08.pdf"},
   "2026-7":{cover:"covers/2026-07.png",read:"pdf/2026-07.pdf",pdf:"pdf/2026-07.pdf"},
