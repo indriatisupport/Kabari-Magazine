@@ -15,6 +15,7 @@ const T={
  search:{en:'Search by month or year',id:'Cari berdasarkan bulan atau tahun'},none:{en:'No issues match. Try another year, topic or search.',id:'Tidak ada edisi yang cocok. Coba tahun, topik, atau kata kunci lain.'},
  count:{en:'{n} issues',id:'{n} edisi'},
  a_sub:{en:'Every monthly issue of Kabari Magazine in one place. Use the filters to find the one you want.',id:'Setiap edisi bulanan Majalah Kabari di satu tempat. Gunakan filter untuk menemukan edisi yang Anda cari.'},
+ flt_t:{en:'Filters',id:'Filter'},flt_show:{en:'Show {n} issues',id:'Tampilkan {n} edisi'},flt_show1:{en:'Show 1 issue',id:'Tampilkan 1 edisi'},
  fm_t:{en:'Search by Month',id:'Cari berdasarkan Bulan'},fm_d:{en:'Type a month or a year, like “March” or “2024”.',id:'Ketik bulan atau tahun, seperti “Maret” atau “2024”.'},q_ph:{en:'Search issues',id:'Cari edisi'},
  ft_t:{en:'Search by Topic',id:'Cari berdasarkan Topik'},ft_d:{en:'Choose the kind of stories you want to read.',id:'Pilih jenis kisah yang ingin Anda baca.'},
  fy_t:{en:'Search by Year',id:'Cari berdasarkan Tahun'},fy_d:{en:'Show the issues from one year.',id:'Tampilkan edisi dari satu tahun.'},
@@ -23,6 +24,7 @@ const T={
  ab1:{en:"Kabari Magazine is the largest Indonesian news and multimedia portal in the USA. First published in 2007, it has kept growing ever since, connecting Indonesians across America with news, culture and community.",id:"Majalah Kabari adalah portal berita dan multimedia Indonesia terbesar di Amerika Serikat. Pertama terbit pada 2007, Kabari terus berkembang dan menghubungkan masyarakat Indonesia di seluruh Amerika dengan berita, budaya, dan komunitas."},
  ab2:{en:'Our mission is to connect, inform and inspire, from in-depth reporting on immigration and business to features on food and culture that link the homeland with the diaspora.',id:'Misi kami adalah menghubungkan, menginformasikan, dan menginspirasi, dari liputan mendalam tentang imigrasi dan bisnis hingga kisah kuliner dan budaya yang menjembatani tanah air dan diaspora.'},
  ab_eye:{en:'About Kabari Magazine',id:'Tentang Majalah Kabari'},
+ ab_band:{en:'About',id:'Tentang'},bd_latest:{en:'Latest',id:'Terbaru'},bd_sub:{en:'Kabari Magazine',id:'Majalah Kabari'},
  ab_h:{en:'The voice of the Indonesian community in America.',id:'Suara komunitas Indonesia di Amerika.'},
  st_since:{en:'Publishing since',id:'Terbit sejak'},
  st_issues:{en:'Issues in the archive',id:'Edisi dalam arsip'},
@@ -312,6 +314,10 @@ const pages={
   const list=ISSUES.filter(i=>(S.c==='all'||i.cat===S.c)&&(S.y==='all'||String(i.y)===S.y)&&monthMatch(i,S.q));
   $('#count').textContent=t(list.length===1?'count1':'count',{n:list.length});
   $('#grid').innerHTML=list.length?list.map(card).join(''):`<p class="empty">${t('none')}</p>`;
+  const act=(S.y!=='all'?1:0)+(S.c!=='all'?1:0)+(S.q.trim()?1:0),fn=$('#fltn'),fb=$('#fltb'),sd=$('#arcside');
+  fn.textContent=act||'';fn.hidden=!act;$('#fltd').textContent=list.length===1?t('flt_show1'):t('flt_show',{n:list.length});
+  fb.onclick=()=>{const o=sd.classList.toggle('open');fb.setAttribute('aria-expanded',o)};
+  $('#fltd').onclick=()=>{sd.classList.remove('open');fb.setAttribute('aria-expanded','false');$('#grid').scrollIntoView({behavior:'smooth',block:'start'})};
   $('#years').onclick=e=>{const b=e.target.closest('[data-y]');if(b){S.y=b.dataset.y;render();$('#years [aria-pressed=true]').focus({preventScroll:true})}};
   $('#cats').onclick=e=>{const b=e.target.closest('[data-c]');if(b){S.c=b.dataset.c;render();$('#cats [aria-pressed=true]').focus({preventScroll:true})}};
   mb.onclick=()=>{S.more=!S.more;if(!S.more&&S.y!=='all'&&yrs.indexOf(S.y)>=SHOW)S.y='all';render();mb.focus({preventScroll:true})};

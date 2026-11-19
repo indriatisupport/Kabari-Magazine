@@ -160,7 +160,7 @@ header{padding-inline:max(5%,calc((100% - 1180px)/2 + 5%))}
 /* ===== Contact page (measured from the reference design) ===== */
 :root{--f3:'Newsreader',Georgia,'Times New Roman',serif;--bd:#c3c2bf}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.ch{background:var(--ink);color:#fdfcf8;text-align:center;padding:clamp(3rem,7vw,5.9rem) 5%}
+.ch{background:var(--ink);color:#fdfcf8;text-align:center;padding:clamp(2.5rem,5vw,4rem) 5%}
 .ch h1{font:700 clamp(2.5rem,6vw,4rem)/1.05 var(--f3);letter-spacing:0}
 .cw{width:min(900px,90%);margin:0 auto;padding:clamp(3rem,6.4vw,5.75rem) 0 5rem;font-family:var(--f1)}
 .ct-h2{font:500 clamp(1.75rem,4vw,2.5rem)/1.1 var(--f3);text-align:center;margin:0}
@@ -312,8 +312,7 @@ body.lgp{background:#070707;color:#fff;overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){.lg *,.lg-card,.lg-card::before{animation:none!important;transition:none!important}.lg h1 span,.lg-copy p{opacity:1;transform:none}}
 
 /* ===== Archive: simple filters (matches Contact page + reference) ===== */
-.arc-ch{padding-block:clamp(2.5rem,5vw,4rem)}
-.arc-ch .arc-sub{max-width:38rem;margin:1rem auto 0;color:#d1d5db;font:400 1.0625rem/1.65 var(--f1)}
+.ch .ch-sub{max-width:38rem;margin:1rem auto 0;color:#d1d5db;font:400 1.0625rem/1.65 var(--f1)}
 .arc{padding-top:2.5rem;font-family:var(--f1)}
 .arc #count{margin:0 0 1.5rem;font:400 .95rem var(--f1);color:#6B6A66}
 .arc-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:3.5rem;align-items:start}
@@ -346,5 +345,37 @@ body.lgp{background:#070707;color:#fff;overflow-x:hidden}
 @media(max-width:900px){
  .arc-layout{grid-template-columns:minmax(0,1fr);gap:2rem}
  .arc-side{position:static}
+ .arc-res{scroll-margin-top:5.5rem}
  .arc-res .grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* About page body (under the black heading band) */
+.ab-h{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;max-width:24ch;margin:0}.abi .lead{margin-top:1.2rem}
+/* ===== Archive filters: one tap-to-open bar on phones/tablets ===== */
+.flt-btn,.flt-done{display:none}
+@media(max-width:900px){
+ .flt-btn{display:flex;align-items:center;justify-content:space-between;width:100%;height:48px;padding:0 1rem;border:1px solid var(--bd);background:#fff;font:700 14px var(--f1);letter-spacing:1.12px;text-transform:uppercase;color:var(--ink);cursor:pointer}
+ .flt-l{display:flex;align-items:center;gap:.6rem}
+ .flt-n{display:inline-grid;place-items:center;min-width:1.4rem;height:1.4rem;padding:0 .35rem;border-radius:99px;background:var(--ink);color:#fff;font:700 12px var(--f2);letter-spacing:0}.flt-n[hidden]{display:none}
+ .flt-btn svg{width:1.2rem;height:1.2rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s}
+ .arc-side.open .flt-btn svg{transform:rotate(180deg)}
+ .flt-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+ .arc-side.open .flt-panel{grid-template-rows:1fr}
+ .flt-in{overflow:hidden;min-height:0;visibility:hidden;transition:visibility 0s .35s}
+ .arc-side.open .flt-in{visibility:visible;transition-delay:0s}
+ .flt-body{margin-top:.6rem;padding:1.25rem 1rem;border:1px solid var(--bd);background:#fff}
+ .flt-body .opts{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1rem}
+ .flt-done{display:block;width:100%;height:48px;margin-top:1.25rem;background:var(--ink);color:#fff;font:700 13px var(--f1);letter-spacing:1.12px;text-transform:uppercase;cursor:pointer}
+}
+@media(min-width:600px) and (max-width:900px){.arc-res .grid{grid-template-columns:repeat(3,1fr)}}
+@media(prefers-reduced-motion:reduce){.flt-panel,.flt-btn svg,.flt-in{transition:none}}
+
+/* ===== Touch screens: no sticky hover flash when tapping a cover ===== */
+.card,.fav,.opts button,.flt-btn,.flt-done,.hb,.sr-i{-webkit-tap-highlight-color:transparent}
+@media(hover:none),(pointer:coarse){
+ .card:hover .cv{transform:none;box-shadow:0 8px 20px rgba(10,10,10,.18)}
+ .arc-res .card:hover .cv{transform:none;box-shadow:0 2px 10px rgba(10,10,10,.12)}
+ .arc-res .card:hover strong{text-decoration:none}
+ .fav:hover{transform:none}
+ .cv{transition:none}
 }
