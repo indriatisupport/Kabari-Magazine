@@ -290,9 +290,22 @@ function i18n(){
 function setLang(l){lang=l;try{localStorage.setItem('kabariLang',l)}catch(e){}i18n();render()}
 const L=ISSUES[0];
 const legal=k=>{const d=LEGAL[k],g=o=>o[lang]||o.en;$('#lg').innerHTML=`<h1 class="sec-t">${g(d.t)}</h1><p class="upd">${t('upd')}: ${g(d.u)}</p>`+d.s.map(([h,p])=>`<h2>${g(h)}</h2><p>${g(p)}</p>`).join('')};
+let HS={n:0,t:null};
 const pages={
  index(){
-  $('#fan').innerHTML=ISSUES.slice(0,3).reverse().map((i,n)=>`<a class="fc f${n}" href="latest.html" aria-label="${title(i)}">${cover(i,1)}</a>`).join('');
+  {const yr=ISSUES[0].y;let hl=ISSUES.filter(i=>i.y===yr&&i.cover);if(hl.length<2)hl=ISSUES.filter(i=>i.cover).slice(0,8);
+   clearInterval(HS.t);if(HS.n>=hl.length)HS.n=0;
+   $('#fan').innerHTML=hl.length?`<div class="hs" aria-roledescription="carousel" aria-label="Kabari Magazine covers"><div class="hs-stage">${hl.map((i,k)=>`<button type="button" class="hs-s" data-id="${i.id}" aria-label="${title(i)}"><img src="${i.cover}" alt="" width="600" height="800" decoding="async"${k?' loading="lazy"':''}></button>`).join('')}</div><div class="hs-cap"><b id="hs-t"></b><div class="hs-dots">${hl.map((i,k)=>`<button type="button" class="hs-d" data-k="${k}" aria-label="${title(i)}"></button>`).join('')}</div></div></div>`:'';
+   if(hl.length){const sl=$$('.hs-s'),ds=$$('.hs-d');let prev=-1;
+    const show=n=>{HS.n=n;sl.forEach((s,k)=>{s.classList.toggle('on',k===n);s.classList.toggle('out',k===prev&&k!==n)});ds.forEach((d,k)=>d.setAttribute('aria-current',k===n));$('#hs-t').textContent=title(hl[n]);prev=n};
+    const red=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const run=()=>{clearInterval(HS.t);if(red||hl.length<2)return;HS.t=setInterval(()=>{if(!document.hidden)show((HS.n+1)%hl.length)},3000)};
+    show(HS.n);run();
+    const st=$('.hs');st.onmouseenter=()=>clearInterval(HS.t);st.onmouseleave=run;st.onfocusin=()=>clearInterval(HS.t);st.onfocusout=run;
+    ds.forEach(d=>d.onclick=()=>{show(+d.dataset.k);run()});
+    sl.forEach(s=>s.onclick=()=>openModal(byId(s.dataset.id)))}}
+  {const unit='<span class="mq-i">Kabari Magazine</span><svg class="mq-s" viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>',g=unit.repeat(8);
+   $('#mq1').innerHTML=`<div class="mq-g">${g}</div><div class="mq-g">${g}</div>`}
   $('#recent').innerHTML=ISSUES.slice(0,4).map(card).join('');
   {let pop=(CONFIG.popular||[]).map(byId).filter(Boolean);if(!pop.length)pop=ISSUES.filter(i=>i.cover).slice(4,8);$('#mv').innerHTML=pop.slice(0,4).map(card).join('')}
   $('#topics').innerHTML=CATS.map(c=>`<a class="topic" style="--c:${CAT_COLOR[c]}" href="archive.html?cat=${c}">${t('c_'+c)}</a>`).join('');
