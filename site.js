@@ -145,6 +145,7 @@ const T={
  lg_s1:{en:"Weak",id:"Lemah"},lg_s2:{en:"Okay",id:"Cukup"},lg_s3:{en:"Strong",id:"Kuat"},
  lg_ok:{en:"Welcome to Kabari",id:"Selamat datang di Kabari"},lg_ok_s:{en:"Taking you to your library...",id:"Mengantar Anda ke perpustakaan..."},
  lg_c1:{en:"Since 2007",id:"Sejak 2007"},lg_c2:{en:"English & Indonesian",id:"Inggris & Indonesia"},
+ mq_1:{en:"Indonesian Stories from America",id:"Kisah Indonesia dari Amerika"},mq_2:{en:"Published since 2007",id:"Terbit sejak 2007"},mq_3:{en:"Culture & Heritage",id:"Budaya & Warisan"},mq_4:{en:"Diaspora Voices",id:"Suara Diaspora"},mq_5:{en:"Business & Community",id:"Bisnis & Komunitas"},
  sb_t:{en:"Stories from Home, Straight to Your Inbox",id:"Kisah dari Tanah Air, Langsung ke Email Anda"},
  sb_l:{en:"2007",id:"2007"},sb_ld:{en:"Publishing since 2007: the largest Indonesian news and multimedia portal in the USA.",id:"Terbit sejak 2007: portal berita dan multimedia Indonesia terbesar di Amerika Serikat."},
  sb_r:{en:"Monthly",id:"Bulanan"},sb_rd:{en:"A new issue every month, with news, culture, community, business and lifestyle stories in English and Indonesian.",id:"Edisi baru setiap bulan, dengan kisah berita, budaya, komunitas, bisnis, dan gaya hidup dalam bahasa Inggris dan Indonesia."},
@@ -304,7 +305,7 @@ const pages={
     const st=$('.hs');st.onmouseenter=()=>clearInterval(HS.t);st.onmouseleave=run;st.onfocusin=()=>clearInterval(HS.t);st.onfocusout=run;
     ds.forEach(d=>d.onclick=()=>{show(+d.dataset.k);run()});
     sl.forEach(s=>s.onclick=()=>openModal(byId(s.dataset.id)))}}
-  {const unit='<span class="mq-i">Kabari Magazine</span><svg class="mq-s" viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>',g=unit.repeat(8);
+  {const star='<svg class="mq-s" viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>',one=[1,2,3,4,5].map(n=>`<span class="mq-i">${t('mq_'+n)}</span>${star}`).join(''),g=one+one;
    $('#mq1').innerHTML=`<div class="mq-g">${g}</div><div class="mq-g">${g}</div>`}
   $('#recent').innerHTML=ISSUES.slice(0,4).map(card).join('');
   {let pop=(CONFIG.popular||[]).map(byId).filter(Boolean);if(!pop.length)pop=ISSUES.filter(i=>i.cover).slice(4,8);$('#mv').innerHTML=pop.slice(0,4).map(card).join('')}
